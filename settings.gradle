@@ -1,2 +1,3 @@
 rootProject.name = "RestaurantsValley"
 include ':app'
+include ':map-module'
