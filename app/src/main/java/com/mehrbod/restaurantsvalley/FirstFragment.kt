@@ -8,12 +8,19 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.maps.Style
+import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.databinding.FragmentFirstBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@AndroidEntryPoint
 class FirstFragment : Fragment() {
+
+    @Inject
+    lateinit var mapModule: MapModule
 
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
@@ -22,7 +29,6 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Mapbox.getInstance(requireContext(), "sk.eyJ1IjoibWVocmJvZCIsImEiOiJja3M3czJncmkwYWl2MnZuMDZ3cTQ2Y2p6In0.KCoKmygq7x8auJilSp6EGA")
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync {
