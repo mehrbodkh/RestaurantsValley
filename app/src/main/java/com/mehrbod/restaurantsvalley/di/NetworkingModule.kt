@@ -1,9 +1,12 @@
 package com.mehrbod.restaurantsvalley.di
 
+import android.content.Context
+import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,7 +18,7 @@ class NetworkingModule {
 
     @Provides
     @Named("BaseUrl")
-    fun provideBaseUrl(): String = "https://api.foursquare.com/v2/"
+    fun provideBaseUrl(@ApplicationContext context: Context): String = context.getString(R.string.restaurants_base_api)
 
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
@@ -32,7 +35,7 @@ class NetworkingModule {
     }
 
     @Provides
-    fun provideApiService(retrofit: Retrofit): RestaurantApiService {
+    fun provideRestaurantApiService(retrofit: Retrofit): RestaurantApiService {
         return retrofit.create(RestaurantApiService::class.java)
     }
 }
