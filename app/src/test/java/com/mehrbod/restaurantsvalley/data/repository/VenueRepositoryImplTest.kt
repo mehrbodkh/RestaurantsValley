@@ -35,7 +35,9 @@ class VenueRepositoryImplTest {
     fun `test get venues successful response`() = coroutineDispatcher.runBlockingTest {
         every { venuesResponse.meta.code } returns 200
         coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } returns venuesResponse
+
         val response = venueRepositoryImpl.getVenues(1.0, 1.0, 1).first()
+
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
         assert(response.isSuccess)
         assert(response.getOrNull() != null)
@@ -45,7 +47,9 @@ class VenueRepositoryImplTest {
     @Test
     fun `test venues failed request`() = coroutineDispatcher.runBlockingTest {
         coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } throws Exception("")
+
         val response = venueRepositoryImpl.getVenues(1.0, 1.0, 1).first()
+
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
         assert(response.isFailure)
         assert(response.getOrNull() == null)
@@ -55,7 +59,9 @@ class VenueRepositoryImplTest {
     fun `test venues failed response`() = coroutineDispatcher.runBlockingTest {
         every { venuesResponse.meta.code } returns 400
         coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } returns venuesResponse
+
         val response = venueRepositoryImpl.getVenues(1.0, 1.0, 1).first()
+
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
         assert(response.isFailure)
         assert(response.getOrNull() == null)
