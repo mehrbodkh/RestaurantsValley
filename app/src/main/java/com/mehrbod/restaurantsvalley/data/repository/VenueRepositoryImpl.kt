@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.data.repository
 
+import com.mehrbod.restaurantsvalley.data.api.model.ApiVenues
 import com.mehrbod.restaurantsvalley.data.datasource.VenuesDataSource
-import com.mehrbod.restaurantsvalley.data.model.response.Venues
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,13 +15,14 @@ class VenueRepositoryImpl @Inject constructor(
     @Named("IODispatcher") private val dispatcher: CoroutineDispatcher
 ) : VenueRepository {
 
-    override fun getVenues(lat: Double, lng: Double, radius: Int): Flow<Result<List<Venues>>> =
+
+    override fun getVenues(lat: Double, lng: Double, radius: Int): Flow<Result<List<ApiVenues>>> =
         flow {
             val result = remoteDataSource.fetchVenues(lat, lng, radius)
-            if (result.meta.code == 200) {
-                emit(Result.success(result.response.venues))
+            if (result.apiMeta.code == 200) {
+                emit(Result.success(result.apiResponse.venues))
             } else {
-                emit(Result.failure<List<Venues>>(Throwable("")))
+                emit(Result.failure<List<ApiVenues>>(Throwable("")))
             }
         }
             .flowOn(dispatcher)

@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.data.repository
 
 import com.mehrbod.restaurantsvalley.data.datasource.VenuesRemoteDataSource
-import com.mehrbod.restaurantsvalley.data.model.response.VenuesResponse
+import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,7 @@ class VenueRepositoryImplTest {
     lateinit var remoteDataSource: VenuesRemoteDataSource
 
     @RelaxedMockK
-    lateinit var venuesResponse: VenuesResponse
+    lateinit var apiVenuesResponse: ApiVenuesResponse
 
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
     private lateinit var venueRepositoryImpl: VenueRepositoryImpl
@@ -33,8 +33,8 @@ class VenueRepositoryImplTest {
 
     @Test
     fun `test get venues successful response`() = coroutineDispatcher.runBlockingTest {
-        every { venuesResponse.meta.code } returns 200
-        coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } returns venuesResponse
+        every { apiVenuesResponse.apiMeta.code } returns 200
+        coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } returns apiVenuesResponse
         val response = venueRepositoryImpl.getVenues(1.0, 1.0, 1).first()
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
         assert(response.isSuccess)
@@ -53,8 +53,8 @@ class VenueRepositoryImplTest {
 
     @Test
     fun `test venues failed response`() = coroutineDispatcher.runBlockingTest {
-        every { venuesResponse.meta.code } returns 400
-        coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } returns venuesResponse
+        every { apiVenuesResponse.apiMeta.code } returns 400
+        coEvery { remoteDataSource.fetchVenues(any(), any(), any()) } returns apiVenuesResponse
         val response = venueRepositoryImpl.getVenues(1.0, 1.0, 1).first()
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
         assert(response.isFailure)

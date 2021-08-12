@@ -1,8 +1,8 @@
-package com.mehrbod.restaurantsvalley.data.model.response
+package com.mehrbod.restaurantsvalley.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Icon (
+data class ApiIcon (
 
 	@SerializedName("prefix") val prefix : String,
 	@SerializedName("mapPrefix") val mapPrefix : String,
