@@ -1,6 +1,8 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
+import com.mehrbod.restaurantsvalley.data.api.model.ApiMeta
+import com.mehrbod.restaurantsvalley.data.api.model.ApiResponse
 import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -17,9 +19,6 @@ class ApiVenuesRemoteDataSourceTest  {
     @MockK
     lateinit var apiService: RestaurantApiService
 
-    @RelaxedMockK
-    lateinit var apiVenuesResponse: ApiVenuesResponse
-
     private lateinit var remoteDataSource: VenuesDataSource
 
     @Before
@@ -30,10 +29,26 @@ class ApiVenuesRemoteDataSourceTest  {
 
     @Test
     fun `test fetch venues api call`() = runBlocking {
-        coEvery { apiService.getVenues(any(), any(), any(), any(), any()) } returns apiVenuesResponse
-        remoteDataSource.fetchVenues(1.0, 1.0, 1)
-        coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
+        coEvery { apiService.getVenues(any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
+            ApiMeta(code = 200, requestId = "32408243"),
+            emptyList(),
+            ApiResponse(venues = emptyList(), null)
+        )
+        val response = remoteDataSource.fetchVenues(1.0, 1.0, 1)
         coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any()) }
+        assert(response.isSuccess)
+    }
+
+    @Test
+    fun `test fetch venues failure response`() = runBlocking {
+        coEvery { apiService.getVenues(any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
+            ApiMeta(code = 400, requestId = "32408243"),
+            emptyList(),
+            ApiResponse(venues = emptyList(), null)
+        )
+        val response = remoteDataSource.fetchVenues(1.0, 1.0, 1)
+        coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any()) }
+        assert(response.isFailure)
     }
 
     @After
