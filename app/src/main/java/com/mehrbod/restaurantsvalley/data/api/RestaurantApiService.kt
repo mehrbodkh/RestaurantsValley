@@ -9,7 +9,7 @@ interface RestaurantApiService {
     @GET("venues/search")
     suspend fun getVenues(
         @Query("ll") latLng: String,
-        @Query("limit") limit: Int,
-        @Query("radius") radius: Int
+        @Query("radius") radius: Int,
+        @Query("v") version: String = "20180401"
     ): VenuesResponse
 }

@@ -18,7 +18,8 @@ class NetworkingModule {
 
     @Provides
     @Named("BaseUrl")
-    fun provideBaseUrl(@ApplicationContext context: Context): String = context.getString(R.string.restaurants_base_api)
+    fun provideBaseUrl(@ApplicationContext context: Context): String =
+        context.getString(R.string.restaurants_base_api)
 
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
