@@ -1,8 +1,8 @@
-package com.mehrbod.restaurantsvalley.data.model.response
+package com.mehrbod.restaurantsvalley.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Stats (
+data class ApiStats (
 
 	@SerializedName("tipCount") val tipCount : Int,
 	@SerializedName("usersCount") val usersCount : Int,

@@ -1,7 +1,7 @@
-package com.mehrbod.restaurantsvalley.data.model.response
+package com.mehrbod.restaurantsvalley.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class BeenHere (
+data class ApiBeenHere (
 	@SerializedName("lastCheckinExpiredAt") val lastCheckinExpiredAt : Int
 )
