@@ -17,7 +17,6 @@ class VenuesRemoteDataSourceTest  {
     @MockK
     lateinit var apiService: RestaurantApiService
 
-    @MockK
     @RelaxedMockK
     lateinit var venuesResponse: VenuesResponse
 
@@ -26,15 +25,15 @@ class VenuesRemoteDataSourceTest  {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        remoteDataSource = VenuesRemoteDataSource(apiService)
+        remoteDataSource = VenuesRemoteDataSource(apiService, "null", "null")
     }
 
     @Test
     fun `test fetch venues api call`() = runBlocking {
-        coEvery { apiService.getVenues(allAny(), any()) } returns venuesResponse
+        coEvery { apiService.getVenues(any(), any(), any(), any(), any()) } returns venuesResponse
         remoteDataSource.fetchVenues(1.0, 1.0, 1)
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
-        coVerify { apiService.getVenues("1.0,1.0", 1) }
+        coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any()) }
     }
 
     @After
