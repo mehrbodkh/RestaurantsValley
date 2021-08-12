@@ -6,6 +6,7 @@ import com.mehrbod.map_module.MapModule
 import com.mehrbod.map_module.MapModuleImpl
 import com.mehrbod.map_module.model.MapBoxOptions
 import com.mehrbod.map_module.model.MapOptions
+import com.mehrbod.restaurantsvalley.R
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,8 +24,8 @@ class MapProviderModule {
 
     @Provides
     @Named("MapboxToken")
-    fun provideMapToken(): String =
-        "sk.eyJ1IjoibWVocmJvZCIsImEiOiJja3M3czJncmkwYWl2MnZuMDZ3cTQ2Y2p6In0.KCoKmygq7x8auJilSp6EGA"
+    fun provideMapToken(@ApplicationContext context: Context): String =
+        context.getString(R.string.mapbox_sdk_token)
 
     @Provides
     fun provideMapModule(mapOptions: MapOptions): MapModule = MapModuleImpl(mapOptions)
