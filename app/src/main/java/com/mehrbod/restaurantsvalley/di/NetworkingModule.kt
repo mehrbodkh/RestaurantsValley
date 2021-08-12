@@ -26,7 +26,7 @@ class NetworkingModule {
 
     @Provides
     fun provideRetrofitClient(
-        @Named("BasedUrl") baseUrl: String,
+        @Named("BaseUrl") baseUrl: String,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
