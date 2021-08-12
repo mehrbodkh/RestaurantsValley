@@ -30,11 +30,11 @@ class VenuesRemoteDataSourceTest  {
     }
 
     @Test
-    fun `test fetch venues call`() = runBlocking {
+    fun `test fetch venues api call`() = runBlocking {
         coEvery { apiService.getVenues(allAny(), any()) } returns venuesResponse
         remoteDataSource.fetchVenues(1.0, 1.0, 1)
         coVerify { remoteDataSource.fetchVenues(1.0, 1.0, 1) }
-        coVerify { apiService.getVenues(allAny(), any()) }
+        coVerify { apiService.getVenues("1.0,1.0", 1) }
     }
 
     @After
