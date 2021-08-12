@@ -12,9 +12,9 @@ data class Venue(
     val apiStats : Stats?,
     val apiSpecials : Specials?,
     val apiVenuePage : VenuePage?,
-    val locked : Boolean,
+    val locked : Boolean?,
     val apiHereNow : HereNow?,
-    val referralId : String,
-    val venueChains : List<String>,
-    val hasPerk : Boolean
+    val referralId : String?,
+    val venueChains : List<String>?,
+    val hasPerk : Boolean?
 )

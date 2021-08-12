@@ -8,11 +8,13 @@ fun ApiVenuesResponse.convertToVenues(): List<Venue> {
         Venue(
             it.id,
             it.name,
-            if (it.apiContact != null) Contact(
-                it.apiContact.phone,
-                it.apiContact.formattedPhone
-            ) else null,
-            if (it.apiLocation != null) Location(
+            it.apiContact?.let { apiContact ->
+                Contact(
+                    apiContact.phone,
+                    apiContact.formattedPhone
+                )
+            },
+            Location(
                 it.apiLocation.address,
                 it.apiLocation.crossStreet,
                 it.apiLocation.lat,
@@ -27,7 +29,7 @@ fun ApiVenuesResponse.convertToVenues(): List<Venue> {
                 it.apiLocation.contextLine,
                 it.apiLocation.contextGeoId,
                 it.apiLocation.formattedAddress
-            ) else null,
+            ),
             it.canonicalUrl,
             it.canonicalPath,
             it.categories.map { category ->
@@ -45,11 +47,28 @@ fun ApiVenuesResponse.convertToVenues(): List<Venue> {
                 )
             },
             it.verified,
-            if (it.apiStats != null) Stats(it.apiStats.tipCount, it.apiStats.usersCount, it.apiStats.checkinsCount) else null,
-            if (it.apiSpecials != null) Specials(it.apiSpecials.count, it.apiSpecials.items) else null,
-            if (it.apiVenuePage != null) VenuePage(it.apiVenuePage.id) else null,
+            it.apiStats?.let { apiStats ->
+                Stats(
+                    apiStats.tipCount,
+                    apiStats.usersCount,
+                    apiStats.checkinsCount
+                )
+            },
+            it.apiSpecials?.let { apiSpecials ->
+                Specials(
+                    apiSpecials.count,
+                    apiSpecials.items
+                )
+            },
+            it.apiVenuePage?.let { apiVenuePage -> VenuePage(apiVenuePage.id) },
             it.locked,
-            it.apiHereNow?.let { hereNow -> HereNow(hereNow.count, hereNow.summary, hereNow.groups) },
+            it.apiHereNow?.let { hereNow ->
+                HereNow(
+                    hereNow.count,
+                    hereNow.summary,
+                    hereNow.groups
+                )
+            },
             it.referralId,
             it.venueChains,
             it.hasPerk
