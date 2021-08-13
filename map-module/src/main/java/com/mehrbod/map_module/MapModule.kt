@@ -1,10 +1,12 @@
 package com.mehrbod.map_module
 
 import android.os.Bundle
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapView
 
 interface MapModule {
-    fun initialize(mapView: MapView, savedInstanceState: Bundle?)
+    fun initialize(mapView: MapView, savedInstanceState: Bundle?, onMapReadyListener: () -> Unit)
+    fun addOnCameraIdleListener(listener: (position: LatLng, radius: Int) -> Unit)
     fun onStart()
     fun onResume()
     fun onPause()

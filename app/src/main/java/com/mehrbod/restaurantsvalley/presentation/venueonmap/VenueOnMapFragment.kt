@@ -60,7 +60,11 @@ class VenueOnMapFragment : Fragment() {
     // TODO: All map related initializations should be moved to map module
     @SuppressLint("MissingPermission")
     private fun initializeMap(savedInstanceState: Bundle?) {
-        mapModule.initialize(binding.mapView, savedInstanceState)
+        mapModule.initialize(binding.mapView, savedInstanceState) {
+            mapModule.addOnCameraIdleListener { position, radius ->
+                viewModel.onMapCameraPositionUpdated(position.latitude, position.longitude, radius)
+            }
+        }
 //        binding.mapView.onCreate(savedInstanceState)
 //        binding.mapView.getMapAsync {
 //            it.setStyle(mapStyleUrl)

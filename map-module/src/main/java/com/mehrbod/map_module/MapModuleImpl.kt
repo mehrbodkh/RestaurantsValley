@@ -3,6 +3,7 @@ package com.mehrbod.map_module
 import android.os.Bundle
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mehrbod.map_module.model.MapBoxOptions
@@ -19,19 +20,20 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
         }
     }
 
-    override fun initialize(mapView: MapView, savedInstanceState: Bundle?) {
+    override fun initialize(
+        mapView: MapView,
+        savedInstanceState: Bundle?,
+        onMapReadyListener: () -> Unit
+    ) {
         this.mapView = mapView
 
         (options as? MapBoxOptions)?.let { mapBoxOptions ->
-            initializeMapboxView(mapBoxOptions, savedInstanceState)
-        }
-    }
-
-    private fun initializeMapboxView(mapBoxOptions: MapBoxOptions, savedInstanceState: Bundle?) {
-        onCreate(savedInstanceState)
-        mapView?.getMapAsync {
-            this.mapboxMap = it
-            initializeMapboxMap(mapBoxOptions)
+            onCreate(savedInstanceState)
+            mapView.getMapAsync {
+                this.mapboxMap = it
+                initializeMapboxMap(mapBoxOptions)
+                onMapReadyListener()
+            }
         }
     }
 
@@ -46,6 +48,21 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
                 .target(mapBoxOptions.initialCameraPosition)
                 .zoom(mapBoxOptions.defaultZoomLevel)
                 .build()
+        }
+    }
+
+    override fun addOnCameraIdleListener(listener: (position: LatLng, radius: Int) -> Unit) {
+        mapboxMap?.let {
+            it.addOnCameraIdleListener {
+                val cameraPosition = it.cameraPosition
+                val radius = it.projection.visibleRegion.farLeft
+                    .distanceTo(it.projection.visibleRegion.farRight)
+
+                listener(
+                    LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude),
+                    radius.toInt()
+                )
+            }
         }
     }
 

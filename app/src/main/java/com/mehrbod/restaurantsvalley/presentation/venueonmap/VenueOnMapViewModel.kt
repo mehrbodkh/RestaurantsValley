@@ -2,7 +2,6 @@ package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
 import com.mehrbod.restaurantsvalley.domain.model.Venue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,12 +19,12 @@ class VenueOnMapViewModel @Inject constructor(
     val venuesState = _venuesState
 
 
-    fun onMapCameraPositionUpdated(cameraPosition: CameraPosition) {
+    fun onMapCameraPositionUpdated(lat: Double, lng: Double, radius: Int) {
         viewModelScope.launch {
             venueRepository.getVenues(
-                cameraPosition.target.latitude,
-                cameraPosition.target.longitude,
-                ((20 - cameraPosition.zoom) * 50).toInt()
+                lat,
+                lng,
+                radius
             ).collect {
                 _venuesState.value = VenuesUiState.ShowVenues(it.getOrNull() ?: emptyList())
             }
