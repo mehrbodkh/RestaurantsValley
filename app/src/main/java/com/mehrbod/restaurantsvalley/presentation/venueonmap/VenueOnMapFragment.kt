@@ -56,11 +56,11 @@ class VenueOnMapFragment : Fragment() {
             it.setStyle(mapStyleUrl)
             it.uiSettings.isRotateGesturesEnabled = false
             it.uiSettings.isTiltGesturesEnabled = false
-            it.setMaxZoomPreference(19.0)
-            it.setMinZoomPreference(4.0)
+            it.setMaxZoomPreference(17.0)
+            it.setMinZoomPreference(6.0)
             it.cameraPosition = CameraPosition.Builder()
                 .target(LatLng(52.370986, 4.910211))
-                .zoom(10.0)
+                .zoom(12.0)
                 .build()
 
             it.addOnCameraIdleListener {
