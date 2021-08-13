@@ -60,69 +60,70 @@ class VenueOnMapFragment : Fragment() {
     // TODO: All map related initializations should be moved to map module
     @SuppressLint("MissingPermission")
     private fun initializeMap(savedInstanceState: Bundle?) {
-        binding.mapView.onCreate(savedInstanceState)
-        binding.mapView.getMapAsync {
-            it.setStyle(mapStyleUrl)
-            it.uiSettings.isRotateGesturesEnabled = false
-            it.uiSettings.isTiltGesturesEnabled = false
-            it.setMaxZoomPreference(17.0)
-            it.setMinZoomPreference(6.0)
-            it.cameraPosition = CameraPosition.Builder()
-                .target(LatLng(52.370986, 4.910211))
-                .zoom(12.0)
-                .build()
-
-            it.addOnCameraIdleListener {
-                viewModel.onMapCameraPositionUpdated(it.cameraPosition)
-            }
-
-            if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
-                it.getStyle { style ->
-                    val locationComponent = it.locationComponent
-                    val options =
-                        LocationComponentActivationOptions.Builder(requireContext(), style).build()
-                    locationComponent.activateLocationComponent(options)
-                    locationComponent.isLocationComponentEnabled = true
-                    locationComponent.renderMode = RenderMode.NORMAL
-                }
-
-            } else {
-                PermissionsManager(object: PermissionsListener {
-                    override fun onExplanationNeeded(p0: MutableList<String>?) {
-
-                    }
-
-                    override fun onPermissionResult(p0: Boolean) {
-                        if (p0) {
-                            it.getStyle { style ->
-                                val locationComponent = it.locationComponent
-                                val options =
-                                    LocationComponentActivationOptions.Builder(requireContext(), style).build()
-                                locationComponent.activateLocationComponent(options)
-                                locationComponent.isLocationComponentEnabled = true
-                                locationComponent.renderMode = RenderMode.NORMAL
-                            }
-                        }
-                    }
-
-                }).apply {
-                    requestLocationPermissions(activity)
-                }
-            }
-            binding.myLocationButton.setOnClickListener { _ ->
-                if (it.locationComponent.isLocationComponentActivated) {
-                    val lat = it.locationComponent.lastKnownLocation?.latitude
-                    val lng = it.locationComponent.lastKnownLocation?.longitude
-                    if (lat != null && lng != null) {
-                        it.cameraPosition = CameraPosition.Builder()
-                            .target(LatLng(lat!!, lng!!))
-                            .zoom(15.0)
-                            .build()
-                    }
-                }
-
-            }
-        }
+        mapModule.initialize(binding.mapView, savedInstanceState)
+//        binding.mapView.onCreate(savedInstanceState)
+//        binding.mapView.getMapAsync {
+//            it.setStyle(mapStyleUrl)
+//            it.uiSettings.isRotateGesturesEnabled = false
+//            it.uiSettings.isTiltGesturesEnabled = false
+//            it.setMaxZoomPreference(17.0)
+//            it.setMinZoomPreference(6.0)
+//            it.cameraPosition = CameraPosition.Builder()
+//                .target(LatLng(52.370986, 4.910211))
+//                .zoom(12.0)
+//                .build()
+//
+//            it.addOnCameraIdleListener {
+//                viewModel.onMapCameraPositionUpdated(it.cameraPosition)
+//            }
+//
+//            if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
+//                it.getStyle { style ->
+//                    val locationComponent = it.locationComponent
+//                    val options =
+//                        LocationComponentActivationOptions.Builder(requireContext(), style).build()
+//                    locationComponent.activateLocationComponent(options)
+//                    locationComponent.isLocationComponentEnabled = true
+//                    locationComponent.renderMode = RenderMode.NORMAL
+//                }
+//
+//            } else {
+//                PermissionsManager(object: PermissionsListener {
+//                    override fun onExplanationNeeded(p0: MutableList<String>?) {
+//
+//                    }
+//
+//                    override fun onPermissionResult(p0: Boolean) {
+//                        if (p0) {
+//                            it.getStyle { style ->
+//                                val locationComponent = it.locationComponent
+//                                val options =
+//                                    LocationComponentActivationOptions.Builder(requireContext(), style).build()
+//                                locationComponent.activateLocationComponent(options)
+//                                locationComponent.isLocationComponentEnabled = true
+//                                locationComponent.renderMode = RenderMode.NORMAL
+//                            }
+//                        }
+//                    }
+//
+//                }).apply {
+//                    requestLocationPermissions(activity)
+//                }
+//            }
+//            binding.myLocationButton.setOnClickListener { _ ->
+//                if (it.locationComponent.isLocationComponentActivated) {
+//                    val lat = it.locationComponent.lastKnownLocation?.latitude
+//                    val lng = it.locationComponent.lastKnownLocation?.longitude
+//                    if (lat != null && lng != null) {
+//                        it.cameraPosition = CameraPosition.Builder()
+//                            .target(LatLng(lat!!, lng!!))
+//                            .zoom(15.0)
+//                            .build()
+//                    }
+//                }
+//
+//            }
+//        }
     }
 
     private fun initializeObservers() {
@@ -143,37 +144,37 @@ class VenueOnMapFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        binding.mapView.onSaveInstanceState(outState)
+        mapModule.onSavedInstanceState(outState)
     }
 
     override fun onResume() {
         super.onResume()
-        binding.mapView.onResume()
+        mapModule.onResume()
     }
 
     override fun onStart() {
         super.onStart()
-        binding.mapView.onStart()
+        mapModule.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        binding.mapView.onStop()
+        mapModule.onStop()
     }
 
     override fun onPause() {
         super.onPause()
-        binding.mapView.onPause()
+        mapModule.onPause()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        binding.mapView.onLowMemory()
+        mapModule.onLowMemory()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.mapView.onDestroy()
+        mapModule.onDestroy()
         _binding = null
     }
 
