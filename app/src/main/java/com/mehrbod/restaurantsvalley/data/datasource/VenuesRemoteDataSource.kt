@@ -23,10 +23,10 @@ class VenuesRemoteDataSource @Inject constructor(
             clientSecret = clientSecret
         )
 
-        return if (response.apiMeta.code == SUCCESS) {
+        return if (response.metaDto.code == SUCCESS) {
             Result.success(response.convertToVenues())
         } else {
-            Result.failure(Throwable(response.apiMeta.code.toString()))
+            Result.failure(Throwable(response.metaDto.code.toString()))
         }
     }
 }

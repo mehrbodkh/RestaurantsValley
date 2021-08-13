@@ -2,7 +2,7 @@ package com.mehrbod.restaurantsvalley.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiMeta (
+data class MetaDto (
 
 	@SerializedName("code") val code : Int,
 	@SerializedName("errorType") val errorType : String? = null,

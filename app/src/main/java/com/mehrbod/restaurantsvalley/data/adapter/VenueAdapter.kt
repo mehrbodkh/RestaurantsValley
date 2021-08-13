@@ -1,34 +1,34 @@
 package com.mehrbod.restaurantsvalley.data.adapter
 
-import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
+import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import com.mehrbod.restaurantsvalley.domain.model.*
 
 fun ApiVenuesResponse.convertToVenues(): List<Venue> {
-    return this.apiResponse.venues.map {
+    return this.responseDto.venues.map {
         Venue(
             it.id,
             it.name,
-            it.apiContact?.let { apiContact ->
+            it.contactDto?.let { apiContact ->
                 Contact(
                     apiContact.phone,
                     apiContact.formattedPhone
                 )
             },
             Location(
-                it.apiLocation.address,
-                it.apiLocation.crossStreet,
-                it.apiLocation.lat,
-                it.apiLocation.lng,
-                it.apiLocation.distance,
-                it.apiLocation.postalCode,
-                it.apiLocation.cc,
-                it.apiLocation.neighborhood,
-                it.apiLocation.city,
-                it.apiLocation.state,
-                it.apiLocation.country,
-                it.apiLocation.contextLine,
-                it.apiLocation.contextGeoId,
-                it.apiLocation.formattedAddress
+                it.locationDto.address,
+                it.locationDto.crossStreet,
+                it.locationDto.lat,
+                it.locationDto.lng,
+                it.locationDto.distance,
+                it.locationDto.postalCode,
+                it.locationDto.cc,
+                it.locationDto.neighborhood,
+                it.locationDto.city,
+                it.locationDto.state,
+                it.locationDto.country,
+                it.locationDto.contextLine,
+                it.locationDto.contextGeoId,
+                it.locationDto.formattedAddress
             ),
             it.canonicalUrl,
             it.canonicalPath,
@@ -39,30 +39,30 @@ fun ApiVenuesResponse.convertToVenues(): List<Venue> {
                     category.pluralName,
                     category.shortName,
                     Icon(
-                        category.apiIcon.prefix,
-                        category.apiIcon.mapPrefix,
-                        category.apiIcon.suffix
+                        category.iconDto.prefix,
+                        category.iconDto.mapPrefix,
+                        category.iconDto.suffix
                     ),
                     category.primary
                 )
             },
             it.verified,
-            it.apiStats?.let { apiStats ->
+            it.statsDto?.let { apiStats ->
                 Stats(
                     apiStats.tipCount,
                     apiStats.usersCount,
                     apiStats.checkinsCount
                 )
             },
-            it.apiSpecials?.let { apiSpecials ->
+            it.specialsDto?.let { apiSpecials ->
                 Specials(
                     apiSpecials.count,
                     apiSpecials.items
                 )
             },
-            it.apiVenuePage?.let { apiVenuePage -> VenuePage(apiVenuePage.id) },
+            it.venuePageDto?.let { apiVenuePage -> VenuePage(apiVenuePage.id) },
             it.locked,
-            it.apiHereNow?.let { hereNow ->
+            it.hereNowDto?.let { hereNow ->
                 HereNow(
                     hereNow.count,
                     hereNow.summary,
