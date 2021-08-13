@@ -1,6 +1,6 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
-import com.mehrbod.restaurantsvalley.data.adapter.convertToVenues
+import com.mehrbod.restaurantsvalley.data.api.adapter.convertToVenues
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
 import com.mehrbod.restaurantsvalley.domain.model.Venue
 import javax.inject.Inject

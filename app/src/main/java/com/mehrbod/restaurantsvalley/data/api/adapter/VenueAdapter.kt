@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.data.adapter
+package com.mehrbod.restaurantsvalley.data.api.adapter
 
 import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import com.mehrbod.restaurantsvalley.domain.model.*
