@@ -1,6 +1,6 @@
 package com.mehrbod.restaurantsvalley.data.api
 
-import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
+import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

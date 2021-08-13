@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.data.repository
 
 import com.mehrbod.restaurantsvalley.data.datasource.VenuesDataSource
-import com.mehrbod.restaurantsvalley.data.model.Venue
+import com.mehrbod.restaurantsvalley.domain.model.Venue
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

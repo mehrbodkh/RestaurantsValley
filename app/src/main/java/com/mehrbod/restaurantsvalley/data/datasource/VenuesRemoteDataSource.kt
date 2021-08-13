@@ -1,9 +1,8 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
-import com.mehrbod.restaurantsvalley.data.adapter.convertToVenues
+import com.mehrbod.restaurantsvalley.data.api.adapter.convertToVenues
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
-import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
-import com.mehrbod.restaurantsvalley.data.model.Venue
+import com.mehrbod.restaurantsvalley.domain.model.Venue
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -24,10 +23,10 @@ class VenuesRemoteDataSource @Inject constructor(
             clientSecret = clientSecret
         )
 
-        return if (response.apiMeta.code == SUCCESS) {
+        return if (response.metaDto.code == SUCCESS) {
             Result.success(response.convertToVenues())
         } else {
-            Result.failure(Throwable(response.apiMeta.code.toString()))
+            Result.failure(Throwable(response.metaDto.code.toString()))
         }
     }
 }

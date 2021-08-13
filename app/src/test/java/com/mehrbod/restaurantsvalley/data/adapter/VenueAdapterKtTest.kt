@@ -1,6 +1,8 @@
 package com.mehrbod.restaurantsvalley.data.adapter
 
+import com.mehrbod.restaurantsvalley.data.api.adapter.convertToVenues
 import com.mehrbod.restaurantsvalley.data.api.model.*
+import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.Assert.assertEquals
@@ -11,7 +13,7 @@ import org.junit.Test
 class VenueAdapterKtTest {
 
     @RelaxedMockK
-    lateinit var apiLocation: ApiLocation
+    lateinit var locationDto: LocationDto
 
     private lateinit var model: ApiVenuesResponse
 
@@ -19,14 +21,14 @@ class VenueAdapterKtTest {
     fun setup() {
         MockKAnnotations.init(this)
         model = ApiVenuesResponse(
-            ApiMeta(code = 200, errorDetail = null, errorType = null, requestId = "hjlkfjfs02834"),
+            MetaDto(code = 200, errorDetail = null, errorType = null, requestId = "hjlkfjfs02834"),
             listOf(),
-            ApiResponse(
+            ResponseDto(
                 listOf(
-                    ApiVenues(
+                    VenuesDto(
                         "1",
                         name = "2",
-                        apiLocation = apiLocation,
+                        locationDto = locationDto,
                         categories = emptyList(),
                     )
                 ),

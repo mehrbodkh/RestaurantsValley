@@ -1,19 +1,19 @@
-package com.mehrbod.restaurantsvalley.data.model
+package com.mehrbod.restaurantsvalley.domain.model
 
 data class Venue(
     val id : String,
     val name : String,
-    val apiContact : Contact?,
-    val apiLocation : Location?,
+    val contact : Contact?,
+    val location : Location?,
     val canonicalUrl : String?,
     val canonicalPath : String?,
     val categories : List<Categories>,
     val verified : Boolean?,
-    val apiStats : Stats?,
-    val apiSpecials : Specials?,
+    val stats : Stats?,
+    val specials : Specials?,
     val apiVenuePage : VenuePage?,
     val locked : Boolean?,
-    val apiHereNow : HereNow?,
+    val hereNow : HereNow?,
     val referralId : String?,
     val venueChains : List<String>?,
     val hasPerk : Boolean?

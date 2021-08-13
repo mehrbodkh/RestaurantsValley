@@ -2,7 +2,7 @@ package com.mehrbod.restaurantsvalley.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiVenuePage (
+data class ItemDto (
 
-	@SerializedName("id") val id : Int
+	@SerializedName("unreadCount") val unreadCount : Int
 )

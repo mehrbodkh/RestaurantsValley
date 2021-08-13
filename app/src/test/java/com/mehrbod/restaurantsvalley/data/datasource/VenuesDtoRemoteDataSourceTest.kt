@@ -1,21 +1,20 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
-import com.mehrbod.restaurantsvalley.data.api.model.ApiMeta
-import com.mehrbod.restaurantsvalley.data.api.model.ApiResponse
-import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
+import com.mehrbod.restaurantsvalley.data.api.model.MetaDto
+import com.mehrbod.restaurantsvalley.data.api.model.ResponseDto
+import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.unmockkAll
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class ApiVenuesRemoteDataSourceTest  {
+class VenuesDtoRemoteDataSourceTest  {
     @MockK
     lateinit var apiService: RestaurantApiService
 
@@ -30,9 +29,9 @@ class ApiVenuesRemoteDataSourceTest  {
     @Test
     fun `test fetch venues api call`() = runBlocking {
         coEvery { apiService.getVenues(any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
-            ApiMeta(code = 200, requestId = "32408243"),
+            MetaDto(code = 200, requestId = "32408243"),
             emptyList(),
-            ApiResponse(venues = emptyList(), null)
+            ResponseDto(venues = emptyList(), null)
         )
         val response = remoteDataSource.fetchVenues(1.0, 1.0, 1)
         coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any()) }
@@ -42,9 +41,9 @@ class ApiVenuesRemoteDataSourceTest  {
     @Test
     fun `test fetch venues failure response`() = runBlocking {
         coEvery { apiService.getVenues(any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
-            ApiMeta(code = 400, requestId = "32408243"),
+            MetaDto(code = 400, requestId = "32408243"),
             emptyList(),
-            ApiResponse(venues = emptyList(), null)
+            ResponseDto(venues = emptyList(), null)
         )
         val response = remoteDataSource.fetchVenues(1.0, 1.0, 1)
         coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any()) }

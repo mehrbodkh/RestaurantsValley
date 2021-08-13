@@ -2,8 +2,9 @@ package com.mehrbod.restaurantsvalley.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiSpecials (
+data class HereNowDto (
 
 	@SerializedName("count") val count : Int,
-	@SerializedName("items") val items : List<String>
+	@SerializedName("summary") val summary : String,
+	@SerializedName("groups") val groups : List<String>
 )
