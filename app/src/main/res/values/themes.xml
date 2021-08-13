@@ -12,6 +12,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="space2XSmall">2dp</item>
+        <item name="spaceXSmall">4dp</item>
+        <item name="spaceSmall">8dp</item>
+        <item name="spaceMedium">12dp</item>
+        <item name="spaceLarge">16dp</item>
+        <item name="spaceXLarge">24dp</item>
+        <item name="space2XLarge">32dp</item>
+        <item name="space3XLarge">40dp</item>
+
     </style>
 
     <style name="Theme.RestaurantsValley.NoActionBar">
