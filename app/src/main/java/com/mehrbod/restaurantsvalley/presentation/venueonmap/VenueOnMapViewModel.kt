@@ -6,6 +6,7 @@ import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
 import com.mehrbod.restaurantsvalley.domain.model.Venue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class VenueOnMapViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _venuesState = MutableStateFlow<VenuesUiState>(VenuesUiState.Loading)
-    val venuesState = _venuesState
+    val venuesState: StateFlow<VenuesUiState> = _venuesState
 
 
     fun onMapCameraPositionUpdated(lat: Double, lng: Double, radius: Int) {
