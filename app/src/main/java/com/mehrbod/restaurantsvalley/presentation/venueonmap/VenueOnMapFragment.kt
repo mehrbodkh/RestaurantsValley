@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
+import com.mehrbod.restaurantsvalley.domain.model.Venue
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -42,6 +46,7 @@ class VenueOnMapFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(VenueOnMapViewModel::class.java)
 
         initializeMap(savedInstanceState)
+        initializeObservers()
     }
 
     // TODO: All map related initializations should be moved to map module
@@ -57,7 +62,26 @@ class VenueOnMapFragment : Fragment() {
                 .target(LatLng(52.370986, 4.910211))
                 .zoom(10.0)
                 .build()
+
+            it.addOnCameraIdleListener {
+                viewModel.onMapCameraPositionUpdated(it.cameraPosition)
+            }
         }
+    }
+
+    private fun initializeObservers() {
+        lifecycleScope.launch {
+            viewModel.venuesState.collect {
+                when (it) {
+                    VenuesUiState.Loading -> { }
+                    is VenuesUiState.ShowVenues -> showVenuesOnMap(it.venues)
+                }
+            }
+        }
+    }
+
+    private fun showVenuesOnMap(venues: List<Venue>) {
+        // TODO: Show venues on map
     }
 
     override fun onResume() {
