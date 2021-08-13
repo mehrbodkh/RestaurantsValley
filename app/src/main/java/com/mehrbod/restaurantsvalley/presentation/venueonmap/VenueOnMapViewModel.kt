@@ -1,6 +1,5 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -28,9 +27,7 @@ class VenueOnMapViewModel @Inject constructor(
                 cameraPosition.target.longitude,
                 ((20 - cameraPosition.zoom) * 50).toInt()
             ).collect {
-                if (it.isSuccess && it.getOrNull() != null) {
-                    _venuesState.value = VenuesUiState.ShowVenues(it.getOrNull()!!)
-                }
+                _venuesState.value = VenuesUiState.ShowVenues(it.getOrNull() ?: emptyList())
             }
         }
     }
