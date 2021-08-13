@@ -2,8 +2,7 @@ package com.mehrbod.restaurantsvalley.data.datasource
 
 import com.mehrbod.restaurantsvalley.data.adapter.convertToVenues
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
-import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
-import com.mehrbod.restaurantsvalley.data.model.Venue
+import com.mehrbod.restaurantsvalley.domain.model.Venue
 import javax.inject.Inject
 import javax.inject.Named
 

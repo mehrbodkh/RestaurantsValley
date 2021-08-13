@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.data.model
+package com.mehrbod.restaurantsvalley.domain.model
 
 data class Contact(
     val phone: Int?,

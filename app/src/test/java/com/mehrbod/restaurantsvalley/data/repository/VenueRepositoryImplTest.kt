@@ -2,7 +2,7 @@ package com.mehrbod.restaurantsvalley.data.repository
 
 import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
 import com.mehrbod.restaurantsvalley.data.datasource.VenuesRemoteDataSource
-import com.mehrbod.restaurantsvalley.data.model.Venue
+import com.mehrbod.restaurantsvalley.domain.model.Venue
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi

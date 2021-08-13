@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.data.adapter
 
 import com.mehrbod.restaurantsvalley.data.api.model.ApiVenuesResponse
-import com.mehrbod.restaurantsvalley.data.model.*
+import com.mehrbod.restaurantsvalley.domain.model.*
 
 fun ApiVenuesResponse.convertToVenues(): List<Venue> {
     return this.apiResponse.venues.map {
