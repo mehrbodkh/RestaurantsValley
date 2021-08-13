@@ -7,6 +7,7 @@ import com.mehrbod.map_module.MapModuleImpl
 import com.mehrbod.map_module.model.MapBoxOptions
 import com.mehrbod.map_module.model.MapOptions
 import com.mehrbod.restaurantsvalley.R
+import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +37,11 @@ class MapProviderModule {
         @Named("MapboxToken") token: String,
         @Named("MapStyleUrl") styleUrl: String
     ): MapOptions {
-        return MapBoxOptions(context, token, styleUrl)
+        return MapBoxOptions(
+            context,
+            token,
+            styleUrl,
+            initialCameraPosition = LocationHelper.DEFAULT_CAMERA_POSITION
+        )
     }
 }

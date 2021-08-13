@@ -4,7 +4,7 @@ data class Venue(
     val id : String,
     val name : String,
     val contact : Contact?,
-    val location : Location?,
+    val location : Location,
     val canonicalUrl : String?,
     val canonicalPath : String?,
     val categories : List<Categories>,

@@ -1,16 +1,23 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
+import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.mapbox.mapboxsdk.camera.CameraPosition
+import androidx.lifecycle.lifecycleScope
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
+import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
+import com.mehrbod.restaurantsvalley.domain.model.Venue
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -42,52 +49,122 @@ class VenueOnMapFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(VenueOnMapViewModel::class.java)
 
         initializeMap(savedInstanceState)
+        initializeObservers()
     }
 
     // TODO: All map related initializations should be moved to map module
+    @SuppressLint("MissingPermission")
     private fun initializeMap(savedInstanceState: Bundle?) {
-        binding.mapView.onCreate(savedInstanceState)
-        binding.mapView.getMapAsync {
-            it.setStyle(mapStyleUrl)
-            it.uiSettings.isRotateGesturesEnabled = false
-            it.uiSettings.isTiltGesturesEnabled = false
-            it.setMaxZoomPreference(19.0)
-            it.setMinZoomPreference(4.0)
-            it.cameraPosition = CameraPosition.Builder()
-                .target(LatLng(52.370986, 4.910211))
-                .zoom(10.0)
-                .build()
+        mapModule.initialize(binding.mapView, savedInstanceState) {
+            mapModule.addOnCameraIdleListener { position, radius ->
+                viewModel.onMapCameraPositionUpdated(position.latitude, position.longitude, radius)
+            }
         }
+//            if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
+//                it.getStyle { style ->
+//                    val locationComponent = it.locationComponent
+//                    val options =
+//                        LocationComponentActivationOptions.Builder(requireContext(), style).build()
+//                    locationComponent.activateLocationComponent(options)
+//                    locationComponent.isLocationComponentEnabled = true
+//                    locationComponent.renderMode = RenderMode.NORMAL
+//                }
+//
+//            } else {
+//                PermissionsManager(object: PermissionsListener {
+//                    override fun onExplanationNeeded(p0: MutableList<String>?) {
+//
+//                    }
+//
+//                    override fun onPermissionResult(p0: Boolean) {
+//                        if (p0) {
+//                            it.getStyle { style ->
+//                                val locationComponent = it.locationComponent
+//                                val options =
+//                                    LocationComponentActivationOptions.Builder(requireContext(), style).build()
+//                                locationComponent.activateLocationComponent(options)
+//                                locationComponent.isLocationComponentEnabled = true
+//                                locationComponent.renderMode = RenderMode.NORMAL
+//                            }
+//                        }
+//                    }
+//
+//                }).apply {
+//                    requestLocationPermissions(activity)
+//                }
+//            }
+//            binding.myLocationButton.setOnClickListener { _ ->
+//                if (it.locationComponent.isLocationComponentActivated) {
+//                    val lat = it.locationComponent.lastKnownLocation?.latitude
+//                    val lng = it.locationComponent.lastKnownLocation?.longitude
+//                    if (lat != null && lng != null) {
+//                        it.cameraPosition = CameraPosition.Builder()
+//                            .target(LatLng(lat!!, lng!!))
+//                            .zoom(15.0)
+//                            .build()
+//                    }
+//                }
+//
+//            }
+//        }
+    }
+
+    private fun initializeObservers() {
+        lifecycleScope.launch {
+            viewModel.venuesState.collect {
+                when (it) {
+                    VenuesUiState.Loading -> {
+                    }
+                    is VenuesUiState.ShowVenues -> showVenuesOnMap(it.venues)
+                }
+            }
+        }
+    }
+
+    private fun showVenuesOnMap(venues: List<Venue>) {
+        mapModule.removeAllMarkers()
+        venues.forEach {
+            mapModule.addMarker(
+                it.id,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_location_on)!!,
+                LatLng(it.location.lat, it.location.lng)
+            )
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapModule.onSavedInstanceState(outState)
     }
 
     override fun onResume() {
         super.onResume()
-        binding.mapView.onResume()
+        mapModule.onResume()
     }
 
     override fun onStart() {
         super.onStart()
-        binding.mapView.onStart()
+        mapModule.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        binding.mapView.onStop()
+        mapModule.onStop()
     }
 
     override fun onPause() {
         super.onPause()
-        binding.mapView.onPause()
+        mapModule.onPause()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        binding.mapView.onLowMemory()
+        mapModule.onLowMemory()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.mapView.onDestroy()
+        mapModule.onDestroy()
         _binding = null
     }
 

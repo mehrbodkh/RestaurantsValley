@@ -9,7 +9,7 @@ data class LocationDto (
     @SerializedName("lng") val lng : Double,
     @SerializedName("labeledLatLngs") val labeledLatLngDtos : List<LabeledLatLngsDto>,
     @SerializedName("distance") val distance : Int,
-    @SerializedName("postalCode") val postalCode : Int,
+    @SerializedName("postalCode") val postalCode : String,
     @SerializedName("cc") val cc : String,
     @SerializedName("neighborhood") val neighborhood : String,
     @SerializedName("city") val city : String,
