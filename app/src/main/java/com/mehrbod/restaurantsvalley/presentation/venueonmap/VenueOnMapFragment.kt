@@ -6,13 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.mehrbod.restaurantsvalley.R
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class VenueOnMapFragment : Fragment() {
+
+    @Inject
+    lateinit var mapModule: MapModule
+
+    @Inject
+    @Named("MapStyleUrl")
+    lateinit var mapStyleUrl: String
 
     private lateinit var viewModel: VenueOnMapViewModel
 
@@ -30,10 +40,54 @@ class VenueOnMapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(VenueOnMapViewModel::class.java)
+
+        initializeMap(savedInstanceState)
+    }
+
+    // TODO: All map related initializations should be moved to map module
+    private fun initializeMap(savedInstanceState: Bundle?) {
+        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync {
+            it.setStyle(mapStyleUrl)
+            it.uiSettings.isRotateGesturesEnabled = false
+            it.uiSettings.isTiltGesturesEnabled = false
+            it.setMaxZoomPreference(19.0)
+            it.setMinZoomPreference(4.0)
+            it.cameraPosition = CameraPosition.Builder()
+                .target(LatLng(52.370986, 4.910211))
+                .zoom(10.0)
+                .build()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.mapView.onResume()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.mapView.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.mapView.onStop()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.mapView.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        binding.mapView.onLowMemory()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        binding.mapView.onDestroy()
         _binding = null
     }
 
