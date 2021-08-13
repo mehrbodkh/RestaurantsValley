@@ -19,6 +19,7 @@ class VenuesRemoteDataSource @Inject constructor(
         val response = apiService.getVenues(
             "$lat,$lng",
             radius,
+            limit = 50,
             clientId = clientId,
             clientSecret = clientSecret
         )

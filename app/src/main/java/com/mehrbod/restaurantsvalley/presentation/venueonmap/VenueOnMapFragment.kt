@@ -1,23 +1,18 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.mapbox.android.core.permissions.PermissionsListener
-import com.mapbox.android.core.permissions.PermissionsManager
-import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mehrbod.map_module.MapModule
+import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
 import com.mehrbod.restaurantsvalley.domain.model.Venue
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,22 +60,6 @@ class VenueOnMapFragment : Fragment() {
                 viewModel.onMapCameraPositionUpdated(position.latitude, position.longitude, radius)
             }
         }
-//        binding.mapView.onCreate(savedInstanceState)
-//        binding.mapView.getMapAsync {
-//            it.setStyle(mapStyleUrl)
-//            it.uiSettings.isRotateGesturesEnabled = false
-//            it.uiSettings.isTiltGesturesEnabled = false
-//            it.setMaxZoomPreference(17.0)
-//            it.setMinZoomPreference(6.0)
-//            it.cameraPosition = CameraPosition.Builder()
-//                .target(LatLng(52.370986, 4.910211))
-//                .zoom(12.0)
-//                .build()
-//
-//            it.addOnCameraIdleListener {
-//                viewModel.onMapCameraPositionUpdated(it.cameraPosition)
-//            }
-//
 //            if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
 //                it.getStyle { style ->
 //                    val locationComponent = it.locationComponent
@@ -143,7 +122,14 @@ class VenueOnMapFragment : Fragment() {
     }
 
     private fun showVenuesOnMap(venues: List<Venue>) {
-        // TODO: Show venues on map
+        mapModule.removeAllMarkers()
+        venues.forEach {
+            mapModule.addMarker(
+                it.id,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_location_on)!!,
+                LatLng(it.location.lat, it.location.lng)
+            )
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

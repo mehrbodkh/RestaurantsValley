@@ -11,6 +11,7 @@ interface RestaurantApiService {
         @Query("ll") latLng: String,
         @Query("radius") radius: Int,
         @Query("v") version: String = "20180401",
+        @Query("limit") limit: Int,
         @Query("client_id") clientId: String,
         @Query("client_secret") clientSecret: String
     ): ApiVenuesResponse

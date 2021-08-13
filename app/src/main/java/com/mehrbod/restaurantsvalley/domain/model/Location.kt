@@ -3,8 +3,8 @@ package com.mehrbod.restaurantsvalley.domain.model
 data class Location(
     val address : String?,
     val crossStreet : String?,
-    val lat : Double?,
-    val lng : Double?,
+    val lat : Double,
+    val lng : Double,
     val distance : Int?,
     val postalCode : String?,
     val cc : String?,
