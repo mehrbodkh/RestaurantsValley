@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="space2XSmall" format="dimension|reference" />
+    <attr name="spaceXSmall" format="dimension|reference" />
+    <attr name="spaceSmall" format="dimension|reference" />
+    <attr name="spaceMedium" format="dimension|reference" />
+    <attr name="spaceLarge" format="dimension|reference" />
+    <attr name="spaceXLarge" format="dimension|reference" />
+    <attr name="space2XLarge" format="dimension|reference" />
+    <attr name="space3XLarge" format="dimension|reference" />
+</resources>
