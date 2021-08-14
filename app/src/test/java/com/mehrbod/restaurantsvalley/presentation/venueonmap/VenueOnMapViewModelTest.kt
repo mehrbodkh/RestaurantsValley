@@ -2,6 +2,7 @@ package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
 import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
 import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.util.LocationHelper
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,9 @@ class VenueOnMapViewModelTest {
     @RelaxedMockK
     lateinit var venueRepository: VenueRepository
 
+    @RelaxedMockK
+    lateinit var locationHelper: LocationHelper
+
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
     private lateinit var viewModel: VenueOnMapViewModel
 
@@ -29,7 +33,7 @@ class VenueOnMapViewModelTest {
     fun setUp() {
         MockKAnnotations.init(this)
         coroutineDispatcher = TestCoroutineDispatcher()
-        viewModel = VenueOnMapViewModel(venueRepository)
+        viewModel = VenueOnMapViewModel(venueRepository, locationHelper)
         Dispatchers.setMain(coroutineDispatcher)
     }
 
