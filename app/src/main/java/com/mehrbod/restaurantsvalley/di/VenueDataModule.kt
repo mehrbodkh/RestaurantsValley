@@ -13,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 abstract class VenueDataModule {
 
     @Binds
