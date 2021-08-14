@@ -27,7 +27,7 @@ class VenueOnMapViewModel @Inject constructor(
                 lng,
                 radius
             ).collect {
-                _venuesState.value = VenuesUiState.ShowVenues(it.getOrNull() ?: emptyList())
+                _venuesState.value = VenuesUiState.VenuesAvailable(it.getOrNull() ?: emptyList())
             }
         }
     }
@@ -36,5 +36,5 @@ class VenueOnMapViewModel @Inject constructor(
 
 sealed class VenuesUiState {
     object Loading : VenuesUiState()
-    class ShowVenues(val venues: List<Venue>) : VenuesUiState()
+    class VenuesAvailable(val venues: List<Venue>) : VenuesUiState()
 }

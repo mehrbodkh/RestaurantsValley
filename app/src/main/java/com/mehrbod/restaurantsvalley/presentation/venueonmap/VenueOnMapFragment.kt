@@ -1,7 +1,6 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
@@ -36,6 +36,8 @@ class VenueOnMapFragment : Fragment() {
     private var _binding: VenueOnMapFragmentBinding? = null
     private val binding get() = _binding!!
 
+    private val infoAdapter = VenuesInfoAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +51,7 @@ class VenueOnMapFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(VenueOnMapViewModel::class.java)
 
         initializeMap(savedInstanceState)
+        initializeInfoList()
         initializeObservers()
     }
 
@@ -109,16 +112,27 @@ class VenueOnMapFragment : Fragment() {
 //        }
     }
 
+    private fun initializeInfoList() {
+        binding.venuesInfoList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.venuesInfoList.adapter = infoAdapter
+    }
+
     private fun initializeObservers() {
         lifecycleScope.launch {
             viewModel.venuesState.collect {
                 when (it) {
                     VenuesUiState.Loading -> {
                     }
-                    is VenuesUiState.ShowVenues -> showVenuesOnMap(it.venues)
+                    is VenuesUiState.VenuesAvailable -> showVenues(it.venues)
                 }
             }
         }
+    }
+
+    private fun showVenues(venues: List<Venue>) {
+        showVenuesOnMap(venues)
+        showVenuesInfo(venues)
     }
 
     private fun showVenuesOnMap(venues: List<Venue>) {
@@ -130,6 +144,10 @@ class VenueOnMapFragment : Fragment() {
                 LatLng(it.location.lat, it.location.lng)
             )
         }
+    }
+
+    private fun showVenuesInfo(venues: List<Venue>) {
+        infoAdapter.submitList(venues)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
