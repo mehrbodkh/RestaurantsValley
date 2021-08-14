@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.ItemVenueInfoBinding
 import com.mehrbod.restaurantsvalley.domain.model.Venue
 
@@ -36,5 +37,10 @@ class VenueInfoViewHolder(private val binding: ItemVenueInfoBinding) :
 
     fun onBind(venue: Venue) {
         binding.name.text = venue.name
+        binding.distance.text = String.format(
+            binding.root.context.getString(R.string.distance_unit),
+            venue.location.distance
+        )
+        binding.address.text = venue.location.address
     }
 }
