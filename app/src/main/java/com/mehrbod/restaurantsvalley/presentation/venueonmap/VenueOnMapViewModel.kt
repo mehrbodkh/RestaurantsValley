@@ -26,8 +26,13 @@ class VenueOnMapViewModel @Inject constructor(
     private val _locationState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
     val locationState: StateFlow<LocationUiState> = _locationState
 
+    init {
+        viewModelScope.launch {
+            handleLocation()
+        }
+    }
 
-    fun onMapCameraPositionUpdated(lat: Double, lng: Double, radius: Int) {
+    fun onSearchAreaClicked(lat: Double, lng: Double, radius: Int) {
         viewModelScope.launch {
             _venuesState.value = VenuesUiState.Loading
             venueRepository.getVenues(
@@ -63,6 +68,8 @@ class VenueOnMapViewModel @Inject constructor(
             val locationResult = locationHelper.findUserLocation()
 
             if (locationResult.isSuccess) {
+                val location = locationResult.getOrNull()!!
+                onSearchAreaClicked(location.latitude, location.longitude, 100)
                 _locationState.value =
                     LocationUiState.LocationAvailable(locationResult.getOrNull()!!)
             } else {

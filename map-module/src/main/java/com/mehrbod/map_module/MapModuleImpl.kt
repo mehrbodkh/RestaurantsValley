@@ -79,25 +79,23 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
         }
     }
 
-
-
-    override fun addOnCameraIdleListener(listener: (position: LatLng, radius: Int) -> Unit) {
+    override fun getCameraPosition(): Pair<LatLng, Int>? {
         mapboxMap?.let {
-            it.addOnCameraIdleListener {
-                val cameraPosition = it.cameraPosition
-                val radius = it.projection.visibleRegion.farLeft
-                    .distanceTo(it.projection.visibleRegion.farRight)
+            val cameraPosition = it.cameraPosition
+            val radius = it.projection.visibleRegion.farLeft
+                .distanceTo(it.projection.visibleRegion.farRight)
 
-                listener(
-                    LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude),
-                    radius.toInt()
-                )
-            }
+            return Pair(
+                LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude),
+                radius.toInt()
+            )
         }
+        return null
     }
 
+
     override fun findUserLocation(listener: (position: LatLng) -> Unit) {
-        
+
     }
 
     override fun addMarker(tag: String, icon: Drawable, position: LatLng) {

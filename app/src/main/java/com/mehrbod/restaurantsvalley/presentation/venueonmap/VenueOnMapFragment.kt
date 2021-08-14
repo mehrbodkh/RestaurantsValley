@@ -61,18 +61,20 @@ class VenueOnMapFragment : Fragment() {
         initializeMapObservers()
     }
 
-    // TODO: All map related initializations should be moved to map module
     @SuppressLint("MissingPermission")
     private fun initializeMap(savedInstanceState: Bundle?) {
         mapModule.initialize(binding.mapView, savedInstanceState) {
             mapModule.initializeLocationProvider(requireContext())
-            mapModule.addOnCameraIdleListener { position, radius ->
-                viewModel.onMapCameraPositionUpdated(position.latitude, position.longitude, radius)
-            }
         }
 
         binding.myLocationButton.setOnClickListener {
             viewModel.onRequestLocationClicked()
+        }
+
+        binding.currentArea.setOnClickListener {
+            mapModule.getCameraPosition()?.let {
+                viewModel.onSearchAreaClicked(it.first.latitude, it.first.longitude, it.second)
+            }
         }
     }
 

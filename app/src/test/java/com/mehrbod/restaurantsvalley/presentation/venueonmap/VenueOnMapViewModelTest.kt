@@ -50,7 +50,7 @@ class VenueOnMapViewModelTest {
             emit(Result.success<List<Venue>>(emptyList()))
         }
 
-        viewModel.onMapCameraPositionUpdated(1.0, 1.0, 1)
+        viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
         coVerify { venueRepository.getVenues(any(), any(), any()) }
@@ -65,7 +65,7 @@ class VenueOnMapViewModelTest {
             emit(Result.success<List<Venue>>(listOf(venue)))
         }
 
-        viewModel.onMapCameraPositionUpdated(1.0, 1.0, 1)
+        viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
         coVerify { venueRepository.getVenues(any(), any(), any()) }
