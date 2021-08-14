@@ -15,6 +15,7 @@ import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
 import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,6 +31,9 @@ class VenueOnMapFragment : Fragment() {
     @Inject
     @Named("MapStyleUrl")
     lateinit var mapStyleUrl: String
+
+    @Inject
+    lateinit var locationHelper: LocationHelper
 
     private lateinit var viewModel: VenueOnMapViewModel
 
@@ -52,28 +56,25 @@ class VenueOnMapFragment : Fragment() {
 
         initializeMap(savedInstanceState)
         initializeInfoList()
-        initializeObservers()
+        initializeVenueObservers()
+        initializeMapObservers()
     }
 
     // TODO: All map related initializations should be moved to map module
     @SuppressLint("MissingPermission")
     private fun initializeMap(savedInstanceState: Bundle?) {
         mapModule.initialize(binding.mapView, savedInstanceState) {
+            mapModule.initializeLocationProvider(requireContext())
             mapModule.addOnCameraIdleListener { position, radius ->
                 viewModel.onMapCameraPositionUpdated(position.latitude, position.longitude, radius)
             }
         }
-//            if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
-//                it.getStyle { style ->
-//                    val locationComponent = it.locationComponent
-//                    val options =
-//                        LocationComponentActivationOptions.Builder(requireContext(), style).build()
-//                    locationComponent.activateLocationComponent(options)
-//                    locationComponent.isLocationComponentEnabled = true
-//                    locationComponent.renderMode = RenderMode.NORMAL
-//                }
-//
-//            } else {
+
+        binding.myLocationButton.setOnClickListener { _ ->
+            viewModel.onRequestLocationClicked()
+        }
+
+//            else {
 //                PermissionsManager(object: PermissionsListener {
 //                    override fun onExplanationNeeded(p0: MutableList<String>?) {
 //
@@ -118,19 +119,45 @@ class VenueOnMapFragment : Fragment() {
         binding.venuesInfoList.adapter = infoAdapter
     }
 
-    private fun initializeObservers() {
+    private fun initializeVenueObservers() {
         lifecycleScope.launch {
             viewModel.venuesState.collect {
                 when (it) {
-                    VenuesUiState.Loading -> {
-                    }
+                    VenuesUiState.Loading -> showLoading()
                     is VenuesUiState.VenuesAvailable -> showVenues(it.venues)
                 }
             }
         }
     }
 
+    private fun initializeMapObservers() {
+        lifecycleScope.launch {
+            viewModel.locationState.collect {
+                when (it) {
+                    LocationUiState.Loading -> showLoading()
+                    is LocationUiState.LocationAvailable -> {
+                        hideLoading()
+                        mapModule.moveCamera(
+                            it.location.latitude,
+                            it.location.longitude,
+                            15.0
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+    }
+
     private fun showVenues(venues: List<Venue>) {
+        hideLoading()
         showVenuesOnMap(venues)
         showVenuesInfo(venues)
     }

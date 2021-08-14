@@ -1,12 +1,17 @@
 package com.mehrbod.map_module
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
+import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.style.layers.Layer
@@ -60,6 +65,22 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    override fun initializeLocationProvider(context: Context) {
+        if (PermissionsManager.areLocationPermissionsGranted(context)) {
+            mapboxMap?.getStyle { style ->
+                val locationComponent = mapboxMap?.locationComponent
+                val options =
+                    LocationComponentActivationOptions.Builder(context, style).build()
+                locationComponent?.activateLocationComponent(options)
+                locationComponent?.isLocationComponentEnabled = true
+                locationComponent?.renderMode = RenderMode.NORMAL
+            }
+        }
+    }
+
+
+
     override fun addOnCameraIdleListener(listener: (position: LatLng, radius: Int) -> Unit) {
         mapboxMap?.let {
             it.addOnCameraIdleListener {
@@ -73,6 +94,10 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
                 )
             }
         }
+    }
+
+    override fun findUserLocation(listener: (position: LatLng) -> Unit) {
+        
     }
 
     override fun addMarker(tag: String, icon: Drawable, position: LatLng) {
