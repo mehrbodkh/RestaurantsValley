@@ -50,8 +50,8 @@ class VenueOnMapViewModelTest {
         val result = viewModel.venuesState.first()
 
         coVerify { venueRepository.getVenues(any(), any(), any()) }
-        assert(result is VenuesUiState.ShowVenues)
-        assert((result as VenuesUiState.ShowVenues).venues.isEmpty())
+        assert(result is VenuesUiState.VenuesAvailable)
+        assert((result as VenuesUiState.VenuesAvailable).venues.isEmpty())
     }
 
     @Test
@@ -65,8 +65,8 @@ class VenueOnMapViewModelTest {
         val result = viewModel.venuesState.first()
 
         coVerify { venueRepository.getVenues(any(), any(), any()) }
-        assert(result is VenuesUiState.ShowVenues)
-        assert((result as VenuesUiState.ShowVenues).venues.isNotEmpty())
+        assert(result is VenuesUiState.VenuesAvailable)
+        assert((result as VenuesUiState.VenuesAvailable).venues.isNotEmpty())
         assert(result.venues[0] == venue)
     }
 

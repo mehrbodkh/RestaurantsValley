@@ -16,12 +16,21 @@
         style="@style/Widget.Design.FloatingActionButton"
         android:src="@drawable/ic_baseline_my_location_24"
         android:layout_marginEnd="?attr/spaceXLarge"
-        android:layout_marginBottom="?attr/spaceXLarge"
+        android:layout_marginTop="?attr/spaceXLarge"
         android:contentDescription="@string/current_location_description"
         app:backgroundTint="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/venues_info_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/spaceMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
