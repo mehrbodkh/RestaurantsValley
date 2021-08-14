@@ -106,6 +106,13 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
         }
     }
 
+    override fun moveCamera(lat: Double, lng: Double, zoomLevel: Double) {
+        mapboxMap?.cameraPosition = CameraPosition.Builder()
+            .target(LatLng(lat, lng))
+            .zoom(zoomLevel)
+            .build()
+    }
+
     override fun removeAllMarkers() {
         mapboxMap?.style?.let { style ->
             addedLayers.forEach {
