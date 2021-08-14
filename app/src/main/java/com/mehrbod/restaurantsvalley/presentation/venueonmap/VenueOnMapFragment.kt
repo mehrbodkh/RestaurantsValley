@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.common.api.ResolvableApiException
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
@@ -70,47 +71,9 @@ class VenueOnMapFragment : Fragment() {
             }
         }
 
-        binding.myLocationButton.setOnClickListener { _ ->
+        binding.myLocationButton.setOnClickListener {
             viewModel.onRequestLocationClicked()
         }
-
-//            else {
-//                PermissionsManager(object: PermissionsListener {
-//                    override fun onExplanationNeeded(p0: MutableList<String>?) {
-//
-//                    }
-//
-//                    override fun onPermissionResult(p0: Boolean) {
-//                        if (p0) {
-//                            it.getStyle { style ->
-//                                val locationComponent = it.locationComponent
-//                                val options =
-//                                    LocationComponentActivationOptions.Builder(requireContext(), style).build()
-//                                locationComponent.activateLocationComponent(options)
-//                                locationComponent.isLocationComponentEnabled = true
-//                                locationComponent.renderMode = RenderMode.NORMAL
-//                            }
-//                        }
-//                    }
-//
-//                }).apply {
-//                    requestLocationPermissions(activity)
-//                }
-//            }
-//            binding.myLocationButton.setOnClickListener { _ ->
-//                if (it.locationComponent.isLocationComponentActivated) {
-//                    val lat = it.locationComponent.lastKnownLocation?.latitude
-//                    val lng = it.locationComponent.lastKnownLocation?.longitude
-//                    if (lat != null && lng != null) {
-//                        it.cameraPosition = CameraPosition.Builder()
-//                            .target(LatLng(lat!!, lng!!))
-//                            .zoom(15.0)
-//                            .build()
-//                    }
-//                }
-//
-//            }
-//        }
     }
 
     private fun initializeInfoList() {
@@ -143,6 +106,12 @@ class VenueOnMapFragment : Fragment() {
                             15.0
                         )
                     }
+                    LocationUiState.Failure -> hideLoading()
+                    is LocationUiState.GPSNeeded -> turnGpsOn(it.resolvableApiException)
+                    LocationUiState.LocationPermissionNeeded -> grantLocationPermission()
+                    LocationUiState.ShowLocationOnMap -> mapModule.initializeLocationProvider(
+                        requireContext()
+                    )
                 }
             }
         }
@@ -175,6 +144,18 @@ class VenueOnMapFragment : Fragment() {
 
     private fun showVenuesInfo(venues: List<Venue>) {
         infoAdapter.submitList(venues)
+    }
+
+    private fun turnGpsOn(resolvableApiException: ResolvableApiException) {
+        hideLoading()
+        resolvableApiException.startResolutionForResult(requireActivity(), 1)
+    }
+
+    private fun grantLocationPermission() {
+        hideLoading()
+        locationHelper.requestLocationPermission(requireActivity()) {
+            viewModel.onPermissionResult(it)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
