@@ -9,7 +9,7 @@ interface MapModule {
     fun initialize(mapView: MapView, savedInstanceState: Bundle?, onMapReadyListener: () -> Unit)
     fun addOnCameraIdleListener(listener: (position: LatLng, radius: Int) -> Unit)
     fun addMarker(tag: String, icon: Drawable, position: LatLng)
-    fun moveCamera(val lat: Double, val lng: Double, val zoomLevel: Double)
+    fun moveCamera(lat: Double, lng: Double, zoomLevel: Double)
     fun removeAllMarkers()
     fun onStart()
     fun onResume()
