@@ -9,10 +9,10 @@ import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 abstract class RestaurantDataModule {
 
     @Binds
