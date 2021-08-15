@@ -9,7 +9,7 @@ import com.mapbox.mapboxsdk.maps.MapView
 interface MapModule {
     fun initialize(mapView: MapView, savedInstanceState: Bundle?, onMapReadyListener: () -> Unit)
     fun initializeLocationProvider(context: Context)
-    fun addOnCameraIdleListener(listener: (position: LatLng, radius: Int) -> Unit)
+    fun getCameraPosition(): Pair<LatLng, Int>?
     fun findUserLocation(listener: (position: LatLng) -> Unit)
     fun addMarker(tag: String, icon: Drawable, position: LatLng)
     fun moveCamera(lat: Double, lng: Double, zoomLevel: Double)

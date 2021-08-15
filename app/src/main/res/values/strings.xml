@@ -27,4 +27,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="current_location_description">Current location button</string>
     <string name="distance_unit">%1$d meters</string>
+    <string name="current_area_button">Search This Area</string>
 </resources>

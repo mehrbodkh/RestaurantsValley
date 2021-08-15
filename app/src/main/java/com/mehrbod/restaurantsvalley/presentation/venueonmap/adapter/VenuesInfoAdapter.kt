@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venueonmap
+package com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

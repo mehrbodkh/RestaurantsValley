@@ -1,10 +1,13 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +19,9 @@ import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
 import com.mehrbod.restaurantsvalley.domain.model.Venue
-import com.mehrbod.restaurantsvalley.util.LocationHelper
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter.VenuesInfoAdapter
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,9 +37,6 @@ class VenueOnMapFragment : Fragment() {
     @Inject
     @Named("MapStyleUrl")
     lateinit var mapStyleUrl: String
-
-    @Inject
-    lateinit var locationHelper: LocationHelper
 
     private lateinit var viewModel: VenueOnMapViewModel
 
@@ -61,18 +63,20 @@ class VenueOnMapFragment : Fragment() {
         initializeMapObservers()
     }
 
-    // TODO: All map related initializations should be moved to map module
     @SuppressLint("MissingPermission")
     private fun initializeMap(savedInstanceState: Bundle?) {
         mapModule.initialize(binding.mapView, savedInstanceState) {
             mapModule.initializeLocationProvider(requireContext())
-            mapModule.addOnCameraIdleListener { position, radius ->
-                viewModel.onMapCameraPositionUpdated(position.latitude, position.longitude, radius)
-            }
         }
 
         binding.myLocationButton.setOnClickListener {
             viewModel.onRequestLocationClicked()
+        }
+
+        binding.currentArea.setOnClickListener {
+            mapModule.getCameraPosition()?.let {
+                viewModel.onSearchAreaClicked(it.first.latitude, it.first.longitude, it.second)
+            }
         }
     }
 
@@ -98,14 +102,7 @@ class VenueOnMapFragment : Fragment() {
             viewModel.locationState.collect {
                 when (it) {
                     LocationUiState.Loading -> showLoading()
-                    is LocationUiState.LocationAvailable -> {
-                        hideLoading()
-                        mapModule.moveCamera(
-                            it.location.latitude,
-                            it.location.longitude,
-                            15.0
-                        )
-                    }
+                    is LocationUiState.LocationAvailable -> handleLocationAvailable(it.location)
                     LocationUiState.Failure -> hideLoading()
                     is LocationUiState.GPSNeeded -> turnGpsOn(it.resolvableApiException)
                     LocationUiState.LocationPermissionNeeded -> grantLocationPermission()
@@ -146,6 +143,23 @@ class VenueOnMapFragment : Fragment() {
         infoAdapter.submitList(venues)
     }
 
+    private fun handleLocationAvailable(location: Location) {
+        hideLoading()
+        mapModule.moveCamera(
+            location.latitude,
+            location.longitude,
+            15.0
+        )
+        val userPosition = mapModule.getCameraPosition()
+        userPosition?.let {
+            viewModel.onUserLocationShowing(
+                userPosition.first.latitude,
+                userPosition.first.longitude,
+                userPosition.second
+            )
+        }
+    }
+
     private fun turnGpsOn(resolvableApiException: ResolvableApiException) {
         hideLoading()
         resolvableApiException.startResolutionForResult(requireActivity(), 1)
@@ -153,9 +167,19 @@ class VenueOnMapFragment : Fragment() {
 
     private fun grantLocationPermission() {
         hideLoading()
-        locationHelper.requestLocationPermission(requireActivity()) {
-            viewModel.onPermissionResult(it)
-        }
+        requestLocationPermission()
+    }
+
+    private fun requestLocationPermission() {
+        val requestPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    viewModel.onPermissionResult(isGranted)
+                }
+            }
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
