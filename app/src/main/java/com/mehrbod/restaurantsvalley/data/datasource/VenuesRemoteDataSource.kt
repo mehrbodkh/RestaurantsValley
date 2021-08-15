@@ -32,4 +32,13 @@ class VenuesRemoteDataSource @Inject constructor(
             Result.failure(Throwable(response.metaDto.code.toString()))
         }
     }
+
+    /**
+     * Venue details API is not free and cannot be accessed via my account.
+     *
+     * This can be implemented for a more updated result.
+     */
+    override suspend fun fetchVenueDetail(venueId: String): Result<Venue> {
+        return Result.failure(Throwable("API is not usable"))
+    }
 }

@@ -12,6 +12,7 @@ import javax.inject.Named
 
 class VenueRepositoryImpl @Inject constructor(
     @Named("RemoteSource") private val remoteDataSource: VenuesDataSource,
+    @Named("LocalSource") private val localDataSource: VenuesDataSource,
     @Named("IODispatcher") private val dispatcher: CoroutineDispatcher
 ) : VenueRepository {
 
@@ -23,4 +24,11 @@ class VenueRepositoryImpl @Inject constructor(
         }
             .flowOn(dispatcher)
             .catch { emit(Result.failure(it)) }
+
+    override fun getVenueDetails(venueId: String): Flow<Result<Venue>> = flow {
+        emit(Result.success(Venue()))
+    }
+        .flowOn(dispatcher)
+        .catch { emit(Result.failure(it)) }
+
 }
