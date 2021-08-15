@@ -1,11 +1,11 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
-import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
 import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
-import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
 import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -87,18 +87,4 @@ class VenueOnMapViewModel @Inject constructor(
         }
     }
 
-}
-
-sealed class VenuesUiState {
-    object Loading : VenuesUiState()
-    class VenuesAvailable(val venues: List<Venue>) : VenuesUiState()
-}
-
-sealed class LocationUiState {
-    object Loading : LocationUiState()
-    object ShowLocationOnMap : LocationUiState()
-    object LocationPermissionNeeded : LocationUiState()
-    object Failure : LocationUiState()
-    class GPSNeeded(val resolvableApiException: ResolvableApiException) : LocationUiState()
-    class LocationAvailable(val location: Location) : LocationUiState()
 }

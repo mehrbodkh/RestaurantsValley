@@ -18,6 +18,9 @@ import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
 import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter.VenuesInfoAdapter
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

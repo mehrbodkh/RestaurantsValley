@@ -51,6 +51,7 @@
         android:paddingTop="?attr/spaceLarge"
         android:paddingBottom="?attr/spaceLarge"
         android:textColor="@color/black"
+        app:rippleColor="@color/black"
         app:cornerRadius="32dp"
         app:backgroundTint="@color/white"
         android:text="@string/current_area_button"
