@@ -1,14 +1,12 @@
 package com.mehrbod.restaurantsvalley.util
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.location.Location
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
-import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.geometry.LatLng
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -30,7 +28,6 @@ class LocationHelper @Inject constructor(
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var cancellationTokenSource = CancellationTokenSource()
     private val settingsClient = SettingsClient(context)
-    private var permissionManager: PermissionsManager? = null
 
     fun isLocationPermissionGranted(): Boolean =
         PermissionsManager.areLocationPermissionsGranted(context)
@@ -90,23 +87,4 @@ class LocationHelper @Inject constructor(
                 }
             }
         }
-
-    fun requestLocationPermission(activity: Activity, completeListener: (Boolean) -> Unit) {
-        permissionManager = PermissionsManager(object : PermissionsListener {
-            override fun onExplanationNeeded(p0: MutableList<String>?) {}
-
-            override fun onPermissionResult(isGranted: Boolean) {
-                completeListener(isGranted)
-            }
-        })
-        permissionManager?.requestLocationPermissions(activity)
-    }
-
-    fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        permissionManager?.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 }

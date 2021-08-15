@@ -1,10 +1,12 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +18,6 @@ import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
 import com.mehrbod.restaurantsvalley.domain.model.Venue
-import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,9 +33,6 @@ class VenueOnMapFragment : Fragment() {
     @Inject
     @Named("MapStyleUrl")
     lateinit var mapStyleUrl: String
-
-    @Inject
-    lateinit var locationHelper: LocationHelper
 
     private lateinit var viewModel: VenueOnMapViewModel
 
@@ -155,9 +153,19 @@ class VenueOnMapFragment : Fragment() {
 
     private fun grantLocationPermission() {
         hideLoading()
-        locationHelper.requestLocationPermission(requireActivity()) {
-            viewModel.onPermissionResult(it)
-        }
+        requestLocationPermission()
+    }
+
+    private fun requestLocationPermission() {
+        val requestPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    viewModel.onPermissionResult(isGranted)
+                }
+            }
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
