@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ResolvableApiException
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -43,7 +44,7 @@ class VenueOnMapFragment : Fragment() {
     private var _binding: VenueOnMapFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val infoAdapter = VenuesInfoAdapter()
+    private lateinit var infoAdapter: VenuesInfoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +82,9 @@ class VenueOnMapFragment : Fragment() {
     }
 
     private fun initializeInfoList() {
+        infoAdapter = VenuesInfoAdapter {
+            viewModel.onVenueClicked(it)
+        }
         binding.venuesInfoList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.venuesInfoList.adapter = infoAdapter
@@ -92,6 +96,7 @@ class VenueOnMapFragment : Fragment() {
                 when (it) {
                     VenuesUiState.Loading -> showLoading()
                     is VenuesUiState.VenuesAvailable -> showVenues(it.venues)
+                    is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(it.bundle)
                 }
             }
         }
@@ -126,6 +131,10 @@ class VenueOnMapFragment : Fragment() {
         hideLoading()
         showVenuesOnMap(venues)
         showVenuesInfo(venues)
+    }
+
+    private fun showVenueDetail(bundle: Bundle) {
+        findNavController().navigate(R.id.action_venueOnMapFragment_to_venueDetailsFragment, bundle)
     }
 
     private fun showVenuesOnMap(venues: List<Venue>) {

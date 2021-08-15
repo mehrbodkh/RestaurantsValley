@@ -1,9 +1,12 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
 import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
+import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.presentation.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
 import com.mehrbod.restaurantsvalley.util.LocationHelper
@@ -87,6 +90,15 @@ class VenueOnMapViewModel @Inject constructor(
 
     fun onUserLocationShowing(lat: Double, lng: Double, radius: Int) {
         onSearchAreaClicked(lat, lng, radius)
+    }
+
+    fun onVenueClicked(venue: Venue) {
+        _venuesState.value = VenuesUiState.VenueDetailsAvailable(Bundle().apply {
+            putString(
+                VenueDetailsViewModel.VENUE_ID,
+                venue.id
+            )
+        })
     }
 
 }

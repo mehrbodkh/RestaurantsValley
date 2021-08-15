@@ -20,7 +20,7 @@ object VenuesDiffCallback : DiffUtil.ItemCallback<Venue>() {
     }
 }
 
-class VenuesInfoAdapter : ListAdapter<Venue, VenueInfoViewHolder>(VenuesDiffCallback) {
+class VenuesInfoAdapter(private val onItemClickListener: (Venue) -> Unit) : ListAdapter<Venue, VenueInfoViewHolder>(VenuesDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VenueInfoViewHolder {
         val binding =
             ItemVenueInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,19 +28,22 @@ class VenuesInfoAdapter : ListAdapter<Venue, VenueInfoViewHolder>(VenuesDiffCall
     }
 
     override fun onBindViewHolder(holder: VenueInfoViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        holder.onBind(getItem(position), onItemClickListener)
     }
 }
 
 class VenueInfoViewHolder(private val binding: ItemVenueInfoBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind(venue: Venue) {
+    fun onBind(venue: Venue, onItemClickListener: (Venue) -> Unit) {
         binding.name.text = venue.name
         binding.distance.text = String.format(
             binding.root.context.getString(R.string.distance_unit),
             venue.location.distance
         )
         binding.address.text = venue.location.address
+        binding.root.setOnClickListener {
+            onItemClickListener(venue)
+        }
     }
 }
