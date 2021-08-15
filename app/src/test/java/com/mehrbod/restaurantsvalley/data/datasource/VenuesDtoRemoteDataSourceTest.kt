@@ -23,7 +23,7 @@ class VenuesDtoRemoteDataSourceTest  {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        remoteDataSource = VenuesRemoteDataSource(apiService, "null", "null")
+        remoteDataSource = RestaurantsRemoteDataSourceImpl(apiService, "null", "null")
     }
 
     @Test

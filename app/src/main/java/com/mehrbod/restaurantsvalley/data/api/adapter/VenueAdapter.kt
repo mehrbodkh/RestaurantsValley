@@ -3,9 +3,9 @@ package com.mehrbod.restaurantsvalley.data.api.adapter
 import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import com.mehrbod.restaurantsvalley.domain.model.*
 
-fun ApiVenuesResponse.convertToVenues(): List<Venue> {
+fun ApiVenuesResponse.convertToVenues(): List<Restaurant> {
     return this.responseDto.venues.map {
-        Venue(
+        Restaurant(
             it.id,
             it.name,
             it.contactDto?.let { apiContact ->

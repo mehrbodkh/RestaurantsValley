@@ -19,7 +19,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
-import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter.VenuesInfoAdapter
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
@@ -95,7 +95,7 @@ class VenueOnMapFragment : Fragment() {
             viewModel.venuesState.collect {
                 when (it) {
                     VenuesUiState.Loading -> showLoading()
-                    is VenuesUiState.VenuesAvailable -> showVenues(it.venues)
+                    is VenuesUiState.VenuesAvailable -> showVenues(it.restaurants)
                     is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(it.bundle)
                 }
             }
@@ -127,19 +127,19 @@ class VenueOnMapFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showVenues(venues: List<Venue>) {
+    private fun showVenues(restaurants: List<Restaurant>) {
         hideLoading()
-        showVenuesOnMap(venues)
-        showVenuesInfo(venues)
+        showVenuesOnMap(restaurants)
+        showVenuesInfo(restaurants)
     }
 
     private fun showVenueDetail(bundle: Bundle) {
         findNavController().navigate(R.id.action_venueOnMapFragment_to_venueDetailsFragment, bundle)
     }
 
-    private fun showVenuesOnMap(venues: List<Venue>) {
+    private fun showVenuesOnMap(restaurants: List<Restaurant>) {
         mapModule.removeAllMarkers()
-        venues.forEach {
+        restaurants.forEach {
             mapModule.addMarker(
                 it.id,
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_location_on)!!,
@@ -148,8 +148,8 @@ class VenueOnMapFragment : Fragment() {
         }
     }
 
-    private fun showVenuesInfo(venues: List<Venue>) {
-        infoAdapter.submitList(venues)
+    private fun showVenuesInfo(restaurants: List<Restaurant>) {
+        infoAdapter.submitList(restaurants)
     }
 
     private fun handleLocationAvailable(location: Location) {

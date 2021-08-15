@@ -1,13 +1,13 @@
 package com.mehrbod.restaurantsvalley.presentation.venuedetails
 
 import androidx.lifecycle.ViewModel
-import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
+import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class VenueDetailsViewModel @Inject constructor(
-    private val venuesRepository: VenueRepository
+    private val venuesRepository: RestaurantsRepository
 ) : ViewModel() {
 
     companion object {

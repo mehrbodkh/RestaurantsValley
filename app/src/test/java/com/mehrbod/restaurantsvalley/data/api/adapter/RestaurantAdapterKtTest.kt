@@ -9,7 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class VenueAdapterKtTest {
+class RestaurantAdapterKtTest {
 
     @RelaxedMockK
     lateinit var locationDto: LocationDto
