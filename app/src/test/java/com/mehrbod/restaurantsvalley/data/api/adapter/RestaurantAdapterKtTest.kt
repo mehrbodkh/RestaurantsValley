@@ -9,7 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class VenueAdapterKtTest {
+class RestaurantAdapterKtTest {
 
     @RelaxedMockK
     lateinit var locationDto: LocationDto
@@ -38,7 +38,7 @@ class VenueAdapterKtTest {
 
     @Test
     fun `test response model to model conversion`() {
-        val venues = model.convertToVenues()
+        val venues = model.convertToRestaurants()
         assertEquals(venues[0].id, "1")
         assertEquals(venues[0].name, "2")
         assertTrue(venues[0].categories.isEmpty())

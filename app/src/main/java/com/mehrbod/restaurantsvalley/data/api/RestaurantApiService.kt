@@ -13,6 +13,7 @@ interface RestaurantApiService {
         @Query("v") version: String = "20180401",
         @Query("limit") limit: Int,
         @Query("client_id") clientId: String,
-        @Query("client_secret") clientSecret: String
+        @Query("client_secret") clientSecret: String,
+        @Query("categoryId") categoryIds: List<String>? = null
     ): ApiVenuesResponse
 }

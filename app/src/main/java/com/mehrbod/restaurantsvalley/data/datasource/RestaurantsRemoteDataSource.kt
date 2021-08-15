@@ -1,0 +1,3 @@
+package com.mehrbod.restaurantsvalley.data.datasource
+
+interface RestaurantsRemoteDataSource : RestaurantsDataSource

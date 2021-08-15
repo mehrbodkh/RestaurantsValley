@@ -1,6 +1,6 @@
 package com.mehrbod.restaurantsvalley.domain.model
 
-data class Venue(
+data class Restaurant(
     val id : String,
     val name : String,
     val contact : Contact?,

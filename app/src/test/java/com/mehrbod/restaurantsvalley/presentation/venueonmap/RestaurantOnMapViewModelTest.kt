@@ -3,8 +3,8 @@ package com.mehrbod.restaurantsvalley.presentation.venueonmap
 import android.location.Location
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
-import com.mehrbod.restaurantsvalley.data.repository.VenueRepository
-import com.mehrbod.restaurantsvalley.domain.model.Venue
+import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
+import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
 import com.mehrbod.restaurantsvalley.util.LocationHelper
@@ -23,10 +23,10 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class VenueOnMapViewModelTest {
+class RestaurantOnMapViewModelTest {
 
     @RelaxedMockK
-    lateinit var venueRepository: VenueRepository
+    lateinit var restaurantsRepository: RestaurantsRepository
 
     @RelaxedMockK
     lateinit var locationHelper: LocationHelper
@@ -39,7 +39,7 @@ class VenueOnMapViewModelTest {
         MockKAnnotations.init(this)
         coroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(coroutineDispatcher)
-        viewModel = VenueOnMapViewModel(venueRepository, locationHelper)
+        viewModel = VenueOnMapViewModel(restaurantsRepository, locationHelper)
     }
 
     @Test
@@ -51,32 +51,32 @@ class VenueOnMapViewModelTest {
 
     @Test
     fun `test successful empty venue loading`() = coroutineDispatcher.runBlockingTest {
-        every { venueRepository.getVenues(any(), any(), any()) } returns flow {
-            emit(Result.success<List<Venue>>(emptyList()))
+        every { restaurantsRepository.getRestaurants(any(), any(), any()) } returns flow {
+            emit(Result.success<List<Restaurant>>(emptyList()))
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
-        coVerify { venueRepository.getVenues(any(), any(), any()) }
+        coVerify { restaurantsRepository.getRestaurants(any(), any(), any()) }
         assert(result is VenuesUiState.VenuesAvailable)
-        assert((result as VenuesUiState.VenuesAvailable).venues.isEmpty())
+        assert((result as VenuesUiState.VenuesAvailable).restaurants.isEmpty())
     }
 
     @Test
     fun `test successful venue loading`() = coroutineDispatcher.runBlockingTest {
-        val venue = mockk<Venue>()
-        every { venueRepository.getVenues(any(), any(), any()) } returns flow {
-            emit(Result.success<List<Venue>>(listOf(venue)))
+        val venue = mockk<Restaurant>()
+        every { restaurantsRepository.getRestaurants(any(), any(), any()) } returns flow {
+            emit(Result.success<List<Restaurant>>(listOf(venue)))
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
-        coVerify { venueRepository.getVenues(any(), any(), any()) }
+        coVerify { restaurantsRepository.getRestaurants(any(), any(), any()) }
         assert(result is VenuesUiState.VenuesAvailable)
-        assert((result as VenuesUiState.VenuesAvailable).venues.isNotEmpty())
-        assert(result.venues[0] == venue)
+        assert((result as VenuesUiState.VenuesAvailable).restaurants.isNotEmpty())
+        assert(result.restaurants[0] == venue)
     }
 
     @Test
