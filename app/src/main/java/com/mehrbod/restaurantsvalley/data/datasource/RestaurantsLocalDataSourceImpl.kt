@@ -3,8 +3,9 @@ package com.mehrbod.restaurantsvalley.data.datasource
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
-@Named("LocalDataSource")
+@Singleton
 class RestaurantsLocalDataSourceImpl @Inject constructor() : RestaurantsLocalDataSource {
     private val cachedRestaurants = HashSet<Restaurant>()
 

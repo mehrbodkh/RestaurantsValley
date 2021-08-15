@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueDetailsFragmentBinding
+import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
@@ -29,6 +34,41 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(VenueDetailsViewModel::class.java)
+
+        handleArguments()
+        initializeUIStateObserver()
+    }
+
+    private fun handleArguments() {
+        arguments?.getString(VenueDetailsViewModel.RESTAURANT_ID)?.let {
+            viewModel.onRestaurantIdReceived(it)
+        }
+    }
+
+    private fun initializeUIStateObserver() {
+        lifecycleScope.launch {
+            viewModel.restaurantDetailUIState.collect {
+                when (it) {
+                    RestaurantDetailUIState.Loading -> showLoading()
+                    is RestaurantDetailUIState.RestaurantDetailAvailable -> showRestaurantDetails(it.restaurant)
+                }
+            }
+        }
+    }
+
+    private fun showLoading() {
+
+    }
+
+    private fun showRestaurantDetails(restaurant: Restaurant) = with(binding){
+        name.text = restaurant.name
+        distance.text = String.format(
+            binding.root.context.getString(R.string.distance_unit),
+            restaurant.location.distance
+        )
+        type.text = restaurant.categories.joinToString(separator = ", ") { it.name }
+        address.text = restaurant.location.formattedAddress?.joinToString(separator = " - ")
+        contact.text = restaurant.contact?.formattedPhone ?: "No phone numbers available"
     }
 
     override fun onDestroy() {

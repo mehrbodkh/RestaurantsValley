@@ -1,11 +1,13 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
-import com.mehrbod.restaurantsvalley.data.api.adapter.convertToVenues
+import com.mehrbod.restaurantsvalley.data.api.adapter.convertToRestaurants
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
+@Singleton
 class RestaurantsRemoteDataSourceImpl @Inject constructor(
     private val apiService: RestaurantApiService,
     @Named("ClientId") private val clientId: String,
@@ -27,7 +29,7 @@ class RestaurantsRemoteDataSourceImpl @Inject constructor(
         )
 
         return if (response.metaDto.code == SUCCESS) {
-            Result.success(response.convertToVenues())
+            Result.success(response.convertToRestaurants())
         } else {
             Result.failure(Throwable(response.metaDto.code.toString()))
         }

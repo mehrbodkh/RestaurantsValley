@@ -9,10 +9,10 @@ import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 abstract class RestaurantDataModule {
 
     @Binds
@@ -26,7 +26,7 @@ abstract class RestaurantDataModule {
     ): RestaurantsLocalDataSource
 
     @Binds
-    abstract fun bindsVenueRepository(
+    abstract fun bindsRestaurantsRepository(
         restaurantsRepositoryImpl: RestaurantsRepositoryImpl
     ): RestaurantsRepository
 }

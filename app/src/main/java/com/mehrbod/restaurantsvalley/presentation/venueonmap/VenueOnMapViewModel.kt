@@ -95,7 +95,7 @@ class VenueOnMapViewModel @Inject constructor(
     fun onVenueClicked(restaurant: Restaurant) {
         _venuesState.value = VenuesUiState.VenueDetailsAvailable(Bundle().apply {
             putString(
-                VenueDetailsViewModel.VENUE_ID,
+                VenueDetailsViewModel.RESTAURANT_ID,
                 restaurant.id
             )
         })
