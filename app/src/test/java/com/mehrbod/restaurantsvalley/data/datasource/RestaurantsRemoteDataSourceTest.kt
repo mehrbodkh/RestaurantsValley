@@ -14,7 +14,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class VenuesDtoRemoteDataSourceTest  {
+class RestaurantsRemoteDataSourceTest  {
     @MockK
     lateinit var apiService: RestaurantApiService
 
