@@ -43,7 +43,9 @@ class VenueOnMapViewModel @Inject constructor(
                 lng,
                 radius
             ).collect {
-                _venuesState.value = VenuesUiState.VenuesAvailable(it.getOrNull() ?: emptyList())
+                it.getOrNull()?.let {
+                    _venuesState.value = VenuesUiState.VenuesAvailable(it)
+                }
             }
         }
     }

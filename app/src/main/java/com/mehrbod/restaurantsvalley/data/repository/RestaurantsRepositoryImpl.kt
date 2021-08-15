@@ -20,10 +20,14 @@ class RestaurantsRepositoryImpl @Inject constructor(
 
     override fun getRestaurants(lat: Double, lng: Double, radius: Int): Flow<Result<List<Restaurant>>> =
         flow {
-            val result = remoteDataSource.fetchRestaurants(lat, lng, radius)
-            emit(result)
-            if (result.isSuccess) {
-                localDataSource.updateRestaurants(result.getOrDefault(emptyList()))
+            val localData = localDataSource.fetchRestaurants(lat, lng, radius)
+            localData.getOrNull()?.let {
+                emit(localData)
+            }
+            val remoteData = remoteDataSource.fetchRestaurants(lat, lng, radius)
+            emit(remoteData)
+            if (remoteData.isSuccess) {
+                localDataSource.updateRestaurants(remoteData.getOrDefault(emptyList()))
             }
         }
             .flowOn(dispatcher)
