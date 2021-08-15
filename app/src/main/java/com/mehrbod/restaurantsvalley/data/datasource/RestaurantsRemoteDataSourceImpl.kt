@@ -16,7 +16,7 @@ class RestaurantsRemoteDataSourceImpl @Inject constructor(
         const val category = "4d4b7105d754a06374d81259"
     }
 
-    override suspend fun fetchVenues(lat: Double, lng: Double, radius: Int): Result<List<Restaurant>> {
+    override suspend fun fetchRestaurants(lat: Double, lng: Double, radius: Int): Result<List<Restaurant>> {
         val response = apiService.getVenues(
             "$lat,$lng",
             radius,

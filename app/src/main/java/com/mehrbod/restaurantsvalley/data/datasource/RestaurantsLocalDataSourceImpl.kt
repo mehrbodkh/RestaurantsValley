@@ -6,16 +6,24 @@ import javax.inject.Named
 
 @Named("LocalDataSource")
 class RestaurantsLocalDataSourceImpl @Inject constructor() : RestaurantsLocalDataSource {
+    private val cachedRestaurants = HashSet<Restaurant>()
 
     override fun updateRestaurants(restaurants: List<Restaurant>) {
-        TODO("Not yet implemented")
+        cachedRestaurants.addAll(restaurants)
     }
 
     override suspend fun getRestaurantDetail(restaurantId: String): Result<Restaurant> {
-        return Result.failure(Throwable(""))
+        val restaurant = cachedRestaurants.find { it.id == restaurantId }
+        return restaurant?.let {
+            Result.success(it)
+        } ?: Result.failure(Throwable("Nothing has been found"))
     }
 
-    override suspend fun fetchVenues(lat: Double, lng: Double, radius: Int): Result<List<Restaurant>> {
+    override suspend fun fetchRestaurants(
+        lat: Double,
+        lng: Double,
+        radius: Int
+    ): Result<List<Restaurant>> {
         return Result.failure(Throwable(""))
     }
 }

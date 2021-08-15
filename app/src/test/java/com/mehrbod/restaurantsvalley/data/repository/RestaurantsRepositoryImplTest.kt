@@ -37,11 +37,11 @@ class RestaurantsRepositoryImplTest {
 
     @Test
     fun `test get venues successful response`() = coroutineDispatcher.runBlockingTest {
-        coEvery { remoteDataSourceImpl.fetchVenues(any(), any(), any()) } returns Result.success(restaurants)
+        coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } returns Result.success(restaurants)
 
         val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
 
-        coVerify { remoteDataSourceImpl.fetchVenues(1.0, 1.0, 1) }
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isSuccess)
         assert(response.getOrNull() != null)
         assert(response.getOrNull()!!.isNotEmpty())
@@ -49,22 +49,22 @@ class RestaurantsRepositoryImplTest {
 
     @Test
     fun `test venues failed request`() = coroutineDispatcher.runBlockingTest {
-        coEvery { remoteDataSourceImpl.fetchVenues(any(), any(), any()) } throws Exception("")
+        coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } throws Exception("")
 
         val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
 
-        coVerify { remoteDataSourceImpl.fetchVenues(1.0, 1.0, 1) }
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isFailure)
         assert(response.getOrNull() == null)
     }
 
     @Test
     fun `test venues failed response`() = coroutineDispatcher.runBlockingTest {
-        coEvery { remoteDataSourceImpl.fetchVenues(any(), any(), any()) } returns Result.failure(Throwable(""))
+        coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } returns Result.failure(Throwable(""))
 
         val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
 
-        coVerify { remoteDataSourceImpl.fetchVenues(1.0, 1.0, 1) }
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isFailure)
         assert(response.getOrNull() == null)
     }
