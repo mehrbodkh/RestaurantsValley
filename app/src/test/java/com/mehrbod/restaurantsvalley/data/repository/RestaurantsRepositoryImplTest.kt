@@ -1,6 +1,5 @@
 package com.mehrbod.restaurantsvalley.data.repository
 
-import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSourceImpl
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
@@ -10,7 +9,7 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -46,6 +45,14 @@ class RestaurantsRepositoryImplTest {
     @Test
     fun `test get venues successful response`() = coroutineDispatcher.runBlockingTest {
         coEvery {
+            localDataSourceImpl.fetchRestaurants(
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.success(restaurants)
+
+        coEvery {
             remoteDataSourceImpl.fetchRestaurants(
                 any(),
                 any(),
@@ -53,7 +60,7 @@ class RestaurantsRepositoryImplTest {
             )
         } returns Result.success(restaurants)
 
-        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
+        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
 
         coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isSuccess)
@@ -63,9 +70,16 @@ class RestaurantsRepositoryImplTest {
 
     @Test
     fun `test venues failed request`() = coroutineDispatcher.runBlockingTest {
+        coEvery {
+            localDataSourceImpl.fetchRestaurants(
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.success(restaurants)
         coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } throws Exception("")
 
-        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
+        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
 
         coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isFailure)
@@ -75,6 +89,14 @@ class RestaurantsRepositoryImplTest {
     @Test
     fun `test venues failed response`() = coroutineDispatcher.runBlockingTest {
         coEvery {
+            localDataSourceImpl.fetchRestaurants(
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.failure(Throwable(""))
+
+        coEvery {
             remoteDataSourceImpl.fetchRestaurants(
                 any(),
                 any(),
@@ -82,7 +104,7 @@ class RestaurantsRepositoryImplTest {
             )
         } returns Result.failure(Throwable(""))
 
-        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
+        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
 
         coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isFailure)

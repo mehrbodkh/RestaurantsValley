@@ -1,8 +1,8 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import javax.inject.Inject
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -25,6 +25,16 @@ class RestaurantsLocalDataSourceImpl @Inject constructor() : RestaurantsLocalDat
         lng: Double,
         radius: Int
     ): Result<List<Restaurant>> {
-        return Result.failure(Throwable(""))
+        val result = cachedRestaurants.filter { it.inViewPort(lat, lng, radius) }.take(50)
+
+        return if (result.isEmpty()) {
+            Result.failure(Throwable("No cached data"))
+        } else {
+            Result.success(result)
+        }
     }
+}
+
+private fun Restaurant.inViewPort(lat: Double, lng: Double, radius: Int): Boolean {
+    return LatLng(lat, lng).distanceTo(LatLng(this.location.lat, this.location.lng)) <= radius
 }
