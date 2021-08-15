@@ -1,10 +1,14 @@
 package com.mehrbod.restaurantsvalley.data.repository
 
 import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
+import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSourceImpl
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -20,7 +24,7 @@ class RestaurantsRepositoryImplTest {
     lateinit var remoteDataSourceImpl: RestaurantsRemoteDataSourceImpl
 
     @RelaxedMockK
-    lateinit var apiVenuesResponse: ApiVenuesResponse
+    lateinit var localDataSourceImpl: RestaurantsLocalDataSourceImpl
 
     @RelaxedMockK
     lateinit var restaurants: List<Restaurant>
@@ -32,12 +36,22 @@ class RestaurantsRepositoryImplTest {
     fun setup() {
         MockKAnnotations.init(this)
         coroutineDispatcher = TestCoroutineDispatcher()
-        venueRepositoryImpl = RestaurantsRepositoryImpl(remoteDataSourceImpl, coroutineDispatcher)
+        venueRepositoryImpl = RestaurantsRepositoryImpl(
+            remoteDataSourceImpl,
+            localDataSourceImpl,
+            coroutineDispatcher
+        )
     }
 
     @Test
     fun `test get venues successful response`() = coroutineDispatcher.runBlockingTest {
-        coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } returns Result.success(restaurants)
+        coEvery {
+            remoteDataSourceImpl.fetchRestaurants(
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.success(restaurants)
 
         val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
 
@@ -60,7 +74,13 @@ class RestaurantsRepositoryImplTest {
 
     @Test
     fun `test venues failed response`() = coroutineDispatcher.runBlockingTest {
-        coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } returns Result.failure(Throwable(""))
+        coEvery {
+            remoteDataSourceImpl.fetchRestaurants(
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.failure(Throwable(""))
 
         val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
 

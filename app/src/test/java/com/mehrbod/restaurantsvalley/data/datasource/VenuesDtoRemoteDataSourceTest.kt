@@ -18,7 +18,7 @@ class VenuesDtoRemoteDataSourceTest  {
     @MockK
     lateinit var apiService: RestaurantApiService
 
-    private lateinit var remoteDataSource: VenuesDataSource
+    private lateinit var remoteDataSource: RestaurantsRemoteDataSource
 
     @Before
     fun setup() {
@@ -28,25 +28,25 @@ class VenuesDtoRemoteDataSourceTest  {
 
     @Test
     fun `test fetch venues api call`() = runBlocking {
-        coEvery { apiService.getVenues(any(), any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
+        coEvery { apiService.getVenues(any(), any(), any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
             MetaDto(code = 200, requestId = "32408243"),
             emptyList(),
             ResponseDto(venues = emptyList(), null)
         )
-        val response = remoteDataSource.fetchVenues(1.0, 1.0, 1)
-        coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any(), any()) }
+        val response = remoteDataSource.fetchRestaurants(1.0, 1.0, 1)
+        coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any(), any(), any()) }
         assert(response.isSuccess)
     }
 
     @Test
     fun `test fetch venues failure response`() = runBlocking {
-        coEvery { apiService.getVenues(any(), any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
+        coEvery { apiService.getVenues(any(), any(), any(), any(), any(), any(), any()) } returns ApiVenuesResponse(
             MetaDto(code = 400, requestId = "32408243"),
             emptyList(),
             ResponseDto(venues = emptyList(), null)
         )
-        val response = remoteDataSource.fetchVenues(1.0, 1.0, 1)
-        coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any(), any()) }
+        val response = remoteDataSource.fetchRestaurants(1.0, 1.0, 1)
+        coVerify { apiService.getVenues("1.0,1.0", 1, any(), any(), any(), any(), any()) }
         assert(response.isFailure)
     }
 
