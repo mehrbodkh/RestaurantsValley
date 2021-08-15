@@ -82,8 +82,8 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
     override fun getCameraPosition(): Pair<LatLng, Int>? {
         mapboxMap?.let {
             val cameraPosition = it.cameraPosition
-            val radius = it.projection.visibleRegion.farLeft
-                .distanceTo(it.projection.visibleRegion.farRight)
+            val radius = (it.projection.visibleRegion.farLeft
+                .distanceTo(it.projection.visibleRegion.farRight)) / 2
 
             return Pair(
                 LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude),

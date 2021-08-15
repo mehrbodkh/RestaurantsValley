@@ -20,7 +20,8 @@ object VenuesDiffCallback : DiffUtil.ItemCallback<Venue>() {
     }
 }
 
-class VenuesInfoAdapter(private val onItemClickListener: (Venue) -> Unit) : ListAdapter<Venue, VenueInfoViewHolder>(VenuesDiffCallback) {
+class VenuesInfoAdapter(private val onItemClickListener: (Venue) -> Unit) :
+    ListAdapter<Venue, VenueInfoViewHolder>(VenuesDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VenueInfoViewHolder {
         val binding =
             ItemVenueInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)

@@ -13,6 +13,7 @@ class VenuesRemoteDataSource @Inject constructor(
 ) : VenuesDataSource {
     companion object {
         const val SUCCESS = 200
+        const val category = "4d4b7105d754a06374d81259"
     }
 
     override suspend fun fetchVenues(lat: Double, lng: Double, radius: Int): Result<List<Venue>> {
@@ -21,7 +22,8 @@ class VenuesRemoteDataSource @Inject constructor(
             radius,
             limit = 50,
             clientId = clientId,
-            clientSecret = clientSecret
+            clientSecret = clientSecret,
+            categoryIds = listOf(category)
         )
 
         return if (response.metaDto.code == SUCCESS) {
