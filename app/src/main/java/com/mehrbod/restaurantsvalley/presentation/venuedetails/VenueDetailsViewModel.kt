@@ -29,9 +29,13 @@ class VenueDetailsViewModel @Inject constructor(
         _restaurantDetailUIState.value = RestaurantDetailUIState.Loading
         viewModelScope.launch {
             restaurantsRepository.getRestaurantDetails(restaurantId).collect {
-                it.getOrNull()?.let { restaurant ->
+                if (it.getOrNull() != null) {
+
                     _restaurantDetailUIState.value =
-                        RestaurantDetailUIState.RestaurantDetailAvailable(restaurant)
+                        RestaurantDetailUIState.RestaurantDetailAvailable(it.getOrNull()!!)
+                } else {
+                    _restaurantDetailUIState.value =
+                        RestaurantDetailUIState.Failure("No restaurants found")
                 }
             }
         }

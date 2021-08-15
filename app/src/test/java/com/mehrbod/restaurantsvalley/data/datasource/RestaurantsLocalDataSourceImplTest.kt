@@ -4,9 +4,11 @@ import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -44,5 +46,10 @@ class RestaurantsLocalDataSourceImplTest {
 
         assert(result.isSuccess)
         assert(result.getOrNull()?.name == "name")
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 }
