@@ -2,6 +2,7 @@ package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -101,14 +102,7 @@ class VenueOnMapFragment : Fragment() {
             viewModel.locationState.collect {
                 when (it) {
                     LocationUiState.Loading -> showLoading()
-                    is LocationUiState.LocationAvailable -> {
-                        hideLoading()
-                        mapModule.moveCamera(
-                            it.location.latitude,
-                            it.location.longitude,
-                            15.0
-                        )
-                    }
+                    is LocationUiState.LocationAvailable -> handleLocationAvailable(it.location)
                     LocationUiState.Failure -> hideLoading()
                     is LocationUiState.GPSNeeded -> turnGpsOn(it.resolvableApiException)
                     LocationUiState.LocationPermissionNeeded -> grantLocationPermission()
@@ -147,6 +141,23 @@ class VenueOnMapFragment : Fragment() {
 
     private fun showVenuesInfo(venues: List<Venue>) {
         infoAdapter.submitList(venues)
+    }
+
+    private fun handleLocationAvailable(location: Location) {
+        hideLoading()
+        mapModule.moveCamera(
+            location.latitude,
+            location.longitude,
+            15.0
+        )
+        val userPosition = mapModule.getCameraPosition()
+        userPosition?.let {
+            viewModel.onUserLocationShowing(
+                userPosition.first.latitude,
+                userPosition.first.longitude,
+                userPosition.second
+            )
+        }
     }
 
     private fun turnGpsOn(resolvableApiException: ResolvableApiException) {

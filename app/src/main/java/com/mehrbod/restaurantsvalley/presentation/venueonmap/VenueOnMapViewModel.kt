@@ -68,8 +68,6 @@ class VenueOnMapViewModel @Inject constructor(
             val locationResult = locationHelper.findUserLocation()
 
             if (locationResult.isSuccess) {
-                val location = locationResult.getOrNull()!!
-                onSearchAreaClicked(location.latitude, location.longitude, 100)
                 _locationState.value =
                     LocationUiState.LocationAvailable(locationResult.getOrNull()!!)
             } else {
@@ -85,6 +83,10 @@ class VenueOnMapViewModel @Inject constructor(
                 handleLocation()
             }
         }
+    }
+
+    fun onUserLocationShowing(lat: Double, lng: Double, radius: Int) {
+        onSearchAreaClicked(lat, lng, radius)
     }
 
 }
