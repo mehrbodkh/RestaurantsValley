@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueDetailsFragmentBinding
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -60,7 +60,7 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun showRestaurantDetails(restaurant: Restaurant) = with(binding){
+    private fun showRestaurantDetails(restaurant: com.mehrbod.domain.model.restaurant.Restaurant) = with(binding){
         name.text = restaurant.name
         distance.text = String.format(
             binding.root.context.getString(R.string.distance_unit),

@@ -2,19 +2,17 @@ package com.mehrbod.restaurantsvalley.presentation.venuedetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import kotlinx.coroutines.flow.collect
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class VenueDetailsViewModel @Inject constructor(
-    private val restaurantsRepository: RestaurantsRepository
+    private val restaurantsRepository: com.mehrbod.domain.repository.RestaurantsRepository
 ) : ViewModel() {
 
     companion object {

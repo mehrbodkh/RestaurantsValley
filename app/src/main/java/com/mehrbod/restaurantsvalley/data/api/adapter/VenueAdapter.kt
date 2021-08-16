@@ -1,20 +1,19 @@
 package com.mehrbod.restaurantsvalley.data.api.adapter
 
 import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
-import com.mehrbod.restaurantsvalley.domain.model.*
 
-fun ApiVenuesResponse.convertToRestaurants(): List<Restaurant> {
+fun ApiVenuesResponse.convertToRestaurants(): List<com.mehrbod.domain.model.restaurant.Restaurant> {
     return this.responseDto.venues.map {
-        Restaurant(
+        com.mehrbod.domain.model.restaurant.Restaurant(
             it.id,
             it.name,
             it.contactDto?.let { apiContact ->
-                Contact(
+                com.mehrbod.domain.model.restaurant.Contact(
                     apiContact.phone,
                     apiContact.formattedPhone
                 )
             },
-            Location(
+            com.mehrbod.domain.model.restaurant.Location(
                 it.locationDto.address,
                 it.locationDto.crossStreet,
                 it.locationDto.lat,
@@ -33,12 +32,12 @@ fun ApiVenuesResponse.convertToRestaurants(): List<Restaurant> {
             it.canonicalUrl,
             it.canonicalPath,
             it.categories.map { category ->
-                Categories(
+                com.mehrbod.domain.model.restaurant.Categories(
                     category.id,
                     category.name,
                     category.pluralName,
                     category.shortName,
-                    Icon(
+                    com.mehrbod.domain.model.restaurant.Icon(
                         category.iconDto.prefix,
                         category.iconDto.mapPrefix,
                         category.iconDto.suffix
@@ -48,22 +47,26 @@ fun ApiVenuesResponse.convertToRestaurants(): List<Restaurant> {
             },
             it.verified,
             it.statsDto?.let { apiStats ->
-                Stats(
+                com.mehrbod.domain.model.restaurant.Stats(
                     apiStats.tipCount,
                     apiStats.usersCount,
                     apiStats.checkinsCount
                 )
             },
             it.specialsDto?.let { apiSpecials ->
-                Specials(
+                com.mehrbod.domain.model.restaurant.Specials(
                     apiSpecials.count,
                     apiSpecials.items
                 )
             },
-            it.venuePageDto?.let { apiVenuePage -> VenuePage(apiVenuePage.id) },
+            it.venuePageDto?.let { apiVenuePage ->
+                com.mehrbod.domain.model.restaurant.VenuePage(
+                    apiVenuePage.id
+                )
+            },
             it.locked,
             it.hereNowDto?.let { hereNow ->
-                HereNow(
+                com.mehrbod.domain.model.restaurant.HereNow(
                     hereNow.count,
                     hereNow.summary,
                     hereNow.groups

@@ -1,6 +1,6 @@
-package com.mehrbod.restaurantsvalley.data.repository
+package com.mehrbod.domain.repository
 
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 import kotlinx.coroutines.flow.Flow
 
 interface RestaurantsRepository {

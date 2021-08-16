@@ -2,7 +2,7 @@ package com.mehrbod.restaurantsvalley.data.repository
 
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSource
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSource
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,10 +15,10 @@ class RestaurantsRepositoryImpl @Inject constructor(
     private val remoteDataSource: RestaurantsRemoteDataSource,
     private val localDataSource: RestaurantsLocalDataSource,
     @Named("IODispatcher") private val dispatcher: CoroutineDispatcher
-) : RestaurantsRepository {
+) : com.mehrbod.domain.repository.RestaurantsRepository {
 
 
-    override fun getRestaurants(lat: Double, lng: Double, radius: Int): Flow<Result<List<Restaurant>>> =
+    override fun getRestaurants(lat: Double, lng: Double, radius: Int): Flow<Result<List<com.mehrbod.domain.model.restaurant.Restaurant>>> =
         flow {
             val localData = localDataSource.fetchRestaurants(lat, lng, radius)
             localData.getOrNull()?.let {
@@ -33,7 +33,7 @@ class RestaurantsRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .catch { emit(Result.failure(it)) }
 
-    override fun getRestaurantDetails(restaurantId: String): Flow<Result<Restaurant>> = flow {
+    override fun getRestaurantDetails(restaurantId: String): Flow<Result<com.mehrbod.domain.model.restaurant.Restaurant>> = flow {
         emit(localDataSource.getRestaurantDetail(restaurantId))
     }
         .flowOn(dispatcher)

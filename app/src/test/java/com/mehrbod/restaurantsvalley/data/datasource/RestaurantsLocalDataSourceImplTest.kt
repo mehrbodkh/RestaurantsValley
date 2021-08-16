@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
-import com.mehrbod.restaurantsvalley.domain.model.Location
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Location
+import com.mehrbod.domain.model.restaurant.Restaurant
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -22,7 +22,7 @@ import org.junit.Test
 class RestaurantsLocalDataSourceImplTest {
 
     @MockK
-    lateinit var restaurant: Restaurant
+    lateinit var restaurant: com.mehrbod.domain.model.restaurant.Restaurant
 
     @InjectMockKs
     lateinit var localDataSource: RestaurantsLocalDataSource
@@ -66,7 +66,7 @@ class RestaurantsLocalDataSourceImplTest {
 
     @Test
     fun `test fetch cached restaurants - success`() = coroutineDispatcher.runBlockingTest {
-        val location = mockk<Location>()
+        val location = mockk<com.mehrbod.domain.model.restaurant.Location>()
         every { location getProperty "lat" } returns 1.0
         every { location getProperty "lng" } returns 1.0
         every { restaurant getProperty "location" } returns location

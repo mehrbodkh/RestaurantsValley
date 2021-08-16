@@ -2,7 +2,7 @@ package com.mehrbod.restaurantsvalley.data.datasource
 
 import com.mehrbod.restaurantsvalley.data.api.adapter.convertToRestaurants
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -18,7 +18,7 @@ class RestaurantsRemoteDataSourceImpl @Inject constructor(
         const val category = "4d4b7105d754a06374d81259"
     }
 
-    override suspend fun fetchRestaurants(lat: Double, lng: Double, radius: Int): Result<List<Restaurant>> {
+    override suspend fun fetchRestaurants(lat: Double, lng: Double, radius: Int): Result<List<com.mehrbod.domain.model.restaurant.Restaurant>> {
         val response = apiService.getVenues(
             "$lat,$lng",
             radius,

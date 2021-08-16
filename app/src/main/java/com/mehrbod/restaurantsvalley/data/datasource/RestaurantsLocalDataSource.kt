@@ -1,8 +1,8 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 
 interface RestaurantsLocalDataSource : RestaurantsDataSource {
-    fun updateRestaurants(restaurants: List<Restaurant>)
-    suspend fun getRestaurantDetail(restaurantId: String): Result<Restaurant>
+    fun updateRestaurants(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>)
+    suspend fun getRestaurantDetail(restaurantId: String): Result<com.mehrbod.domain.model.restaurant.Restaurant>
 }

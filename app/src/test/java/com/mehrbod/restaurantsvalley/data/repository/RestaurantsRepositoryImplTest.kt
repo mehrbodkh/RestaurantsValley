@@ -2,7 +2,7 @@ package com.mehrbod.restaurantsvalley.data.repository
 
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSourceImpl
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
@@ -28,10 +28,10 @@ class RestaurantsRepositoryImplTest {
     lateinit var localDataSourceImpl: RestaurantsLocalDataSourceImpl
 
     @RelaxedMockK
-    lateinit var restaurants: List<Restaurant>
+    lateinit var restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>
 
     @RelaxedMockK
-    lateinit var restaurant: Restaurant
+    lateinit var restaurant: com.mehrbod.domain.model.restaurant.Restaurant
 
     @InjectMockKs
     lateinit var restaurantsRepositoryImpl: RestaurantsRepositoryImpl

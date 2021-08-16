@@ -4,7 +4,7 @@ import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSource
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSource
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSourceImpl
-import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
+import com.mehrbod.domain.repository.RestaurantsRepository
 import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepositoryImpl
 import dagger.Binds
 import dagger.Module
@@ -28,5 +28,5 @@ abstract class RestaurantDataModule {
     @Binds
     abstract fun bindsRestaurantsRepository(
         restaurantsRepositoryImpl: RestaurantsRepositoryImpl
-    ): RestaurantsRepository
+    ): com.mehrbod.domain.repository.RestaurantsRepository
 }

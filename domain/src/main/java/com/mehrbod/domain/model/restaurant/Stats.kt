@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.domain.model
+package com.mehrbod.domain.model.restaurant
 
 data class Stats(
     val tipCount: Int?,

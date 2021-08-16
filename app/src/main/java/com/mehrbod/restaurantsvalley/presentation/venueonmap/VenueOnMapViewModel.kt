@@ -1,11 +1,8 @@
 package com.mehrbod.restaurantsvalley.presentation.venueonmap
 
-import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
-import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
@@ -13,13 +10,13 @@ import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 @HiltViewModel
 class VenueOnMapViewModel @Inject constructor(
-    private val restaurantsRepository: RestaurantsRepository,
+    private val restaurantsRepository: com.mehrbod.domain.repository.RestaurantsRepository,
     private val locationHelper: LocationHelper
 ) : ViewModel() {
 
@@ -98,7 +95,7 @@ class VenueOnMapViewModel @Inject constructor(
         onSearchAreaClicked(lat, lng, radius)
     }
 
-    fun onRestaurantClicked(restaurant: Restaurant) {
+    fun onRestaurantClicked(restaurant: com.mehrbod.domain.model.restaurant.Restaurant) {
         _venuesState.value = VenuesUiState.VenueDetailsAvailable(
             VenueDetailsViewModel.RESTAURANT_ID,
             restaurant.id

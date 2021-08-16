@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.presentation.venuedetails
 
-import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.repository.RestaurantsRepository
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -22,7 +22,7 @@ import org.junit.Test
 class VenueDetailsViewModelTest {
 
     @MockK
-    lateinit var repository: RestaurantsRepository
+    lateinit var repository: com.mehrbod.domain.repository.RestaurantsRepository
 
     @InjectMockKs
     lateinit var viewModel: VenueDetailsViewModel
@@ -57,7 +57,7 @@ class VenueDetailsViewModelTest {
 
     @Test
     fun `test get restaurant details - success`() = coroutineDispatcher.runBlockingTest {
-        val restaurant = mockk<Restaurant>()
+        val restaurant = mockk<com.mehrbod.domain.model.restaurant.Restaurant>()
         every { restaurant getProperty "id" } returns "1"
         every { restaurant getProperty "name" } returns "name"
         coEvery { repository.getRestaurantDetails(any()) } returns flowOf(Result.success(restaurant))

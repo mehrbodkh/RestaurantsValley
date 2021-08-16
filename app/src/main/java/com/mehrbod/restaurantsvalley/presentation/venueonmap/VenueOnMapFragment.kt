@@ -20,7 +20,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
-import com.mehrbod.restaurantsvalley.domain.model.Restaurant
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter.VenuesInfoAdapter
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
@@ -132,7 +132,7 @@ class VenueOnMapFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showVenues(restaurants: List<Restaurant>) {
+    private fun showVenues(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>) {
         hideLoading()
         showVenuesOnMap(restaurants)
         showVenuesInfo(restaurants)
@@ -145,7 +145,7 @@ class VenueOnMapFragment : Fragment() {
         )
     }
 
-    private fun showVenuesOnMap(restaurants: List<Restaurant>) {
+    private fun showVenuesOnMap(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>) {
         mapModule.removeAllMarkers()
         restaurants.forEach {
             mapModule.addMarker(
@@ -156,7 +156,7 @@ class VenueOnMapFragment : Fragment() {
         }
     }
 
-    private fun showVenuesInfo(restaurants: List<Restaurant>) {
+    private fun showVenuesInfo(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>) {
         infoAdapter.submitList(restaurants)
     }
 
