@@ -2,3 +2,4 @@ rootProject.name = "RestaurantsValley"
 include ':app'
 include ':map-module'
 include ':domain'
+include ':data'
