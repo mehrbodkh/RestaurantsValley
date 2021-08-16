@@ -42,9 +42,13 @@ class VenueOnMapViewModel @Inject constructor(
                 lat,
                 lng,
                 radius
-            ).collect {
-                it.getOrNull()?.let {
-                    _venuesState.value = VenuesUiState.VenuesAvailable(it)
+            ).collect { result ->
+                if (result.getOrNull() != null) {
+                    _venuesState.value = VenuesUiState.VenuesAvailable(result.getOrNull()!!)
+                } else {
+                    _venuesState.value = VenuesUiState.Failure(
+                        result.exceptionOrNull()?.message ?: "No results found"
+                    )
                 }
             }
         }
@@ -94,13 +98,11 @@ class VenueOnMapViewModel @Inject constructor(
         onSearchAreaClicked(lat, lng, radius)
     }
 
-    fun onVenueClicked(restaurant: Restaurant) {
-        _venuesState.value = VenuesUiState.VenueDetailsAvailable(Bundle().apply {
-            putString(
-                VenueDetailsViewModel.RESTAURANT_ID,
-                restaurant.id
-            )
-        })
+    fun onRestaurantClicked(restaurant: Restaurant) {
+        _venuesState.value = VenuesUiState.VenueDetailsAvailable(
+            VenueDetailsViewModel.RESTAURANT_ID,
+            restaurant.id
+        )
     }
 
 }

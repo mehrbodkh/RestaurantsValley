@@ -3,15 +3,17 @@ package com.mehrbod.restaurantsvalley.data.repository
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSourceImpl
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.*
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.unmockkAll
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -28,58 +30,120 @@ class RestaurantsRepositoryImplTest {
     @RelaxedMockK
     lateinit var restaurants: List<Restaurant>
 
+    @RelaxedMockK
+    lateinit var restaurant: Restaurant
+
+    @InjectMockKs
+    lateinit var restaurantsRepositoryImpl: RestaurantsRepositoryImpl
+
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
-    private lateinit var venueRepositoryImpl: RestaurantsRepositoryImpl
 
     @Before
     fun setup() {
-        MockKAnnotations.init(this)
         coroutineDispatcher = TestCoroutineDispatcher()
-        venueRepositoryImpl = RestaurantsRepositoryImpl(
-            remoteDataSourceImpl,
-            localDataSourceImpl,
-            coroutineDispatcher
-        )
+        Dispatchers.setMain(coroutineDispatcher)
+        MockKAnnotations.init(this)
     }
 
     @Test
-    fun `test get venues successful response`() = coroutineDispatcher.runBlockingTest {
+    fun `test get restaurants success - method call`() = coroutineDispatcher.runBlockingTest {
         coEvery {
-            localDataSourceImpl.fetchRestaurants(
-                any(),
-                any(),
-                any()
-            )
-        } returns Result.success(restaurants)
+            localDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.failure(Throwable(""))
 
         coEvery {
-            remoteDataSourceImpl.fetchRestaurants(
-                any(),
-                any(),
-                any()
-            )
+            remoteDataSourceImpl.fetchRestaurants(any(), any(), any())
         } returns Result.success(restaurants)
 
-        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+        restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
 
         coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
-        assert(response.isSuccess)
-        assert(response.getOrNull() != null)
-        assert(response.getOrNull()!!.isNotEmpty())
+        coVerify { localDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.updateRestaurants(any()) }
     }
 
     @Test
-    fun `test venues failed request`() = coroutineDispatcher.runBlockingTest {
+    fun `test get restaurants successful response - no cache`() = coroutineDispatcher.runBlockingTest {
         coEvery {
-            localDataSourceImpl.fetchRestaurants(
-                any(),
-                any(),
-                any()
-            )
-        } returns Result.success(restaurants)
-        coEvery { remoteDataSourceImpl.fetchRestaurants(any(), any(), any()) } throws Exception("")
+            localDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.failure(Throwable(""))
 
-        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+        coEvery {
+            remoteDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.success(restaurants)
+
+        val firstResponse = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
+        val lastResponse = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.updateRestaurants(any()) }
+        assert(firstResponse.isSuccess)
+        assert(firstResponse.getOrNull() != null)
+        assert(firstResponse.getOrNull()!!.isNotEmpty())
+        assert(lastResponse == firstResponse)
+    }
+
+    @Test
+    fun `test get restaurants successful response - cached`() = coroutineDispatcher.runBlockingTest {
+        coEvery {
+            localDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.success(listOf(mockk()))
+
+        coEvery {
+            remoteDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.success(restaurants)
+
+        val firstResponse = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
+        val lastResponse = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.updateRestaurants(any()) }
+        assert(firstResponse.isSuccess)
+        assert(firstResponse.getOrNull() != null)
+        assert(firstResponse.getOrNull()!!.isNotEmpty())
+        assert(lastResponse.isSuccess)
+        assert(lastResponse.getOrNull() != null)
+        assert(lastResponse.getOrNull()!!.isNotEmpty())
+        assert(lastResponse != firstResponse)
+    }
+
+    @Test
+    fun `test get restaurants failed response - cached`() = coroutineDispatcher.runBlockingTest {
+        coEvery {
+            localDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.success(restaurants)
+
+        coEvery {
+            remoteDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.failure(Throwable(""))
+
+        val firstResponse = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).first()
+        val lastResponse = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        assert(firstResponse.isSuccess)
+        assert(firstResponse.getOrNull() != null)
+        assert(firstResponse.getOrNull()!!.isNotEmpty())
+        assert(lastResponse.isFailure)
+    }
+
+    @Test
+    fun `test restaurant failed response - no cache`() = coroutineDispatcher.runBlockingTest {
+        coEvery {
+            localDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.failure(Throwable(""))
+
+        coEvery {
+            remoteDataSourceImpl.fetchRestaurants(any(), any(), any())
+        } returns Result.failure(Throwable(""))
+
+        val response = restaurantsRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+
+        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
+        coVerify { localDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
 
         coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
         assert(response.isFailure)
@@ -87,33 +151,48 @@ class RestaurantsRepositoryImplTest {
     }
 
     @Test
-    fun `test venues failed response`() = coroutineDispatcher.runBlockingTest {
-        coEvery {
-            localDataSourceImpl.fetchRestaurants(
-                any(),
-                any(),
-                any()
-            )
-        } returns Result.failure(Throwable(""))
+    fun `test restaurant details - call`() = coroutineDispatcher.runBlockingTest {
+        coEvery { localDataSourceImpl.getRestaurantDetail(any()) } returns Result.success(restaurant)
 
-        coEvery {
-            remoteDataSourceImpl.fetchRestaurants(
-                any(),
-                any(),
-                any()
-            )
-        } returns Result.failure(Throwable(""))
+        restaurantsRepositoryImpl.getRestaurantDetails("1").first()
 
-        val response = venueRepositoryImpl.getRestaurants(1.0, 1.0, 1).last()
+        coVerify { localDataSourceImpl.getRestaurantDetail("1") }
+    }
 
-        coVerify { remoteDataSourceImpl.fetchRestaurants(1.0, 1.0, 1) }
-        assert(response.isFailure)
-        assert(response.getOrNull() == null)
+    @Test
+    fun `test restaurant details - success`() = coroutineDispatcher.runBlockingTest {
+        coEvery { localDataSourceImpl.getRestaurantDetail(any()) } returns Result.success(restaurant)
+
+        val result = restaurantsRepositoryImpl.getRestaurantDetails("1").first()
+
+        assert(result.isSuccess)
+        assert(result.getOrNull() == restaurant)
+    }
+
+    @Test
+    fun `test restaurant details - failure`() = coroutineDispatcher.runBlockingTest {
+        coEvery { localDataSourceImpl.getRestaurantDetail(any()) } returns Result.failure(Throwable(""))
+
+        val result = restaurantsRepositoryImpl.getRestaurantDetails("1").first()
+
+        assert(result.isFailure)
+        assert(result.exceptionOrNull()?.message == "")
+    }
+
+    @Test
+    fun `test restaurant details - exception`() = coroutineDispatcher.runBlockingTest {
+        coEvery { localDataSourceImpl.getRestaurantDetail(any()) } throws Exception("Message")
+
+        val result = restaurantsRepositoryImpl.getRestaurantDetails("1").first()
+
+        assert(result.isFailure)
+        assert(result.exceptionOrNull()?.message == "Message")
     }
 
     @After
     fun finalize() {
         unmockkAll()
+        Dispatchers.resetMain()
     }
 
 
