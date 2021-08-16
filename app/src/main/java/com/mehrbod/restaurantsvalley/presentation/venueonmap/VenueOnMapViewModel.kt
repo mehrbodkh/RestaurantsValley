@@ -42,9 +42,11 @@ class VenueOnMapViewModel @Inject constructor(
                 lat,
                 lng,
                 radius
-            ).collect {
-                it.getOrNull()?.let {
-                    _venuesState.value = VenuesUiState.VenuesAvailable(it)
+            ).collect { result ->
+                if (result.getOrNull() != null) {
+                    _venuesState.value = VenuesUiState.VenuesAvailable(result.getOrNull()!!)
+                } else {
+                    _venuesState.value = VenuesUiState.Failure(result.exceptionOrNull()?.message ?: "No results found")
                 }
             }
         }

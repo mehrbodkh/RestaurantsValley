@@ -97,6 +97,7 @@ class VenueOnMapFragment : Fragment() {
                     VenuesUiState.Loading -> showLoading()
                     is VenuesUiState.VenuesAvailable -> showVenues(it.restaurants)
                     is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(it.bundle)
+                    is VenuesUiState.Failure -> hideLoading()
                 }
             }
         }
