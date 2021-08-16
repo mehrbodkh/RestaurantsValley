@@ -83,7 +83,7 @@ class VenueOnMapFragment : Fragment() {
 
     private fun initializeInfoList() {
         infoAdapter = VenuesInfoAdapter {
-            viewModel.onVenueClicked(it)
+            viewModel.onRestaurantClicked(it)
         }
         binding.venuesInfoList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -96,7 +96,7 @@ class VenueOnMapFragment : Fragment() {
                 when (it) {
                     VenuesUiState.Loading -> showLoading()
                     is VenuesUiState.VenuesAvailable -> showVenues(it.restaurants)
-                    is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(it.bundle)
+                    is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(it.key, it.restaurantId)
                     is VenuesUiState.Failure -> hideLoading()
                 }
             }
@@ -134,8 +134,10 @@ class VenueOnMapFragment : Fragment() {
         showVenuesInfo(restaurants)
     }
 
-    private fun showVenueDetail(bundle: Bundle) {
-        findNavController().navigate(R.id.action_venueOnMapFragment_to_venueDetailsFragment, bundle)
+    private fun showVenueDetail(key: String, restaurantId: String) {
+        findNavController().navigate(
+            R.id.action_venueOnMapFragment_to_venueDetailsFragment,
+            Bundle().apply { putString(key, restaurantId) })
     }
 
     private fun showVenuesOnMap(restaurants: List<Restaurant>) {

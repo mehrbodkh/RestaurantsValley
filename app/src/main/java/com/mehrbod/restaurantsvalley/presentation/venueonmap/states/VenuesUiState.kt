@@ -9,5 +9,5 @@ sealed class VenuesUiState {
     object Loading : VenuesUiState()
     class VenuesAvailable(val restaurants: List<Restaurant>) : VenuesUiState()
     class Failure(val message: String) : VenuesUiState()
-    class VenueDetailsAvailable(val bundle: Bundle) : VenuesUiState()
+    class VenueDetailsAvailable(val key: String, val restaurantId: String) : VenuesUiState()
 }
