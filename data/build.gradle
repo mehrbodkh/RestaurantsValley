@@ -36,6 +36,7 @@ android {
 
 dependencies {
     api project(path: ':domain')
+    api project(path: ':map-module')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // -------- GSON ---------
@@ -43,9 +44,9 @@ dependencies {
 
     // -------- Retrofit -------
     def retrofit_version = "2.9.0"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.8'
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api 'com.squareup.okhttp3:logging-interceptor:3.12.8'
 
     // -------- Hilt ---------
     def hilt_version = "2.38.1"

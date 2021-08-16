@@ -1,9 +1,11 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
+import com.mehrbod.data.datasource.RestaurantsRemoteDataSource
+import com.mehrbod.data.datasource.RestaurantsRemoteDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
-import com.mehrbod.restaurantsvalley.data.api.model.MetaDto
-import com.mehrbod.restaurantsvalley.data.api.model.ResponseDto
-import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
+import com.mehrbod.data.api.model.MetaDto
+import com.mehrbod.data.api.model.ResponseDto
+import com.mehrbod.data.api.response.ApiVenuesResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

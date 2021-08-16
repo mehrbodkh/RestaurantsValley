@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.data.datasource
 
-import com.mehrbod.domain.model.restaurant.Location
-import com.mehrbod.domain.model.restaurant.Restaurant
+import com.mehrbod.data.datasource.RestaurantsLocalDataSource
+import com.mehrbod.data.datasource.RestaurantsLocalDataSourceImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

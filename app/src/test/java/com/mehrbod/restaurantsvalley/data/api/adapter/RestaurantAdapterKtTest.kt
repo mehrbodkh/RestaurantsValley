@@ -1,7 +1,11 @@
 package com.mehrbod.restaurantsvalley.data.api.adapter
 
-import com.mehrbod.restaurantsvalley.data.api.model.*
-import com.mehrbod.restaurantsvalley.data.api.response.ApiVenuesResponse
+import com.mehrbod.data.api.adapter.convertToRestaurants
+import com.mehrbod.data.api.model.LocationDto
+import com.mehrbod.data.api.model.MetaDto
+import com.mehrbod.data.api.model.ResponseDto
+import com.mehrbod.data.api.model.VenuesDto
+import com.mehrbod.data.api.response.ApiVenuesResponse
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.Assert.assertEquals

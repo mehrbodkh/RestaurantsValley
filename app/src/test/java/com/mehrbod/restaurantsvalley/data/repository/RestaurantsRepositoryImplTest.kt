@@ -1,8 +1,8 @@
 package com.mehrbod.restaurantsvalley.data.repository
 
-import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsLocalDataSourceImpl
-import com.mehrbod.restaurantsvalley.data.datasource.RestaurantsRemoteDataSourceImpl
-import com.mehrbod.domain.model.restaurant.Restaurant
+import com.mehrbod.data.repository.RestaurantsRepositoryImpl
+import com.mehrbod.data.datasource.RestaurantsLocalDataSourceImpl
+import com.mehrbod.data.datasource.RestaurantsRemoteDataSourceImpl
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
