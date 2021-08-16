@@ -4,12 +4,14 @@ import com.mehrbod.restaurantsvalley.data.repository.RestaurantsRepository
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import io.mockk.*
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -22,15 +24,16 @@ class VenueDetailsViewModelTest {
     @MockK
     lateinit var repository: RestaurantsRepository
 
-    private lateinit var viewModel: VenueDetailsViewModel
+    @InjectMockKs
+    lateinit var viewModel: VenueDetailsViewModel
+
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-        viewModel = VenueDetailsViewModel(repository)
         coroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(coroutineDispatcher)
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -47,6 +50,7 @@ class VenueDetailsViewModelTest {
         viewModel.onRestaurantIdReceived("1")
         val state = viewModel.restaurantDetailUIState.first()
 
+        coVerify { repository.getRestaurantDetails("1") }
         assert(state is RestaurantDetailUIState.Failure)
         assert((state as RestaurantDetailUIState.Failure).message == "No restaurants found")
     }
@@ -61,6 +65,7 @@ class VenueDetailsViewModelTest {
         viewModel.onRestaurantIdReceived("1")
         val state = viewModel.restaurantDetailUIState.first()
 
+        coVerify { repository.getRestaurantDetails("1") }
         assert(state is RestaurantDetailUIState.RestaurantDetailAvailable)
         assert((state as RestaurantDetailUIState.RestaurantDetailAvailable).restaurant.name == "name")
     }
@@ -68,6 +73,7 @@ class VenueDetailsViewModelTest {
     @After
     fun tearDown() {
         unmockkAll()
+        Dispatchers.resetMain()
     }
 
 }

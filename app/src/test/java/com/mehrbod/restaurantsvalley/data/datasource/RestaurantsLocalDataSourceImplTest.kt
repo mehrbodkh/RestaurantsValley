@@ -4,12 +4,16 @@ import com.mehrbod.restaurantsvalley.domain.model.Location
 import com.mehrbod.restaurantsvalley.domain.model.Restaurant
 import io.mockk.MockKAnnotations
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -20,14 +24,17 @@ class RestaurantsLocalDataSourceImplTest {
     @MockK
     lateinit var restaurant: Restaurant
 
-    private lateinit var localDataSource: RestaurantsLocalDataSource
+    @InjectMockKs
+    lateinit var localDataSource: RestaurantsLocalDataSource
+
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-        localDataSource = RestaurantsLocalDataSourceImpl()
         coroutineDispatcher = TestCoroutineDispatcher()
+        Dispatchers.setMain(coroutineDispatcher)
+        localDataSource = RestaurantsLocalDataSourceImpl()
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -74,5 +81,6 @@ class RestaurantsLocalDataSourceImplTest {
     @After
     fun tearDown() {
         unmockkAll()
+        Dispatchers.resetMain()
     }
 }

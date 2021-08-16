@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -96,7 +97,10 @@ class VenueOnMapFragment : Fragment() {
                 when (it) {
                     VenuesUiState.Loading -> showLoading()
                     is VenuesUiState.VenuesAvailable -> showVenues(it.restaurants)
-                    is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(it.key, it.restaurantId)
+                    is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(
+                        it.key,
+                        it.restaurantId
+                    )
                     is VenuesUiState.Failure -> hideLoading()
                 }
             }
@@ -137,7 +141,8 @@ class VenueOnMapFragment : Fragment() {
     private fun showVenueDetail(key: String, restaurantId: String) {
         findNavController().navigate(
             R.id.action_venueOnMapFragment_to_venueDetailsFragment,
-            Bundle().apply { putString(key, restaurantId) })
+            bundleOf(key to restaurantId)
+        )
     }
 
     private fun showVenuesOnMap(restaurants: List<Restaurant>) {
