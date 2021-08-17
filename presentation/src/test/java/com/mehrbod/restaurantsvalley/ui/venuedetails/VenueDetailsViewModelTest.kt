@@ -1,7 +1,6 @@
 package com.mehrbod.restaurantsvalley.ui.venuedetails
 
 import com.mehrbod.domain.model.restaurant.Restaurant
-import com.mehrbod.domain.repository.RestaurantsRepository
 import com.mehrbod.domain.usecase.GetRestaurantDetailsUseCase
 import com.mehrbod.restaurantsvalley.ui.venuedetails.states.RestaurantDetailUIState
 import io.mockk.*

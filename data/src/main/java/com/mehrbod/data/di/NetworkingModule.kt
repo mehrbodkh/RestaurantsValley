@@ -1,7 +1,7 @@
 package com.mehrbod.data.di
 
 import android.content.Context
-import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
+import com.mehrbod.data.api.RestaurantApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

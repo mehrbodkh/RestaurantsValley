@@ -63,7 +63,7 @@ class LocationHelper @Inject constructor(
         return if (permissionApproved) {
             requestCurrentLocation(context)
         } else {
-            Result.failure(Throwable("No permission"))
+            Result.failure(locationPermissionNotGranted)
         }
     }
 

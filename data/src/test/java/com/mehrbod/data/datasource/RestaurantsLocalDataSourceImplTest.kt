@@ -1,11 +1,12 @@
 package com.mehrbod.data.datasource
 
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import com.mehrbod.data.util.cacheDataNotFound
+import com.mehrbod.data.util.noDetailsFound
+import com.mehrbod.data.util.distance
+import com.mehrbod.domain.model.restaurant.Location
+import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
-import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -33,6 +34,7 @@ class RestaurantsLocalDataSourceImplTest {
         Dispatchers.setMain(coroutineDispatcher)
         localDataSource = RestaurantsLocalDataSourceImpl()
         MockKAnnotations.init(this)
+        mockkStatic("com.mehrbod.data.util.LocationExtensions")
     }
 
     @Test
@@ -40,7 +42,7 @@ class RestaurantsLocalDataSourceImplTest {
         val result = localDataSource.getRestaurantDetail("1")
 
         assert(result.isFailure)
-        assert(result.exceptionOrNull()?.message == "Nothing has been found")
+        assert(result.exceptionOrNull() == noDetailsFound)
     }
 
     @Test
@@ -55,18 +57,34 @@ class RestaurantsLocalDataSourceImplTest {
     }
 
     @Test
-    fun `test fetch cached restaurants - failure`() = coroutineDispatcher.runBlockingTest {
+    fun `test fetch cached restaurants - failure - empty cache`() = coroutineDispatcher.runBlockingTest {
         val result = localDataSource.fetchRestaurants(1.0, 1.0, 1)
 
         assert(result.isFailure)
-        assert(result.exceptionOrNull()?.message == "No cached data")
+        assert(result.exceptionOrNull() == cacheDataNotFound)
+    }
+
+    @Test
+    fun `test fetch cached restaurants - failure - not in distance`() = coroutineDispatcher.runBlockingTest {
+        val location = mockk<Location>()
+        every { location getProperty "lat" } returns 1.0
+        every { location getProperty "lng" } returns 1.0
+        every { any<Location>().distance(any(), any()) } returns 159
+        every { restaurant getProperty "location" } returns location
+
+        localDataSource.updateRestaurants(listOf(restaurant))
+        val result = localDataSource.fetchRestaurants(35.0, 35.0, 1)
+
+        assert(result.isFailure)
+        assert(result.exceptionOrNull() == cacheDataNotFound)
     }
 
     @Test
     fun `test fetch cached restaurants - success`() = coroutineDispatcher.runBlockingTest {
-        val location = mockk<com.mehrbod.domain.model.restaurant.Location>()
+        val location = mockk<Location>()
         every { location getProperty "lat" } returns 1.0
         every { location getProperty "lng" } returns 1.0
+        every { any<Location>().distance(any(), any()) } returns 1
         every { restaurant getProperty "location" } returns location
 
         localDataSource.updateRestaurants(listOf(restaurant))

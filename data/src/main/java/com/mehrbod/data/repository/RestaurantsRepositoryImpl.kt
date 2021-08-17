@@ -3,6 +3,7 @@ package com.mehrbod.data.repository
 import com.mehrbod.data.datasource.RestaurantsLocalDataSource
 import com.mehrbod.data.datasource.RestaurantsRemoteDataSource
 import com.mehrbod.domain.model.restaurant.Restaurant
+import com.mehrbod.domain.repository.RestaurantsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,7 +16,7 @@ class RestaurantsRepositoryImpl @Inject constructor(
     private val remoteDataSource: RestaurantsRemoteDataSource,
     private val localDataSource: RestaurantsLocalDataSource,
     @Named("IODispatcher") private val dispatcher: CoroutineDispatcher
-) : com.mehrbod.domain.repository.RestaurantsRepository {
+) : RestaurantsRepository {
 
 
     override fun getRestaurants(lat: Double, lng: Double, radius: Int): Flow<Result<List<Restaurant>>> =
