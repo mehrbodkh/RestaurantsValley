@@ -6,6 +6,9 @@ import com.google.android.gms.common.api.Status
 import com.mehrbod.domain.repository.RestaurantsRepository
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.domain.usecase.GetRestaurantsUseCase
+import com.mehrbod.domain.usecase.GetUserLocationUseCase
+import com.mehrbod.domain.usecase.LocationEnabledInfoUseCase
+import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
 import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
@@ -37,6 +40,15 @@ class RestaurantOnMapViewModelTest {
 
     @InjectMockKs
     lateinit var getRestaurantsUseCase: GetRestaurantsUseCase
+
+    @InjectMockKs
+    lateinit var locationUseCase: GetUserLocationUseCase
+
+    @InjectMockKs
+    lateinit var locationPermissionInfoUseCase: LocationPermissionGrantedInfoUseCase
+
+    @InjectMockKs
+    lateinit var locationEnabledUseCase: LocationEnabledInfoUseCase
 
     @InjectMockKs
     lateinit var viewModel: VenueOnMapViewModel
@@ -104,9 +116,9 @@ class RestaurantOnMapViewModelTest {
 
     @Test
     fun `test location permission granted`() = coroutineDispatcher.runBlockingTest {
-        coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.success(true)
-        every { locationRepositoryImpl.isLocationPermissionGranted() } returns true
-        coEvery { locationRepositoryImpl.findUserLocation() } returns Result.success(Location(""))
+        coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.success(true)
+        every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns true
+        coEvery { locationUseCase.getUserLocation() } returns Result.success(Location(""))
 
         viewModel.onPermissionResult(true)
         val result = viewModel.locationState.first()
@@ -117,9 +129,9 @@ class RestaurantOnMapViewModelTest {
     @Test
     fun `test location request location - permission granted - gps on`() =
         coroutineDispatcher.runBlockingTest {
-            coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.success(true)
-            every { locationRepositoryImpl.isLocationPermissionGranted() } returns true
-            coEvery { locationRepositoryImpl.findUserLocation() } returns Result.success(Location(""))
+            coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.success(true)
+            every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns true
+            coEvery { locationUseCase.getUserLocation() } returns Result.success(Location(""))
 
             viewModel.onRequestLocationClicked()
             val result = viewModel.locationState.first()
@@ -130,9 +142,9 @@ class RestaurantOnMapViewModelTest {
     @Test
     fun `test location request location - permission denied - gps on`() =
         coroutineDispatcher.runBlockingTest {
-            coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.success(true)
-            every { locationRepositoryImpl.isLocationPermissionGranted() } returns false
-            coEvery { locationRepositoryImpl.findUserLocation() } returns Result.success(Location(""))
+            coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.success(true)
+            every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns false
+            coEvery { locationUseCase.getUserLocation() } returns Result.success(Location(""))
 
             viewModel.onRequestLocationClicked()
             val result = viewModel.locationState.first()
@@ -143,9 +155,9 @@ class RestaurantOnMapViewModelTest {
     @Test
     fun `test location request location - permission granted - gps off`() =
         coroutineDispatcher.runBlockingTest {
-            coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.failure(Throwable(""))
-            every { locationRepositoryImpl.isLocationPermissionGranted() } returns true
-            coEvery { locationRepositoryImpl.findUserLocation() } returns Result.success(Location(""))
+            coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.failure(Throwable(""))
+            every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns true
+            coEvery { locationUseCase.getUserLocation() } returns Result.success(Location(""))
 
             viewModel.onRequestLocationClicked()
             val result = viewModel.locationState.first()
@@ -156,13 +168,13 @@ class RestaurantOnMapViewModelTest {
     @Test
     fun `test location request location - permission granted - gps off - ready to enable`() =
         coroutineDispatcher.runBlockingTest {
-            coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.failure(
+            coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.failure(
                 ResolvableApiException(
                     Status.RESULT_TIMEOUT
                 )
             )
-            every { locationRepositoryImpl.isLocationPermissionGranted() } returns true
-            coEvery { locationRepositoryImpl.findUserLocation() } returns Result.success(Location(""))
+            every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns true
+            coEvery { locationUseCase.getUserLocation() } returns Result.success(Location(""))
 
             viewModel.onRequestLocationClicked()
             val result = viewModel.locationState.first()
@@ -173,9 +185,9 @@ class RestaurantOnMapViewModelTest {
     @Test
     fun `test location request location - permission denied - gps off`() =
         coroutineDispatcher.runBlockingTest {
-            coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.failure(Throwable(""))
-            every { locationRepositoryImpl.isLocationPermissionGranted() } returns false
-            coEvery { locationRepositoryImpl.findUserLocation() } returns Result.success(Location(""))
+            coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.failure(Throwable(""))
+            every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns false
+            coEvery { locationUseCase.getUserLocation() } returns Result.success(Location(""))
 
             viewModel.onRequestLocationClicked()
             val result = viewModel.locationState.first()
@@ -186,9 +198,9 @@ class RestaurantOnMapViewModelTest {
     @Test
     fun `test location request location - location not found`() =
         coroutineDispatcher.runBlockingTest {
-            coEvery { locationRepositoryImpl.isLocationEnabled() } returns Result.success(true)
-            every { locationRepositoryImpl.isLocationPermissionGranted() } returns true
-            coEvery { locationRepositoryImpl.findUserLocation() } returns Result.failure(Throwable(""))
+            coEvery { locationEnabledUseCase.isLocationEnabled() } returns Result.success(true)
+            every { locationPermissionInfoUseCase.isLocationPermissionGranted() } returns true
+            coEvery { locationUseCase.getUserLocation() } returns Result.failure(Throwable(""))
 
             viewModel.onRequestLocationClicked()
             val result = viewModel.locationState.first()
