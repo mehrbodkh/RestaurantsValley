@@ -21,10 +21,8 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class VenueDetailsViewModelTest {
-    @RelaxedMockK
-    lateinit var restaurantsRepository: RestaurantsRepository
 
-    @InjectMockKs
+    @RelaxedMockK
     lateinit var getRestaurantDetailsUseCase: GetRestaurantDetailsUseCase
 
     @InjectMockKs
