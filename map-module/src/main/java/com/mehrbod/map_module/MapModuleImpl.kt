@@ -22,6 +22,10 @@ import com.mehrbod.map_module.model.MapBoxOptions
 import com.mehrbod.map_module.model.MapOptions
 
 class MapModuleImpl(private val options: MapOptions) : MapModule {
+    companion object {
+        const val MARKER_ID_KEY = "MARKER_ID_KEY"
+    }
+
     private var mapView: MapView? = null
     private var mapboxMap: MapboxMap? = null
 
@@ -101,7 +105,7 @@ class MapModuleImpl(private val options: MapOptions) : MapModule {
     override fun addMarker(tag: String, icon: Drawable, position: LatLng) {
         val feature =
             Feature.fromGeometry(Point.fromLngLat(position.longitude, position.latitude))
-        feature.addStringProperty("MARKER_ID_KEY", tag)
+        feature.addStringProperty(MARKER_ID_KEY, tag)
         val addMarkerSource = GeoJsonSource(tag, feature)
 
         mapboxMap?.style?.let { style ->

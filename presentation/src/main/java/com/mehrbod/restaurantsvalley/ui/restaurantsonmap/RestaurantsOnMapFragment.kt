@@ -33,6 +33,10 @@ import javax.inject.Named
 @AndroidEntryPoint
 class RestaurantsOnMapFragment : Fragment() {
 
+    companion object {
+        const val DEFAULT_ZOOM_LEVEL = 12.0
+    }
+
     @Inject
     lateinit var mapModule: MapModule
 
@@ -165,7 +169,7 @@ class RestaurantsOnMapFragment : Fragment() {
         mapModule.moveCamera(
             location.latitude,
             location.longitude,
-            12.0
+            DEFAULT_ZOOM_LEVEL
         )
         val userPosition = mapModule.getCameraPosition()
         userPosition?.let {
