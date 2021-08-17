@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mehrbod.domain.model.restaurant.Restaurant
@@ -51,21 +52,26 @@ class RestaurantDetailsDialogFragment : BottomSheetDialogFragment() {
                 when (it) {
                     RestaurantDetailUIState.Loading -> showLoading()
                     is RestaurantDetailUIState.RestaurantDetailAvailable -> showRestaurantDetails(it.restaurant)
-                    is RestaurantDetailUIState.Failure -> showFailure()
+                    is RestaurantDetailUIState.Failure -> showFailure(it.message)
                 }
             }
         }
     }
 
     private fun showLoading() {
-
+        binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun showFailure() {
+    private fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+    }
 
+    private fun showFailure(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showRestaurantDetails(restaurant: Restaurant) = with(binding) {
+        hideLoading()
         name.text = restaurant.name
         distance.text = String.format(
             binding.root.context.getString(R.string.distance_unit),
