@@ -22,11 +22,11 @@ import javax.inject.Named
 class MapProviderModule {
 
     @Provides
-    @Named("MapStyleUrl")
+    @MapStyleUrl
     fun provideMapStyle(): String = Style.MAPBOX_STREETS
 
     @Provides
-    @Named("MapboxToken")
+    @MapboxToken
     fun provideMapToken(): String = BuildConfig.MAPBOX_SDK_TOKEN
 
     @Provides
@@ -35,8 +35,8 @@ class MapProviderModule {
     @Provides
     fun provideMapOptions(
         @ApplicationContext context: Context,
-        @Named("MapboxToken") token: String,
-        @Named("MapStyleUrl") styleUrl: String
+        @MapboxToken token: String,
+        @MapStyleUrl styleUrl: String
     ): MapOptions {
         return MapBoxOptions(
             context,

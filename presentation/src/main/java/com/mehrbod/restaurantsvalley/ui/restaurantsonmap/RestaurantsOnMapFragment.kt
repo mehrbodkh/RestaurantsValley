@@ -21,6 +21,7 @@ import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.RestaurantsOnMapFragmentBinding
+import com.mehrbod.restaurantsvalley.di.MapStyleUrl
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.adapter.RestaurantsInfoAdapter
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
@@ -33,11 +34,15 @@ import javax.inject.Named
 @AndroidEntryPoint
 class RestaurantsOnMapFragment : Fragment() {
 
+    companion object {
+        const val DEFAULT_ZOOM_LEVEL = 12.0
+    }
+
     @Inject
     lateinit var mapModule: MapModule
 
     @Inject
-    @Named("MapStyleUrl")
+    @MapStyleUrl
     lateinit var mapStyleUrl: String
 
     private lateinit var viewModel: RestaurantsOnMapViewModel
@@ -165,7 +170,7 @@ class RestaurantsOnMapFragment : Fragment() {
         mapModule.moveCamera(
             location.latitude,
             location.longitude,
-            12.0
+            DEFAULT_ZOOM_LEVEL
         )
         val userPosition = mapModule.getCameraPosition()
         userPosition?.let {

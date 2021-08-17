@@ -1,4 +1,6 @@
 package com.mehrbod.restaurantsvalley.util
 
-val locationPermissionNotGranted = Throwable("No location permission")
-val noRestaurantsFound = Throwable("No restaurants found")
+import java.lang.RuntimeException
+
+val locationPermissionNotGranted = RuntimeException("No location permission")
+val noRestaurantsFound = RuntimeException("No restaurants found")
