@@ -17,6 +17,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "CLIENT_ID", CLIENT_ID
+        buildConfigField "String", "CLIENT_SECRET", CLIENT_SECRET
     }
 
     buildTypes {
@@ -36,7 +39,6 @@ android {
 
 dependencies {
     api project(path: ':domain')
-    api project(path: ':map-module')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // -------- GSON ---------

@@ -1,7 +1,8 @@
 package com.mehrbod.data.di
 
 import android.content.Context
-import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
+import com.mehrbod.data.BuildConfig
+import com.mehrbod.data.api.RestaurantApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,13 +20,11 @@ class NetworkingModule {
 
     @Provides
     @Named("ClientId")
-    fun provideClientId(@ApplicationContext context: Context): String =
-        "DJL2RZAD1XD2QBXSEBLKCVT4FPRZIOOJXARXRNVVVUVEGEGF"
+    fun provideClientId(): String = BuildConfig.CLIENT_ID
 
     @Provides
     @Named("ClientSecret")
-    fun provideClientSecret(@ApplicationContext context: Context): String =
-        "KIJ5KGCMV554PA5HUS54Z4VSN1K0U3Z5LRJ1LKLSQW3OISIX"
+    fun provideClientSecret(): String = BuildConfig.CLIENT_SECRET
 
     @Provides
     @Named("BaseUrl")

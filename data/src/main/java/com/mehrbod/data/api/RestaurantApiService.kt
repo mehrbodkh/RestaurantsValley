@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.data.api
+package com.mehrbod.data.api
 
 import com.mehrbod.data.api.response.ApiVenuesResponse
 import retrofit2.http.GET
