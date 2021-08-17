@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class GetUserLocationUseCase @Inject constructor(
     private val locationRepository: LocationRepository
-) : UseCase {
+) {
     suspend fun getUserLocation(): Result<Location> = locationRepository.findUserLocation()
 }

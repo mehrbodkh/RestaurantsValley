@@ -5,7 +5,7 @@ import com.mehrbod.domain.model.restaurant.Restaurant
 /**
  * Handles local caching of restaurants data.
  */
-interface RestaurantsLocalDataSource : RestaurantsDataSource {
+interface RestaurantsLocalDataSource {
     /**
      * This method can add all the passed data to the already existing cache of restaurants.
      *

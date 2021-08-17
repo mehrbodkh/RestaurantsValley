@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class LocationPermissionGrantedInfoUseCase @Inject constructor(
     private val locationRepository: LocationRepository
-) : UseCase {
+) {
     fun isLocationPermissionGranted(): Boolean = locationRepository.isLocationPermissionGranted()
 }

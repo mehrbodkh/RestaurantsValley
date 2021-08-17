@@ -9,7 +9,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class GetRestaurantDetailsUseCase @Inject constructor(
     private val restaurantsRepository: RestaurantsRepository
-): UseCase {
+) {
 
     fun execute(restaurantId: String): Flow<Result<Restaurant>> =
         restaurantsRepository.getRestaurantDetails(restaurantId)
