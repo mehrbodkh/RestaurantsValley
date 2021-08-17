@@ -17,5 +17,11 @@ interface RestaurantsLocalDataSource : RestaurantsDataSource {
      * It retrieves the details of a restaurant using its ID. Returns Result.success(restaurant) if
      * it is available in cache. Returns Result.failure otherwise.
      */
-    suspend fun getRestaurantDetail(restaurantId: String): Result<Restaurant>
+    fun getRestaurantDetail(restaurantId: String): Result<Restaurant>
+
+    /**
+     * Returns Result.success(listOf(restaurants)) if available. Returns Result.failure() if
+     * restaurants couldn't be retrieved.
+     */
+    fun fetchRestaurants(lat: Double, lng: Double, radius: Int): Result<List<Restaurant>>
 }

@@ -15,6 +15,10 @@ import javax.inject.Named
 class RestaurantsRepositoryImpl @Inject constructor(
     private val remoteDataSource: RestaurantsRemoteDataSource,
     private val localDataSource: RestaurantsLocalDataSource,
+    /**
+     * This should be provided here because we want all of IO tasks run with a IO dispatcher so
+     * all of our suspend function calls would be safe to call from main thread.
+     */
     @Named("IODispatcher") private val dispatcher: CoroutineDispatcher
 ) : RestaurantsRepository {
 

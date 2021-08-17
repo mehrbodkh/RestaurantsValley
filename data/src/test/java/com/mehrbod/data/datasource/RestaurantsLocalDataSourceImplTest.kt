@@ -26,19 +26,15 @@ class RestaurantsLocalDataSourceImplTest {
     @InjectMockKs
     lateinit var localDataSource: RestaurantsLocalDataSource
 
-    private lateinit var coroutineDispatcher: TestCoroutineDispatcher
-
     @Before
     fun setUp() {
-        coroutineDispatcher = TestCoroutineDispatcher()
-        Dispatchers.setMain(coroutineDispatcher)
         localDataSource = RestaurantsLocalDataSourceImpl()
         MockKAnnotations.init(this)
         mockkStatic("com.mehrbod.data.util.LocationExtensions")
     }
 
     @Test
-    fun `test get restaurant details - failure`() = coroutineDispatcher.runBlockingTest {
+    fun `test get restaurant details - failure`() {
         val result = localDataSource.getRestaurantDetail("1")
 
         assert(result.isFailure)
@@ -46,7 +42,7 @@ class RestaurantsLocalDataSourceImplTest {
     }
 
     @Test
-    fun `test get restaurant details - success`() = coroutineDispatcher.runBlockingTest {
+    fun `test get restaurant details - success`() {
         every { restaurant getProperty "id" } returns "1"
         every { restaurant getProperty "name" } returns "name"
         localDataSource.updateRestaurants(listOf(restaurant))
@@ -57,7 +53,7 @@ class RestaurantsLocalDataSourceImplTest {
     }
 
     @Test
-    fun `test fetch cached restaurants - failure - empty cache`() = coroutineDispatcher.runBlockingTest {
+    fun `test fetch cached restaurants - failure - empty cache`() {
         val result = localDataSource.fetchRestaurants(1.0, 1.0, 1)
 
         assert(result.isFailure)
@@ -65,7 +61,7 @@ class RestaurantsLocalDataSourceImplTest {
     }
 
     @Test
-    fun `test fetch cached restaurants - failure - not in distance`() = coroutineDispatcher.runBlockingTest {
+    fun `test fetch cached restaurants - failure - not in distance`() {
         val location = mockk<Location>()
         every { location getProperty "lat" } returns 1.0
         every { location getProperty "lng" } returns 1.0
@@ -80,7 +76,7 @@ class RestaurantsLocalDataSourceImplTest {
     }
 
     @Test
-    fun `test fetch cached restaurants - success`() = coroutineDispatcher.runBlockingTest {
+    fun `test fetch cached restaurants - success`()  {
         val location = mockk<Location>()
         every { location getProperty "lat" } returns 1.0
         every { location getProperty "lng" } returns 1.0
@@ -97,6 +93,5 @@ class RestaurantsLocalDataSourceImplTest {
     @After
     fun tearDown() {
         unmockkAll()
-        Dispatchers.resetMain()
     }
 }

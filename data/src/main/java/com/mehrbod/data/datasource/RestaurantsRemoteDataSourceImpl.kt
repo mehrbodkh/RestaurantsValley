@@ -14,8 +14,8 @@ class RestaurantsRemoteDataSourceImpl @Inject constructor(
     @Named("ClientSecret") private val clientSecret: String
 ) : RestaurantsRemoteDataSource {
     companion object {
-        const val SUCCESS = 200
-        const val category = "4d4b7105d754a06374d81259"
+        const val SUCCESS_CODE = 200
+        const val RESTAURANTS_CATEGORY = "4d4b7105d754a06374d81259"
     }
 
     override suspend fun fetchRestaurants(
@@ -29,10 +29,10 @@ class RestaurantsRemoteDataSourceImpl @Inject constructor(
             limit = 50,
             clientId = clientId,
             clientSecret = clientSecret,
-            categoryIds = listOf(category)
+            categoryIds = listOf(RESTAURANTS_CATEGORY)
         )
 
-        return if (response.metaDto.code == SUCCESS) {
+        return if (response.metaDto.code == SUCCESS_CODE) {
             Result.success(response.convertToRestaurants())
         } else {
             Result.failure(Throwable(response.metaDto.code.toString()))

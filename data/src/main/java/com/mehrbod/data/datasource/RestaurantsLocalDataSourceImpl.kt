@@ -15,14 +15,20 @@ class RestaurantsLocalDataSourceImpl @Inject constructor() : RestaurantsLocalDat
         cachedRestaurants.addAll(restaurants)
     }
 
-    override suspend fun getRestaurantDetail(restaurantId: String): Result<Restaurant> {
+    /**
+     * These functions need to be suspendable if our cache wasn't just a simple memory set.
+     */
+    override fun getRestaurantDetail(restaurantId: String): Result<Restaurant> {
         val restaurant = cachedRestaurants.find { it.id == restaurantId }
         return restaurant?.let {
             Result.success(it)
         } ?: Result.failure(noDetailsFound)
     }
 
-    override suspend fun fetchRestaurants(
+    /**
+     * These functions need to be suspendable if our cache wasn't just a simple memory set.
+     */
+    override fun fetchRestaurants(
         lat: Double,
         lng: Double,
         radius: Int
