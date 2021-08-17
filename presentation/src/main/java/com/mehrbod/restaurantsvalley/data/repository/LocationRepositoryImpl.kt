@@ -3,8 +3,11 @@ package com.mehrbod.restaurantsvalley.data.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -24,7 +27,9 @@ import kotlin.coroutines.suspendCoroutine
 class LocationRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ): LocationRepository {
-    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private val fusedLocationClient by lazy {
+        LocationServices.getFusedLocationProviderClient(context)
+    }
     private var cancellationTokenSource = CancellationTokenSource()
     private val settingsClient = SettingsClient(context)
 
@@ -52,22 +57,15 @@ class LocationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun findUserLocation(): Result<Location> {
-        if (fusedLocationClient == null) {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        }
-
-        val permissionApproved =
-            PermissionsManager.areLocationPermissionsGranted(context)
-
-        return if (permissionApproved) {
-            requestCurrentLocation(context)
+        return if (PermissionsManager.areLocationPermissionsGranted(context)) {
+            requestCurrentLocation()
         } else {
             Result.failure(locationPermissionNotGranted)
         }
     }
 
     @SuppressLint("MissingPermission")
-    private suspend fun requestCurrentLocation(context: Context) =
+    private suspend fun requestCurrentLocation() =
         suspendCoroutine<Result<Location>> { continuation ->
             if (PermissionsManager.areLocationPermissionsGranted(context)) {
                 val currentLocationTask: Task<Location>? = fusedLocationClient?.getCurrentLocation(
