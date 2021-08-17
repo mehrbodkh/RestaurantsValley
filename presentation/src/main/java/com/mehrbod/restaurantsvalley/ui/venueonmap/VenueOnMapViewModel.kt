@@ -3,6 +3,7 @@ package com.mehrbod.restaurantsvalley.ui.venueonmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
@@ -96,7 +97,7 @@ class VenueOnMapViewModel @Inject constructor(
         onSearchAreaClicked(lat, lng, radius)
     }
 
-    fun onRestaurantClicked(restaurant: com.mehrbod.domain.model.restaurant.Restaurant) {
+    fun onRestaurantClicked(restaurant: Restaurant) {
         _venuesState.value = VenuesUiState.VenueDetailsAvailable(
             VenueDetailsViewModel.RESTAURANT_ID,
             restaurant.id

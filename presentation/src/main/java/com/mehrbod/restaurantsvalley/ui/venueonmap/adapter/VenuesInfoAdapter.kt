@@ -5,22 +5,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.ItemVenueInfoBinding
 
 
-object VenuesDiffCallback : DiffUtil.ItemCallback<com.mehrbod.domain.model.restaurant.Restaurant>() {
-    override fun areItemsTheSame(oldItem: com.mehrbod.domain.model.restaurant.Restaurant, newItem: com.mehrbod.domain.model.restaurant.Restaurant): Boolean {
+object VenuesDiffCallback : DiffUtil.ItemCallback<Restaurant>() {
+    override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: com.mehrbod.domain.model.restaurant.Restaurant, newItem: com.mehrbod.domain.model.restaurant.Restaurant): Boolean {
+    override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
         return oldItem.id == newItem.id
     }
 }
 
-class VenuesInfoAdapter(private val onItemClickListener: (com.mehrbod.domain.model.restaurant.Restaurant) -> Unit) :
-    ListAdapter<com.mehrbod.domain.model.restaurant.Restaurant, VenueInfoViewHolder>(VenuesDiffCallback) {
+class VenuesInfoAdapter(private val onItemClickListener: (Restaurant) -> Unit) :
+    ListAdapter<Restaurant, VenueInfoViewHolder>(VenuesDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VenueInfoViewHolder {
         val binding =
             ItemVenueInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,7 +36,7 @@ class VenuesInfoAdapter(private val onItemClickListener: (com.mehrbod.domain.mod
 class VenueInfoViewHolder(private val binding: ItemVenueInfoBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind(restaurant: com.mehrbod.domain.model.restaurant.Restaurant, onItemClickListener: (com.mehrbod.domain.model.restaurant.Restaurant) -> Unit) {
+    fun onBind(restaurant: Restaurant, onItemClickListener: (Restaurant) -> Unit) {
         binding.name.text = restaurant.name
         binding.distance.text = String.format(
             binding.root.context.getString(R.string.distance_unit),

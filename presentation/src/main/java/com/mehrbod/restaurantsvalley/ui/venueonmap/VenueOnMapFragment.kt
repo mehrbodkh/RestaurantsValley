@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ResolvableApiException
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
@@ -131,7 +132,7 @@ class VenueOnMapFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showVenues(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>) {
+    private fun showVenues(restaurants: List<Restaurant>) {
         hideLoading()
         showVenuesOnMap(restaurants)
         showVenuesInfo(restaurants)
@@ -144,7 +145,7 @@ class VenueOnMapFragment : Fragment() {
         )
     }
 
-    private fun showVenuesOnMap(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>) {
+    private fun showVenuesOnMap(restaurants: List<Restaurant>) {
         mapModule.removeAllMarkers()
         restaurants.forEach {
             mapModule.addMarker(
@@ -155,7 +156,7 @@ class VenueOnMapFragment : Fragment() {
         }
     }
 
-    private fun showVenuesInfo(restaurants: List<com.mehrbod.domain.model.restaurant.Restaurant>) {
+    private fun showVenuesInfo(restaurants: List<Restaurant>) {
         infoAdapter.submitList(restaurants)
     }
 
