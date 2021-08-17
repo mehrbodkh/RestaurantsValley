@@ -1,4 +1,6 @@
 package com.mehrbod.data.util
 
-val noDetailsFound = Throwable("Details are not available")
-val cacheDataNotFound = Throwable("Cache data not found")
+import java.lang.RuntimeException
+
+val noDetailsFound = RuntimeException("Details are not available")
+val cacheDataNotFound = RuntimeException("Cache data not found")

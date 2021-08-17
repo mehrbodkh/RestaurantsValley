@@ -7,6 +7,7 @@ import com.mehrbod.data.di.ClientSecret
 import com.mehrbod.data.util.RESPONSE_LIMIT
 import com.mehrbod.data.util.RESTAURANTS_CATEGORY_ID
 import com.mehrbod.domain.model.restaurant.Restaurant
+import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -38,7 +39,7 @@ class RestaurantsRemoteDataSourceImpl @Inject constructor(
         return if (response.metaDto.code == SUCCESS_CODE) {
             Result.success(response.convertToRestaurants())
         } else {
-            Result.failure(Throwable(response.metaDto.code.toString()))
+            Result.failure(RuntimeException(response.metaDto.code.toString()))
         }
     }
 }
