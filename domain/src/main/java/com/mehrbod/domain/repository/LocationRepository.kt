@@ -3,7 +3,7 @@ package com.mehrbod.domain.repository
 import android.location.Location
 
 /**
- * This interface should be implemented in presentation layer to provide location related
+ * This interface should be implemented in data layer to provide location related
  * information to the use case.
  */
 interface LocationRepository {

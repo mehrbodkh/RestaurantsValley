@@ -8,6 +8,6 @@ sealed class LocationUiState {
     object ShowLocationOnMap : LocationUiState()
     object LocationPermissionNeeded : LocationUiState()
     object Failure : LocationUiState()
-    class GPSNeeded(val resolvableApiException: ResolvableApiException) : LocationUiState()
-    class LocationAvailable(val location: Location) : LocationUiState()
+    class GPSNeeded(val resolvableApiException: ResolvableApiException?) : LocationUiState()
+    class LocationAvailable(val location: Location?) : LocationUiState()
 }

@@ -22,9 +22,7 @@ object RestaurantsInfoDiffCallback : DiffUtil.ItemCallback<Restaurant>() {
 class RestaurantsInfoAdapter(private val onItemClickListener: (Restaurant) -> Unit) :
     ListAdapter<Restaurant, RestaurantInfoViewHolder>(RestaurantsInfoDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantInfoViewHolder {
-        val binding =
-            ItemRestaurantInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RestaurantInfoViewHolder(binding)
+        return RestaurantInfoViewHolder.createFrom(parent)
     }
 
     override fun onBindViewHolder(holder: RestaurantInfoViewHolder, position: Int) {

@@ -1,18 +1,18 @@
-package com.mehrbod.restaurantsvalley.data.repository
+package com.mehrbod.data.repository
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mehrbod.data.util.locationPermissionNotGranted
 import com.mehrbod.domain.repository.LocationRepository
-import com.mehrbod.restaurantsvalley.util.locationPermissionNotGranted
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,7 +20,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 /**
- * This class implements LocationRepository from data layer to provide platform related location
+ * This class implements LocationRepository from domain layer to provide platform related location
  * info for the application usage.
  */
 @Singleton
@@ -39,11 +39,9 @@ class LocationRepositoryImpl @Inject constructor(
 
     override suspend fun isLocationEnabled(): Result<Boolean> = suspendCoroutine { continuation ->
         val locationRequestBuilder = LocationSettingsRequest.Builder().addLocationRequest(
-            LocationRequest.create()
-                .setPriority(PRIORITY_HIGH_ACCURACY)
+            LocationRequest.create().setPriority(PRIORITY_HIGH_ACCURACY)
         )
         val locationRequest = locationRequestBuilder.build()
-
 
         settingsClient.checkLocationSettings(locationRequest).apply {
             addOnSuccessListener {

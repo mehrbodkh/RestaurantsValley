@@ -12,7 +12,8 @@ import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
 import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
-import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
+import com.mehrbod.data.repository.LocationRepositoryImpl
+import com.mehrbod.restaurantsvalley.util.noRestaurantsFound
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
@@ -81,7 +82,7 @@ class RestaurantOnMapViewModelTest {
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is RestaurantsUiState.RestaurantsAvailable)
-        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants.isEmpty())
+        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants!!.isEmpty())
     }
 
     @Test
@@ -96,14 +97,14 @@ class RestaurantOnMapViewModelTest {
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is RestaurantsUiState.RestaurantsAvailable)
-        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants.isNotEmpty())
-        assert(result.restaurants[0] == venue)
+        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants!!.isNotEmpty())
+        assert(result.restaurants!![0] == venue)
     }
 
     @Test
     fun `test restaurants loading - failure`() = coroutineDispatcher.runBlockingTest {
         every { getRestaurantsUseCase.execute(any(), any(), any()) } returns flow {
-            emit(Result.failure<List<Restaurant>>(Throwable("12323")))
+            emit(Result.failure<List<Restaurant>>(Throwable("")))
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
@@ -111,7 +112,7 @@ class RestaurantOnMapViewModelTest {
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is RestaurantsUiState.Failure)
-        assert((result as RestaurantsUiState.Failure).message == "12323")
+        assert((result as RestaurantsUiState.Failure).message == noRestaurantsFound.message)
     }
 
     @Test
@@ -219,7 +220,7 @@ class RestaurantOnMapViewModelTest {
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is RestaurantsUiState.RestaurantsAvailable)
-        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants.isEmpty())
+        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants!!.isEmpty())
     }
 
     @Test
