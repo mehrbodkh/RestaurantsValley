@@ -8,7 +8,7 @@ import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
-import com.mehrbod.restaurantsvalley.util.LocationHelper
+import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class VenueOnMapViewModel @Inject constructor(
     private val getRestaurantsUseCase: GetRestaurantsUseCase,
-    private val locationHelper: LocationHelper
+    private val locationRepositoryImpl: LocationRepositoryImpl
 ) : ViewModel() {
 
     private val _venuesState = MutableStateFlow<VenuesUiState>(VenuesUiState.Loading)
@@ -62,18 +62,18 @@ class VenueOnMapViewModel @Inject constructor(
     private suspend fun handleLocation() {
         _locationState.value = LocationUiState.Loading
 
-        if (!locationHelper.isLocationPermissionGranted()) {
+        if (!locationRepositoryImpl.isLocationPermissionGranted()) {
             _locationState.value = LocationUiState.LocationPermissionNeeded
-        } else if (locationHelper.isLocationEnabled().isFailure) {
-            if (locationHelper.isLocationEnabled().exceptionOrNull() is ResolvableApiException) {
+        } else if (locationRepositoryImpl.isLocationEnabled().isFailure) {
+            if (locationRepositoryImpl.isLocationEnabled().exceptionOrNull() is ResolvableApiException) {
                 _locationState.value = LocationUiState.GPSNeeded(
-                    locationHelper.isLocationEnabled().exceptionOrNull()!! as ResolvableApiException
+                    locationRepositoryImpl.isLocationEnabled().exceptionOrNull()!! as ResolvableApiException
                 )
             } else {
                 _locationState.value = LocationUiState.Failure
             }
         } else {
-            val locationResult = locationHelper.findUserLocation()
+            val locationResult = locationRepositoryImpl.findUserLocation()
 
             if (locationResult.isSuccess) {
                 _locationState.value =

@@ -3,6 +3,9 @@ package com.mehrbod.data.api.adapter
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.data.api.response.ApiVenuesResponse
 
+/**
+ * This method converts data layer models to domain layer models.
+ */
 internal fun ApiVenuesResponse.convertToRestaurants(): List<Restaurant> {
     return this.responseDto.venues.map {
         Restaurant(
