@@ -1,7 +1,7 @@
 package com.mehrbod.restaurantsvalley.di
 
 import com.mehrbod.domain.repository.LocationRepository
-import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
+import com.mehrbod.data.repository.LocationRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

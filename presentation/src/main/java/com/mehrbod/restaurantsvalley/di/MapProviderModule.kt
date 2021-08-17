@@ -7,15 +7,12 @@ import com.mehrbod.map_module.MapModuleImpl
 import com.mehrbod.map_module.model.MapBoxOptions
 import com.mehrbod.map_module.model.MapOptions
 import com.mehrbod.restaurantsvalley.BuildConfig
-import com.mehrbod.restaurantsvalley.R
-import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
 import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Named
 
 @Module
 @InstallIn(FragmentComponent::class)

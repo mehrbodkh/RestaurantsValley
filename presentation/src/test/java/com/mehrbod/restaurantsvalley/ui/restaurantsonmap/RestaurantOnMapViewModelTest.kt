@@ -12,7 +12,7 @@ import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
 import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
-import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
+import com.mehrbod.data.repository.LocationRepositoryImpl
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
