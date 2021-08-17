@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.mehrbod.domain.model.restaurant.Restaurant
-import com.mehrbod.restaurantsvalley.R
-import com.mehrbod.restaurantsvalley.databinding.ItemVenueInfoBinding
+import com.mehrbod.restaurantsvalley.databinding.ItemRestaurantInfoBinding
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.views.RestaurantInfoViewHolder
 
 
@@ -25,7 +23,7 @@ class RestaurantsInfoAdapter(private val onItemClickListener: (Restaurant) -> Un
     ListAdapter<Restaurant, RestaurantInfoViewHolder>(RestaurantsInfoDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantInfoViewHolder {
         val binding =
-            ItemVenueInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemRestaurantInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RestaurantInfoViewHolder(binding)
     }
 

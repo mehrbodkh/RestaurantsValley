@@ -20,7 +20,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
-import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
+import com.mehrbod.restaurantsvalley.databinding.RestaurantsOnMapFragmentBinding
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.adapter.RestaurantsInfoAdapter
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
@@ -42,7 +42,7 @@ class RestaurantsOnMapFragment : Fragment() {
 
     private lateinit var viewModel: RestaurantsOnMapViewModel
 
-    private var _binding: VenueOnMapFragmentBinding? = null
+    private var _binding: RestaurantsOnMapFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var infoAdapter: RestaurantsInfoAdapter
@@ -51,7 +51,7 @@ class RestaurantsOnMapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = VenueOnMapFragmentBinding.inflate(inflater, container, false)
+        _binding = RestaurantsOnMapFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -9,7 +9,7 @@
         android:id="@+id/venueOnMapFragment"
         android:name="com.mehrbod.restaurantsvalley.ui.restaurantsonmap.RestaurantsOnMapFragment"
         android:label="venue_on_map_fragment"
-        tools:layout="@layout/venue_on_map_fragment" >
+        tools:layout="@layout/restaurants_on_map_fragment" >
         <action
             android:id="@+id/action_venueOnMapFragment_to_venueDetailsFragment"
             app:destination="@id/venueDetailsFragment" />
@@ -19,6 +19,6 @@
         android:id="@+id/venueDetailsFragment"
         android:name="com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsDialogFragment"
         android:label="venue_details_fragment"
-        tools:layout="@layout/venue_details_fragment" />
+        tools:layout="@layout/restaurant_details_fragment" />
 
 </navigation>

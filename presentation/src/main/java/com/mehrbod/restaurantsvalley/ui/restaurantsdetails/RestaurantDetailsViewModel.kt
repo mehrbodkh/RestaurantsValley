@@ -3,11 +3,12 @@ package com.mehrbod.restaurantsvalley.ui.restaurantsdetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mehrbod.domain.usecase.GetRestaurantDetailsUseCase
-import kotlinx.coroutines.flow.collect
 import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.states.RestaurantDetailUIState
+import com.mehrbod.restaurantsvalley.util.noRestaurantsFound
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ class RestaurantDetailsViewModel @Inject constructor(
                         RestaurantDetailUIState.RestaurantDetailAvailable(it.getOrNull()!!)
                 } else {
                     _restaurantDetailUIState.value =
-                        RestaurantDetailUIState.Failure("No restaurants found")
+                        RestaurantDetailUIState.Failure(noRestaurantsFound.message!!)
                 }
             }
         }

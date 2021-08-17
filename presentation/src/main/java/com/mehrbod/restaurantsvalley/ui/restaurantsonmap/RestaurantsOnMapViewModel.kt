@@ -11,6 +11,7 @@ import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
 import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
+import com.mehrbod.restaurantsvalley.util.noRestaurantsFound
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,10 +48,11 @@ class RestaurantsOnMapViewModel @Inject constructor(
                 radius
             ).collect { result ->
                 if (result.getOrNull() != null) {
-                    _venuesState.value = RestaurantsUiState.RestaurantsAvailable(result.getOrNull()!!)
+                    _venuesState.value =
+                        RestaurantsUiState.RestaurantsAvailable(result.getOrNull()!!)
                 } else {
                     _venuesState.value = RestaurantsUiState.Failure(
-                        result.exceptionOrNull()?.message ?: "No results found"
+                        noRestaurantsFound.message!!
                     )
                 }
             }

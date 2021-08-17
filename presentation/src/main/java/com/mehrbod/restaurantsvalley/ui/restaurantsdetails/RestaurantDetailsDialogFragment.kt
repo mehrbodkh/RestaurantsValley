@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.R
-import com.mehrbod.restaurantsvalley.databinding.VenueDetailsFragmentBinding
+import com.mehrbod.restaurantsvalley.databinding.RestaurantDetailsFragmentBinding
 import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.states.RestaurantDetailUIState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -20,14 +20,14 @@ class RestaurantDetailsDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: RestaurantDetailsViewModel
 
-    private var _binding: VenueDetailsFragmentBinding? = null
+    private var _binding: RestaurantDetailsFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = VenueDetailsFragmentBinding.inflate(inflater, container, false)
+        _binding = RestaurantDetailsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
