@@ -1,14 +1,16 @@
 package com.mehrbod.data.datasource
 
+import com.mehrbod.data.util.RESPONSE_LIMIT
 import com.mehrbod.data.util.cacheDataNotFound
-import com.mehrbod.data.util.noDetailsFound
 import com.mehrbod.data.util.distance
+import com.mehrbod.data.util.noDetailsFound
 import com.mehrbod.domain.model.restaurant.Restaurant
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RestaurantsLocalDataSourceImpl @Inject constructor() : RestaurantsLocalDataSource {
+
     private val cachedRestaurants = HashSet<Restaurant>()
 
     override fun updateRestaurants(restaurants: List<Restaurant>) {
@@ -35,7 +37,7 @@ class RestaurantsLocalDataSourceImpl @Inject constructor() : RestaurantsLocalDat
     ): Result<List<Restaurant>> {
         val result = cachedRestaurants.filter {
             it.location.distance(lat, lng) <= radius
-        }.take(50)
+        }.take(RESPONSE_LIMIT)
 
         return if (result.isEmpty()) {
             Result.failure(cacheDataNotFound)
