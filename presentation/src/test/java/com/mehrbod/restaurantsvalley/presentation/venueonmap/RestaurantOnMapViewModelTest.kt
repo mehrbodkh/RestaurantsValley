@@ -5,6 +5,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
 import com.mehrbod.domain.repository.RestaurantsRepository
 import com.mehrbod.domain.model.restaurant.Restaurant
+import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
@@ -29,10 +30,13 @@ import org.junit.Test
 class RestaurantOnMapViewModelTest {
 
     @RelaxedMockK
-    lateinit var restaurantsRepository: com.mehrbod.domain.repository.RestaurantsRepository
+    lateinit var restaurantsRepository: RestaurantsRepository
 
     @RelaxedMockK
     lateinit var locationHelper: LocationHelper
+
+    @InjectMockKs
+    lateinit var getRestaurantsUseCase: GetRestaurantsUseCase
 
     @InjectMockKs
     lateinit var viewModel: VenueOnMapViewModel
@@ -56,29 +60,29 @@ class RestaurantOnMapViewModelTest {
 
     @Test
     fun `test successful empty restaurant loading`() = coroutineDispatcher.runBlockingTest {
-        every { restaurantsRepository.getRestaurants(any(), any(), any()) } returns flow {
-            emit(Result.success<List<com.mehrbod.domain.model.restaurant.Restaurant>>(emptyList()))
+        every { getRestaurantsUseCase.execute(any(), any(), any()) } returns flow {
+            emit(Result.success<List<Restaurant>>(emptyList()))
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
-        coVerify { restaurantsRepository.getRestaurants(1.0, 1.0, 1) }
+        coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is VenuesUiState.VenuesAvailable)
         assert((result as VenuesUiState.VenuesAvailable).restaurants.isEmpty())
     }
 
     @Test
     fun `test restaurants loading - success`() = coroutineDispatcher.runBlockingTest {
-        val venue = mockk<com.mehrbod.domain.model.restaurant.Restaurant>()
-        every { restaurantsRepository.getRestaurants(any(), any(), any()) } returns flow {
-            emit(Result.success<List<com.mehrbod.domain.model.restaurant.Restaurant>>(listOf(venue)))
+        val venue = mockk<Restaurant>()
+        every { getRestaurantsUseCase.execute(any(), any(), any()) } returns flow {
+            emit(Result.success<List<Restaurant>>(listOf(venue)))
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
-        coVerify { restaurantsRepository.getRestaurants(1.0, 1.0, 1) }
+        coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is VenuesUiState.VenuesAvailable)
         assert((result as VenuesUiState.VenuesAvailable).restaurants.isNotEmpty())
         assert(result.restaurants[0] == venue)
@@ -86,14 +90,14 @@ class RestaurantOnMapViewModelTest {
 
     @Test
     fun `test restaurants loading - failure`() = coroutineDispatcher.runBlockingTest {
-        every { restaurantsRepository.getRestaurants(any(), any(), any()) } returns flow {
-            emit(Result.failure<List<com.mehrbod.domain.model.restaurant.Restaurant>>(Throwable("12323")))
+        every { getRestaurantsUseCase.execute(any(), any(), any()) } returns flow {
+            emit(Result.failure<List<Restaurant>>(Throwable("12323")))
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
-        coVerify { restaurantsRepository.getRestaurants(1.0, 1.0, 1) }
+        coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is VenuesUiState.Failure)
         assert((result as VenuesUiState.Failure).message == "12323")
     }
@@ -194,21 +198,21 @@ class RestaurantOnMapViewModelTest {
 
     @Test
     fun `on user location showing`() = coroutineDispatcher.runBlockingTest {
-        every { restaurantsRepository.getRestaurants(any(), any(), any()) } returns flow {
-            emit(Result.success<List<com.mehrbod.domain.model.restaurant.Restaurant>>(emptyList()))
+        every { getRestaurantsUseCase.execute(any(), any(), any()) } returns flow {
+            emit(Result.success<List<Restaurant>>(emptyList()))
         }
 
         viewModel.onUserLocationShowing(1.0, 1.0, 1)
         val result = viewModel.venuesState.first()
 
-        coVerify { restaurantsRepository.getRestaurants(1.0, 1.0, 1) }
+        coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
         assert(result is VenuesUiState.VenuesAvailable)
         assert((result as VenuesUiState.VenuesAvailable).restaurants.isEmpty())
     }
 
     @Test
     fun `test click on restaurant`() = coroutineDispatcher.runBlockingTest {
-        val restaurant = mockk<com.mehrbod.domain.model.restaurant.Restaurant>()
+        val restaurant = mockk<Restaurant>()
         every { restaurant.id } returns "123"
 
         viewModel.onRestaurantClicked(restaurant)
@@ -218,7 +222,7 @@ class RestaurantOnMapViewModelTest {
         assert(
             (result as VenuesUiState.VenueDetailsAvailable).key == VenueDetailsViewModel.RESTAURANT_ID
         )
-        assert((result as VenuesUiState.VenueDetailsAvailable).restaurantId == "123")
+        assert(result.restaurantId == "123")
     }
 
     @After

@@ -1,11 +1,12 @@
 package com.mehrbod.restaurantsvalley.presentation.venuedetails
 
-import com.mehrbod.domain.repository.RestaurantsRepository
 import com.mehrbod.domain.model.restaurant.Restaurant
+import com.mehrbod.domain.repository.RestaurantsRepository
+import com.mehrbod.domain.usecase.GetRestaurantDetailsUseCase
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -20,9 +21,11 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class VenueDetailsViewModelTest {
+    @RelaxedMockK
+    lateinit var restaurantsRepository: RestaurantsRepository
 
-    @MockK
-    lateinit var repository: com.mehrbod.domain.repository.RestaurantsRepository
+    @InjectMockKs
+    lateinit var getRestaurantDetailsUseCase: GetRestaurantDetailsUseCase
 
     @InjectMockKs
     lateinit var viewModel: VenueDetailsViewModel
@@ -45,27 +48,27 @@ class VenueDetailsViewModelTest {
 
     @Test
     fun `test get restaurant details - failure`() = coroutineDispatcher.runBlockingTest {
-        coEvery { repository.getRestaurantDetails(any()) } returns flowOf(Result.failure(Throwable("")))
+        coEvery { getRestaurantDetailsUseCase.execute(any()) } returns flowOf(Result.failure(Throwable("")))
 
         viewModel.onRestaurantIdReceived("1")
         val state = viewModel.restaurantDetailUIState.first()
 
-        coVerify { repository.getRestaurantDetails("1") }
+        coVerify { getRestaurantDetailsUseCase.execute("1") }
         assert(state is RestaurantDetailUIState.Failure)
         assert((state as RestaurantDetailUIState.Failure).message == "No restaurants found")
     }
 
     @Test
     fun `test get restaurant details - success`() = coroutineDispatcher.runBlockingTest {
-        val restaurant = mockk<com.mehrbod.domain.model.restaurant.Restaurant>()
+        val restaurant = mockk<Restaurant>()
         every { restaurant getProperty "id" } returns "1"
         every { restaurant getProperty "name" } returns "name"
-        coEvery { repository.getRestaurantDetails(any()) } returns flowOf(Result.success(restaurant))
+        coEvery { getRestaurantDetailsUseCase.execute(any()) } returns flowOf(Result.success(restaurant))
 
         viewModel.onRestaurantIdReceived("1")
         val state = viewModel.restaurantDetailUIState.first()
 
-        coVerify { repository.getRestaurantDetails("1") }
+        coVerify { getRestaurantDetailsUseCase.execute("1") }
         assert(state is RestaurantDetailUIState.RestaurantDetailAvailable)
         assert((state as RestaurantDetailUIState.RestaurantDetailAvailable).restaurant.name == "name")
     }

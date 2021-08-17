@@ -2,6 +2,7 @@ package com.mehrbod.restaurantsvalley.presentation.venuedetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mehrbod.domain.usecase.GetRestaurantDetailsUseCase
 import kotlinx.coroutines.flow.collect
 import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VenueDetailsViewModel @Inject constructor(
-    private val restaurantsRepository: com.mehrbod.domain.repository.RestaurantsRepository
+    private val getRestaurantDetailsUseCase: GetRestaurantDetailsUseCase
 ) : ViewModel() {
 
     companion object {
@@ -26,7 +27,7 @@ class VenueDetailsViewModel @Inject constructor(
     fun onRestaurantIdReceived(restaurantId: String) {
         _restaurantDetailUIState.value = RestaurantDetailUIState.Loading
         viewModelScope.launch {
-            restaurantsRepository.getRestaurantDetails(restaurantId).collect {
+            getRestaurantDetailsUseCase.execute(restaurantId).collect {
                 if (it.getOrNull() != null) {
 
                     _restaurantDetailUIState.value =
