@@ -2,6 +2,7 @@ package com.mehrbod.data.di
 
 import android.content.Context
 import com.mehrbod.data.BuildConfig
+import com.mehrbod.data.R
 import com.mehrbod.data.api.RestaurantApiService
 import dagger.Module
 import dagger.Provides
@@ -28,8 +29,8 @@ class NetworkingModule {
 
     @Provides
     @Named("BaseUrl")
-    fun provideBaseUrl(): String =
-        "https://api.foursquare.com/v2/"
+    fun provideBaseUrl(@ApplicationContext context: Context): String =
+        context.getString(R.string.base_url)
 
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
