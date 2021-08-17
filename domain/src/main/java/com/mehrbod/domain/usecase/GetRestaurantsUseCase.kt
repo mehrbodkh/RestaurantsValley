@@ -9,8 +9,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class GetRestaurantsUseCase @Inject constructor(
     private val repository: RestaurantsRepository
-) {
-
+): UseCase {
     fun execute(lat: Double, lng: Double, radius: Int): Flow<Result<List<Restaurant>>> =
         repository.getRestaurants(lat, lng, radius)
 }

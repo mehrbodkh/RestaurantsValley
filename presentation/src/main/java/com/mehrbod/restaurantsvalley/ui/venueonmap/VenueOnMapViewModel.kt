@@ -5,6 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.domain.usecase.GetRestaurantsUseCase
+import com.mehrbod.domain.usecase.GetUserLocationUseCase
+import com.mehrbod.domain.usecase.LocationEnabledInfoUseCase
+import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
 import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
@@ -19,7 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class VenueOnMapViewModel @Inject constructor(
     private val getRestaurantsUseCase: GetRestaurantsUseCase,
-    private val locationRepositoryImpl: LocationRepositoryImpl
+    private val getUserLocationUseCase: GetUserLocationUseCase,
+    private val locationEnabledInfoUseCase: LocationEnabledInfoUseCase,
+    private val locationPermissionGrantedInfoUseCase: LocationPermissionGrantedInfoUseCase
 ) : ViewModel() {
 
     private val _venuesState = MutableStateFlow<VenuesUiState>(VenuesUiState.Loading)
@@ -62,18 +67,21 @@ class VenueOnMapViewModel @Inject constructor(
     private suspend fun handleLocation() {
         _locationState.value = LocationUiState.Loading
 
-        if (!locationRepositoryImpl.isLocationPermissionGranted()) {
+        if (!locationPermissionGrantedInfoUseCase.isLocationPermissionGranted()) {
             _locationState.value = LocationUiState.LocationPermissionNeeded
-        } else if (locationRepositoryImpl.isLocationEnabled().isFailure) {
-            if (locationRepositoryImpl.isLocationEnabled().exceptionOrNull() is ResolvableApiException) {
+        } else if (locationEnabledInfoUseCase.isLocationEnabled().isFailure) {
+            if (locationEnabledInfoUseCase.isLocationEnabled()
+                    .exceptionOrNull() is ResolvableApiException
+            ) {
                 _locationState.value = LocationUiState.GPSNeeded(
-                    locationRepositoryImpl.isLocationEnabled().exceptionOrNull()!! as ResolvableApiException
+                    locationEnabledInfoUseCase.isLocationEnabled()
+                        .exceptionOrNull()!! as ResolvableApiException
                 )
             } else {
                 _locationState.value = LocationUiState.Failure
             }
         } else {
-            val locationResult = locationRepositoryImpl.findUserLocation()
+            val locationResult = getUserLocationUseCase.getUserLocation()
 
             if (locationResult.isSuccess) {
                 _locationState.value =

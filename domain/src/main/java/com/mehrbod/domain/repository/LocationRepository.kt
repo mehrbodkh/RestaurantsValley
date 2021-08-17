@@ -1,4 +1,4 @@
-package com.mehrbod.data.repository
+package com.mehrbod.domain.repository
 
 import android.location.Location
 

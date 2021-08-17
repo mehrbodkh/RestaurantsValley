@@ -8,8 +8,7 @@ import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import com.mapbox.android.core.permissions.PermissionsManager
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mehrbod.data.repository.LocationRepository
+import com.mehrbod.domain.repository.LocationRepository
 import com.mehrbod.restaurantsvalley.util.locationPermissionNotGranted
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
