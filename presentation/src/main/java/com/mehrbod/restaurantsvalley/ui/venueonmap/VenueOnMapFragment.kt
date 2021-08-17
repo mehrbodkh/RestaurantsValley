@@ -165,7 +165,7 @@ class VenueOnMapFragment : Fragment() {
         mapModule.moveCamera(
             location.latitude,
             location.longitude,
-            15.0
+            12.0
         )
         val userPosition = mapModule.getCameraPosition()
         userPosition?.let {

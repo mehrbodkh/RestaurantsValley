@@ -11,7 +11,6 @@ import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
 import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
-import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
