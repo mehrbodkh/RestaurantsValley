@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/venueOnMapFragment">
+
+    <fragment
+        android:id="@+id/venueOnMapFragment"
+        android:name="com.mehrbod.restaurantsvalley.ui.venueonmap.VenueOnMapFragment"
+        android:label="venue_on_map_fragment"
+        tools:layout="@layout/venue_on_map_fragment" >
+        <action
+            android:id="@+id/action_venueOnMapFragment_to_venueDetailsFragment"
+            app:destination="@id/venueDetailsFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/venueDetailsFragment"
+        android:name="com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsDialogFragment"
+        android:label="venue_details_fragment"
+        tools:layout="@layout/venue_details_fragment" />
+
+</navigation>
