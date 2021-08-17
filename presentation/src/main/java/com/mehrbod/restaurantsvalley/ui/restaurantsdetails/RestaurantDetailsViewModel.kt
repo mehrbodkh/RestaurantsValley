@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VenueDetailsViewModel @Inject constructor(
+class RestaurantDetailsViewModel @Inject constructor(
     private val getRestaurantDetailsUseCase: GetRestaurantDetailsUseCase
 ) : ViewModel() {
 

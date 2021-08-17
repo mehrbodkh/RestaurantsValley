@@ -19,13 +19,13 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class VenueDetailsViewModelTest {
+class RestaurantDetailsViewModelTest {
 
     @RelaxedMockK
     lateinit var getRestaurantDetailsUseCase: GetRestaurantDetailsUseCase
 
     @InjectMockKs
-    lateinit var viewModel: VenueDetailsViewModel
+    lateinit var viewModel: RestaurantDetailsViewModel
 
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
 

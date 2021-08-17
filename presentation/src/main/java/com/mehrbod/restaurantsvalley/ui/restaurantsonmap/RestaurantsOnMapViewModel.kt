@@ -8,7 +8,7 @@ import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.domain.usecase.GetUserLocationUseCase
 import com.mehrbod.domain.usecase.LocationEnabledInfoUseCase
 import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
-import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.VenueDetailsViewModel
+import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -106,7 +106,7 @@ class RestaurantsOnMapViewModel @Inject constructor(
 
     fun onRestaurantClicked(restaurant: Restaurant) {
         _venuesState.value = RestaurantsUiState.VenueDetailsAvailable(
-            VenueDetailsViewModel.RESTAURANT_ID,
+            RestaurantDetailsViewModel.RESTAURANT_ID,
             restaurant.id
         )
     }

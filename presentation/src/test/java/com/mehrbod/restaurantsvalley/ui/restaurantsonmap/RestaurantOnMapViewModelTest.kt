@@ -9,7 +9,7 @@ import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.domain.usecase.GetUserLocationUseCase
 import com.mehrbod.domain.usecase.LocationEnabledInfoUseCase
 import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
-import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.VenueDetailsViewModel
+import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsViewModel
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
 import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
@@ -232,7 +232,7 @@ class RestaurantOnMapViewModelTest {
 
         assert(result is RestaurantsUiState.VenueDetailsAvailable)
         assert(
-            (result as RestaurantsUiState.VenueDetailsAvailable).key == VenueDetailsViewModel.RESTAURANT_ID
+            (result as RestaurantsUiState.VenueDetailsAvailable).key == RestaurantDetailsViewModel.RESTAURANT_ID
         )
         assert(result.restaurantId == "123")
     }

@@ -17,7 +17,7 @@
 
     <dialog
         android:id="@+id/venueDetailsFragment"
-        android:name="com.mehrbod.restaurantsvalley.ui.restaurantsdetails.VenueDetailsDialogFragment"
+        android:name="com.mehrbod.restaurantsvalley.ui.restaurantsdetails.RestaurantDetailsDialogFragment"
         android:label="venue_details_fragment"
         tools:layout="@layout/venue_details_fragment" />
 

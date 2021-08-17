@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
+class RestaurantDetailsDialogFragment : BottomSheetDialogFragment() {
 
-    private lateinit var viewModel: VenueDetailsViewModel
+    private lateinit var viewModel: RestaurantDetailsViewModel
 
     private var _binding: VenueDetailsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -33,14 +33,14 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(VenueDetailsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(RestaurantDetailsViewModel::class.java)
 
         handleArguments()
         initializeUIStateObserver()
     }
 
     private fun handleArguments() {
-        arguments?.getString(VenueDetailsViewModel.RESTAURANT_ID)?.let {
+        arguments?.getString(RestaurantDetailsViewModel.RESTAURANT_ID)?.let {
             viewModel.onRestaurantIdReceived(it)
         }
     }
