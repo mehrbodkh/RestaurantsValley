@@ -49,10 +49,10 @@ class RestaurantsOnMapViewModel @Inject constructor(
             ).collect { result ->
                 if (result.getOrNull() != null) {
                     _venuesState.value =
-                        RestaurantsUiState.RestaurantsAvailable(result.getOrNull()!!)
+                        RestaurantsUiState.RestaurantsAvailable(result.getOrNull())
                 } else {
                     _venuesState.value = RestaurantsUiState.Failure(
-                        noRestaurantsFound.message!!
+                        noRestaurantsFound.message
                     )
                 }
             }
@@ -76,7 +76,7 @@ class RestaurantsOnMapViewModel @Inject constructor(
             ) {
                 _locationState.value = LocationUiState.GPSNeeded(
                     locationEnabledInfoUseCase.isLocationEnabled()
-                        .exceptionOrNull()!! as ResolvableApiException
+                        .exceptionOrNull() as? ResolvableApiException
                 )
             } else {
                 _locationState.value = LocationUiState.Failure
@@ -86,7 +86,7 @@ class RestaurantsOnMapViewModel @Inject constructor(
 
             if (locationResult.isSuccess) {
                 _locationState.value =
-                    LocationUiState.LocationAvailable(locationResult.getOrNull()!!)
+                    LocationUiState.LocationAvailable(locationResult.getOrNull())
             } else {
                 _locationState.value = LocationUiState.Failure
             }

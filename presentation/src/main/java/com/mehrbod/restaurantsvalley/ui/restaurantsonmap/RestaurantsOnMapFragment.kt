@@ -29,7 +29,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @AndroidEntryPoint
 class RestaurantsOnMapFragment : Fragment() {
@@ -137,10 +136,12 @@ class RestaurantsOnMapFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showVenues(restaurants: List<Restaurant>) {
+    private fun showVenues(restaurants: List<Restaurant>?) {
         hideLoading()
-        showVenuesOnMap(restaurants)
-        showVenuesInfo(restaurants)
+        restaurants?.let {
+            showVenuesOnMap(restaurants)
+            showVenuesInfo(restaurants)
+        }
     }
 
     private fun showVenueDetail(key: String, restaurantId: String) {
@@ -165,26 +166,28 @@ class RestaurantsOnMapFragment : Fragment() {
         infoAdapter.submitList(restaurants)
     }
 
-    private fun handleLocationAvailable(location: Location) {
+    private fun handleLocationAvailable(location: Location?) {
         hideLoading()
-        mapModule.moveCamera(
-            location.latitude,
-            location.longitude,
-            DEFAULT_ZOOM_LEVEL
-        )
-        val userPosition = mapModule.getCameraPosition()
-        userPosition?.let {
-            viewModel.onUserLocationShowing(
-                userPosition.first.latitude,
-                userPosition.first.longitude,
-                userPosition.second
+        location?.let {
+            mapModule.moveCamera(
+                location.latitude,
+                location.longitude,
+                DEFAULT_ZOOM_LEVEL
             )
+            val userPosition = mapModule.getCameraPosition()
+            userPosition?.let {
+                viewModel.onUserLocationShowing(
+                    userPosition.first.latitude,
+                    userPosition.first.longitude,
+                    userPosition.second
+                )
+            }
         }
     }
 
-    private fun turnGpsOn(resolvableApiException: ResolvableApiException) {
+    private fun turnGpsOn(resolvableApiException: ResolvableApiException?) {
         hideLoading()
-        resolvableApiException.startResolutionForResult(requireActivity(), 1)
+        resolvableApiException?.startResolutionForResult(requireActivity(), 1)
     }
 
     private fun grantLocationPermission() {
