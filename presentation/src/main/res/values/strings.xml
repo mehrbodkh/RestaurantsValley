@@ -2,20 +2,6 @@
     <string name="app_name">RestaurantsValley</string>
     <string name="action_settings">Settings</string>
     <string name="restaurants_base_api">https://api.foursquare.com/v2/</string>
-    <!--
-        IMPORTANT
-        THESE SECRET TOKENS ARE ONLY HERE FOR THE EASE OF USE AND NOT HAVING ANY BUILD PROBLEMS WHEN
-        REVIEWING THE PROJECT
-
-        Note that these tokens are made by a fake account and will be destroyed after final project
-        review.
-        They should NOT be stored here. They should be stored in the machine's local
-        gradle.properties file to prevent others from using them.
-        They should NOT be committed on any online repositories.
-    -->
-    <string name="mapbox_sdk_token">sk.eyJ1IjoibWVocmJvZCIsImEiOiJja3M3czJncmkwYWl2MnZuMDZ3cTQ2Y2p6In0.KCoKmygq7x8auJilSp6EGA</string>
-    <string name="foursquare_client_id">DJL2RZAD1XD2QBXSEBLKCVT4FPRZIOOJXARXRNVVVUVEGEGF</string>
-    <string name="foursquare_client_secret">KIJ5KGCMV554PA5HUS54Z4VSN1K0U3Z5LRJ1LKLSQW3OISIX</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

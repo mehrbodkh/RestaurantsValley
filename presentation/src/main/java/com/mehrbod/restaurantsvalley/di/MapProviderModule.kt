@@ -6,6 +6,7 @@ import com.mehrbod.map_module.MapModule
 import com.mehrbod.map_module.MapModuleImpl
 import com.mehrbod.map_module.model.MapBoxOptions
 import com.mehrbod.map_module.model.MapOptions
+import com.mehrbod.restaurantsvalley.BuildConfig
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
 import com.mehrbod.restaurantsvalley.util.LocationHelper
@@ -26,8 +27,7 @@ class MapProviderModule {
 
     @Provides
     @Named("MapboxToken")
-    fun provideMapToken(@ApplicationContext context: Context): String =
-        context.getString(R.string.mapbox_sdk_token)
+    fun provideMapToken(): String = BuildConfig.MAPBOX_SDK_TOKEN
 
     @Provides
     fun provideMapModule(mapOptions: MapOptions): MapModule = MapModuleImpl(mapOptions)
