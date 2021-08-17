@@ -7,7 +7,7 @@
     android:paddingBottom="?attr/space2XLarge"
     android:paddingTop="?attr/space2XLarge"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.venuedetails.VenueDetailsDialogFragment">
+    tools:context=".ui.venuedetails.VenueDetailsDialogFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name"

@@ -1,7 +1,5 @@
-package com.mehrbod.restaurantsvalley.data.datasource
+package com.mehrbod.data.datasource
 
-import com.mehrbod.data.datasource.RestaurantsRemoteDataSource
-import com.mehrbod.data.datasource.RestaurantsRemoteDataSourceImpl
 import com.mehrbod.restaurantsvalley.data.api.RestaurantApiService
 import com.mehrbod.data.api.model.MetaDto
 import com.mehrbod.data.api.model.ResponseDto

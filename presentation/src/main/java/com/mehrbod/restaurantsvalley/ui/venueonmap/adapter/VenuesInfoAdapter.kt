@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter
+package com.mehrbod.restaurantsvalley.ui.venueonmap.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.ItemVenueInfoBinding
-import com.mehrbod.domain.model.restaurant.Restaurant
 
 
 object VenuesDiffCallback : DiffUtil.ItemCallback<com.mehrbod.domain.model.restaurant.Restaurant>() {

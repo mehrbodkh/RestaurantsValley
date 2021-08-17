@@ -1,6 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venuedetails.states
-
-import com.mehrbod.domain.model.restaurant.Restaurant
+package com.mehrbod.restaurantsvalley.ui.venuedetails.states
 
 sealed class RestaurantDetailUIState {
     object Loading : RestaurantDetailUIState()

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/venueOnMapFragment"
-        android:name="com.mehrbod.restaurantsvalley.presentation.venueonmap.VenueOnMapFragment"
+        android:name="com.mehrbod.restaurantsvalley.ui.venueonmap.VenueOnMapFragment"
         android:label="venue_on_map_fragment"
         tools:layout="@layout/venue_on_map_fragment" >
         <action
@@ -17,7 +17,7 @@
 
     <dialog
         android:id="@+id/venueDetailsFragment"
-        android:name="com.mehrbod.restaurantsvalley.presentation.venuedetails.VenueDetailsDialogFragment"
+        android:name="com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsDialogFragment"
         android:label="venue_details_fragment"
         tools:layout="@layout/venue_details_fragment" />
 

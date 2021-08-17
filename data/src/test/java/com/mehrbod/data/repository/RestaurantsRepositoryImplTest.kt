@@ -1,6 +1,5 @@
-package com.mehrbod.restaurantsvalley.data.repository
+package com.mehrbod.data.repository
 
-import com.mehrbod.data.repository.RestaurantsRepositoryImpl
 import com.mehrbod.data.datasource.RestaurantsLocalDataSourceImpl
 import com.mehrbod.data.datasource.RestaurantsRemoteDataSourceImpl
 import io.mockk.*

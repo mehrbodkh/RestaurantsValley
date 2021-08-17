@@ -1,10 +1,10 @@
-package com.mehrbod.restaurantsvalley.presentation.venuedetails
+package com.mehrbod.restaurantsvalley.ui.venuedetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mehrbod.domain.usecase.GetRestaurantDetailsUseCase
 import kotlinx.coroutines.flow.collect
-import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
+import com.mehrbod.restaurantsvalley.ui.venuedetails.states.RestaurantDetailUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

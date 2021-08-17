@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.data.api.adapter
+package com.mehrbod.data.adapter
 
 import com.mehrbod.data.api.adapter.convertToRestaurants
 import com.mehrbod.data.api.model.LocationDto

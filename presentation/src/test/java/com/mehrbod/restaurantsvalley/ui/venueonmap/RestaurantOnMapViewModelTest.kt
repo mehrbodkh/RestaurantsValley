@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venueonmap
+package com.mehrbod.restaurantsvalley.ui.venueonmap
 
 import android.location.Location
 import com.google.android.gms.common.api.ResolvableApiException
@@ -6,9 +6,9 @@ import com.google.android.gms.common.api.Status
 import com.mehrbod.domain.repository.RestaurantsRepository
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.domain.usecase.GetRestaurantsUseCase
-import com.mehrbod.restaurantsvalley.presentation.venuedetails.VenueDetailsViewModel
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
+import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
+import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
 import com.mehrbod.restaurantsvalley.util.LocationHelper
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs

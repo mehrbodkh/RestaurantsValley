@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venuedetails
+package com.mehrbod.restaurantsvalley.ui.venuedetails
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueDetailsFragmentBinding
-import com.mehrbod.domain.model.restaurant.Restaurant
-import com.mehrbod.restaurantsvalley.presentation.venuedetails.states.RestaurantDetailUIState
+import com.mehrbod.restaurantsvalley.ui.venuedetails.states.RestaurantDetailUIState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -51,6 +51,7 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
                 when (it) {
                     RestaurantDetailUIState.Loading -> showLoading()
                     is RestaurantDetailUIState.RestaurantDetailAvailable -> showRestaurantDetails(it.restaurant)
+                    is RestaurantDetailUIState.Failure -> showFailure()
                 }
             }
         }
@@ -60,7 +61,11 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun showRestaurantDetails(restaurant: com.mehrbod.domain.model.restaurant.Restaurant) = with(binding){
+    private fun showFailure() {
+
+    }
+
+    private fun showRestaurantDetails(restaurant: Restaurant) = with(binding){
         name.text = restaurant.name
         distance.text = String.format(
             binding.root.context.getString(R.string.distance_unit),

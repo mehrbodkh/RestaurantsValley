@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venueonmap
+package com.mehrbod.restaurantsvalley.ui.venueonmap
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,10 +20,9 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
-import com.mehrbod.domain.model.restaurant.Restaurant
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.adapter.VenuesInfoAdapter
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
+import com.mehrbod.restaurantsvalley.ui.venueonmap.adapter.VenuesInfoAdapter
+import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

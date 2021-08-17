@@ -1,12 +1,12 @@
-package com.mehrbod.restaurantsvalley.presentation.venueonmap
+package com.mehrbod.restaurantsvalley.ui.venueonmap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
 import com.mehrbod.domain.usecase.GetRestaurantsUseCase
-import com.mehrbod.restaurantsvalley.presentation.venuedetails.VenueDetailsViewModel
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.LocationUiState
-import com.mehrbod.restaurantsvalley.presentation.venueonmap.states.VenuesUiState
+import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
+import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
 import com.mehrbod.restaurantsvalley.util.LocationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

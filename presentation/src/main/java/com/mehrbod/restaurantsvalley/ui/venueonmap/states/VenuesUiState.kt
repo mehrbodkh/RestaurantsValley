@@ -1,6 +1,4 @@
-package com.mehrbod.restaurantsvalley.presentation.venueonmap.states
-
-import com.mehrbod.domain.model.restaurant.Restaurant
+package com.mehrbod.restaurantsvalley.ui.venueonmap.states
 
 
 sealed class VenuesUiState {
