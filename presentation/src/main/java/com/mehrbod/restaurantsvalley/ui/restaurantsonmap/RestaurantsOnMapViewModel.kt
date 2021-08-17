@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.ui.venueonmap
+package com.mehrbod.restaurantsvalley.ui.restaurantsonmap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,9 +8,9 @@ import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.domain.usecase.GetUserLocationUseCase
 import com.mehrbod.domain.usecase.LocationEnabledInfoUseCase
 import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
-import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
-import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
-import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
+import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.VenueDetailsViewModel
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,15 +19,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VenueOnMapViewModel @Inject constructor(
+class RestaurantsOnMapViewModel @Inject constructor(
     private val getRestaurantsUseCase: GetRestaurantsUseCase,
     private val getUserLocationUseCase: GetUserLocationUseCase,
     private val locationEnabledInfoUseCase: LocationEnabledInfoUseCase,
     private val locationPermissionGrantedInfoUseCase: LocationPermissionGrantedInfoUseCase
 ) : ViewModel() {
 
-    private val _venuesState = MutableStateFlow<VenuesUiState>(VenuesUiState.Loading)
-    val venuesState: StateFlow<VenuesUiState> = _venuesState
+    private val _venuesState = MutableStateFlow<RestaurantsUiState>(RestaurantsUiState.Loading)
+    val restaurantsState: StateFlow<RestaurantsUiState> = _venuesState
 
     private val _locationState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
     val locationState: StateFlow<LocationUiState> = _locationState
@@ -40,16 +40,16 @@ class VenueOnMapViewModel @Inject constructor(
 
     fun onSearchAreaClicked(lat: Double, lng: Double, radius: Int) {
         viewModelScope.launch {
-            _venuesState.value = VenuesUiState.Loading
+            _venuesState.value = RestaurantsUiState.Loading
             getRestaurantsUseCase.execute(
                 lat,
                 lng,
                 radius
             ).collect { result ->
                 if (result.getOrNull() != null) {
-                    _venuesState.value = VenuesUiState.VenuesAvailable(result.getOrNull()!!)
+                    _venuesState.value = RestaurantsUiState.RestaurantsAvailable(result.getOrNull()!!)
                 } else {
-                    _venuesState.value = VenuesUiState.Failure(
+                    _venuesState.value = RestaurantsUiState.Failure(
                         result.exceptionOrNull()?.message ?: "No results found"
                     )
                 }
@@ -105,7 +105,7 @@ class VenueOnMapViewModel @Inject constructor(
     }
 
     fun onRestaurantClicked(restaurant: Restaurant) {
-        _venuesState.value = VenuesUiState.VenueDetailsAvailable(
+        _venuesState.value = RestaurantsUiState.VenueDetailsAvailable(
             VenueDetailsViewModel.RESTAURANT_ID,
             restaurant.id
         )

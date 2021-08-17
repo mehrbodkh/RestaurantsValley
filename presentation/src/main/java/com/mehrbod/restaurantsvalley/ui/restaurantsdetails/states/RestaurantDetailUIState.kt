@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.ui.venuedetails.states
+package com.mehrbod.restaurantsvalley.ui.restaurantsdetails.states
 
 import com.mehrbod.domain.model.restaurant.Restaurant
 

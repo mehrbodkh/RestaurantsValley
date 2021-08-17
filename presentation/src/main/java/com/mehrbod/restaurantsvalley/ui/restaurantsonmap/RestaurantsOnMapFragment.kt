@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.ui.venueonmap
+package com.mehrbod.restaurantsvalley.ui.restaurantsonmap
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,9 +21,9 @@ import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueOnMapFragmentBinding
-import com.mehrbod.restaurantsvalley.ui.venueonmap.adapter.VenuesInfoAdapter
-import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
-import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.adapter.RestaurantsInfoAdapter
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @AndroidEntryPoint
-class VenueOnMapFragment : Fragment() {
+class RestaurantsOnMapFragment : Fragment() {
 
     @Inject
     lateinit var mapModule: MapModule
@@ -40,12 +40,12 @@ class VenueOnMapFragment : Fragment() {
     @Named("MapStyleUrl")
     lateinit var mapStyleUrl: String
 
-    private lateinit var viewModel: VenueOnMapViewModel
+    private lateinit var viewModel: RestaurantsOnMapViewModel
 
     private var _binding: VenueOnMapFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var infoAdapter: VenuesInfoAdapter
+    private lateinit var infoAdapter: RestaurantsInfoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +57,7 @@ class VenueOnMapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(VenueOnMapViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(RestaurantsOnMapViewModel::class.java)
 
         initializeMap(savedInstanceState)
         initializeInfoList()
@@ -83,7 +83,7 @@ class VenueOnMapFragment : Fragment() {
     }
 
     private fun initializeInfoList() {
-        infoAdapter = VenuesInfoAdapter {
+        infoAdapter = RestaurantsInfoAdapter {
             viewModel.onRestaurantClicked(it)
         }
         binding.venuesInfoList.layoutManager =
@@ -93,15 +93,15 @@ class VenueOnMapFragment : Fragment() {
 
     private fun initializeVenueObservers() {
         lifecycleScope.launch {
-            viewModel.venuesState.collect {
+            viewModel.restaurantsState.collect {
                 when (it) {
-                    VenuesUiState.Loading -> showLoading()
-                    is VenuesUiState.VenuesAvailable -> showVenues(it.restaurants)
-                    is VenuesUiState.VenueDetailsAvailable -> showVenueDetail(
+                    RestaurantsUiState.Loading -> showLoading()
+                    is RestaurantsUiState.RestaurantsAvailable -> showVenues(it.restaurants)
+                    is RestaurantsUiState.VenueDetailsAvailable -> showVenueDetail(
                         it.key,
                         it.restaurantId
                     )
-                    is VenuesUiState.Failure -> hideLoading()
+                    is RestaurantsUiState.Failure -> hideLoading()
                 }
             }
         }

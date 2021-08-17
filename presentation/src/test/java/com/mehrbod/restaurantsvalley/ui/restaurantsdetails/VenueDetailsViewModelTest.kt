@@ -1,8 +1,8 @@
-package com.mehrbod.restaurantsvalley.ui.venuedetails
+package com.mehrbod.restaurantsvalley.ui.restaurantsdetails
 
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.domain.usecase.GetRestaurantDetailsUseCase
-import com.mehrbod.restaurantsvalley.ui.venuedetails.states.RestaurantDetailUIState
+import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.states.RestaurantDetailUIState
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK

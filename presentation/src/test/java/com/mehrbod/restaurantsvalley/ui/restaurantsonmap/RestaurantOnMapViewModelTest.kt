@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.ui.venueonmap
+package com.mehrbod.restaurantsvalley.ui.restaurantsonmap
 
 import android.location.Location
 import com.google.android.gms.common.api.ResolvableApiException
@@ -9,9 +9,9 @@ import com.mehrbod.domain.usecase.GetRestaurantsUseCase
 import com.mehrbod.domain.usecase.GetUserLocationUseCase
 import com.mehrbod.domain.usecase.LocationEnabledInfoUseCase
 import com.mehrbod.domain.usecase.LocationPermissionGrantedInfoUseCase
-import com.mehrbod.restaurantsvalley.ui.venuedetails.VenueDetailsViewModel
-import com.mehrbod.restaurantsvalley.ui.venueonmap.states.LocationUiState
-import com.mehrbod.restaurantsvalley.ui.venueonmap.states.VenuesUiState
+import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.VenueDetailsViewModel
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
+import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
 import com.mehrbod.restaurantsvalley.data.repository.LocationRepositoryImpl
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -51,7 +51,7 @@ class RestaurantOnMapViewModelTest {
     lateinit var locationEnabledUseCase: LocationEnabledInfoUseCase
 
     @InjectMockKs
-    lateinit var viewModel: VenueOnMapViewModel
+    lateinit var viewModel: RestaurantsOnMapViewModel
 
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
 
@@ -65,9 +65,9 @@ class RestaurantOnMapViewModelTest {
 
     @Test
     fun `test loading state`() = coroutineDispatcher.runBlockingTest {
-        val result = viewModel.venuesState.first()
+        val result = viewModel.restaurantsState.first()
 
-        assertEquals(result, VenuesUiState.Loading)
+        assertEquals(result, RestaurantsUiState.Loading)
     }
 
     @Test
@@ -77,11 +77,11 @@ class RestaurantOnMapViewModelTest {
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
-        val result = viewModel.venuesState.first()
+        val result = viewModel.restaurantsState.first()
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
-        assert(result is VenuesUiState.VenuesAvailable)
-        assert((result as VenuesUiState.VenuesAvailable).restaurants.isEmpty())
+        assert(result is RestaurantsUiState.RestaurantsAvailable)
+        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants.isEmpty())
     }
 
     @Test
@@ -92,11 +92,11 @@ class RestaurantOnMapViewModelTest {
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
-        val result = viewModel.venuesState.first()
+        val result = viewModel.restaurantsState.first()
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
-        assert(result is VenuesUiState.VenuesAvailable)
-        assert((result as VenuesUiState.VenuesAvailable).restaurants.isNotEmpty())
+        assert(result is RestaurantsUiState.RestaurantsAvailable)
+        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants.isNotEmpty())
         assert(result.restaurants[0] == venue)
     }
 
@@ -107,11 +107,11 @@ class RestaurantOnMapViewModelTest {
         }
 
         viewModel.onSearchAreaClicked(1.0, 1.0, 1)
-        val result = viewModel.venuesState.first()
+        val result = viewModel.restaurantsState.first()
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
-        assert(result is VenuesUiState.Failure)
-        assert((result as VenuesUiState.Failure).message == "12323")
+        assert(result is RestaurantsUiState.Failure)
+        assert((result as RestaurantsUiState.Failure).message == "12323")
     }
 
     @Test
@@ -215,11 +215,11 @@ class RestaurantOnMapViewModelTest {
         }
 
         viewModel.onUserLocationShowing(1.0, 1.0, 1)
-        val result = viewModel.venuesState.first()
+        val result = viewModel.restaurantsState.first()
 
         coVerify { getRestaurantsUseCase.execute(1.0, 1.0, 1) }
-        assert(result is VenuesUiState.VenuesAvailable)
-        assert((result as VenuesUiState.VenuesAvailable).restaurants.isEmpty())
+        assert(result is RestaurantsUiState.RestaurantsAvailable)
+        assert((result as RestaurantsUiState.RestaurantsAvailable).restaurants.isEmpty())
     }
 
     @Test
@@ -228,11 +228,11 @@ class RestaurantOnMapViewModelTest {
         every { restaurant.id } returns "123"
 
         viewModel.onRestaurantClicked(restaurant)
-        val result = viewModel.venuesState.first()
+        val result = viewModel.restaurantsState.first()
 
-        assert(result is VenuesUiState.VenueDetailsAvailable)
+        assert(result is RestaurantsUiState.VenueDetailsAvailable)
         assert(
-            (result as VenuesUiState.VenueDetailsAvailable).key == VenueDetailsViewModel.RESTAURANT_ID
+            (result as RestaurantsUiState.VenueDetailsAvailable).key == VenueDetailsViewModel.RESTAURANT_ID
         )
         assert(result.restaurantId == "123")
     }

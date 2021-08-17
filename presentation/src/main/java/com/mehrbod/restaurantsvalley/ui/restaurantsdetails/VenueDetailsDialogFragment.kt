@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.ui.venuedetails
+package com.mehrbod.restaurantsvalley.ui.restaurantsdetails
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.VenueDetailsFragmentBinding
-import com.mehrbod.restaurantsvalley.ui.venuedetails.states.RestaurantDetailUIState
+import com.mehrbod.restaurantsvalley.ui.restaurantsdetails.states.RestaurantDetailUIState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -65,7 +65,7 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun showRestaurantDetails(restaurant: Restaurant) = with(binding){
+    private fun showRestaurantDetails(restaurant: Restaurant) = with(binding) {
         name.text = restaurant.name
         distance.text = String.format(
             binding.root.context.getString(R.string.distance_unit),
@@ -73,7 +73,8 @@ class VenueDetailsDialogFragment : BottomSheetDialogFragment() {
         )
         type.text = restaurant.categories.joinToString(separator = ", ") { it.name }
         address.text = restaurant.location.formattedAddress?.joinToString(separator = " - ")
-        contact.text = restaurant.contact?.formattedPhone ?: "No phone numbers available"
+        contact.text =
+            restaurant.contact?.formattedPhone ?: getString(R.string.phone_number_not_found)
     }
 
     override fun onDestroy() {

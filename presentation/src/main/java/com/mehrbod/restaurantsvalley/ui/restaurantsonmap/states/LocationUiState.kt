@@ -1,4 +1,4 @@
-package com.mehrbod.restaurantsvalley.ui.venueonmap.states
+package com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states
 
 import android.location.Location
 import com.google.android.gms.common.api.ResolvableApiException

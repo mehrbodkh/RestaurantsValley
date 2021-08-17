@@ -30,4 +30,5 @@
     <string name="current_area_button">Search This Area</string>
     <string name="address_title">Address</string>
     <string name="contact_title">Contacts</string>
+    <string name="phone_number_not_found">"No phone numbers available"</string>
 </resources>
