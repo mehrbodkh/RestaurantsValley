@@ -13,22 +13,21 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkingModule {
 
     @Provides
-    @Named("ClientId")
+    @ClientId
     fun provideClientId(): String = BuildConfig.CLIENT_ID
 
     @Provides
-    @Named("ClientSecret")
+    @ClientSecret
     fun provideClientSecret(): String = BuildConfig.CLIENT_SECRET
 
     @Provides
-    @Named("BaseUrl")
+    @BaserUrl
     fun provideBaseUrl(@ApplicationContext context: Context): String =
         context.getString(R.string.base_url)
 
@@ -46,7 +45,7 @@ class NetworkingModule {
 
     @Provides
     fun provideRetrofitClient(
-        @Named("BaseUrl") baseUrl: String,
+        @BaserUrl baseUrl: String,
         gsonConverterFactory: GsonConverterFactory,
         client: OkHttpClient
     ): Retrofit {

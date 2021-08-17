@@ -21,6 +21,7 @@ import com.mehrbod.domain.model.restaurant.Restaurant
 import com.mehrbod.map_module.MapModule
 import com.mehrbod.restaurantsvalley.R
 import com.mehrbod.restaurantsvalley.databinding.RestaurantsOnMapFragmentBinding
+import com.mehrbod.restaurantsvalley.di.MapStyleUrl
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.adapter.RestaurantsInfoAdapter
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.LocationUiState
 import com.mehrbod.restaurantsvalley.ui.restaurantsonmap.states.RestaurantsUiState
@@ -41,7 +42,7 @@ class RestaurantsOnMapFragment : Fragment() {
     lateinit var mapModule: MapModule
 
     @Inject
-    @Named("MapStyleUrl")
+    @MapStyleUrl
     lateinit var mapStyleUrl: String
 
     private lateinit var viewModel: RestaurantsOnMapViewModel

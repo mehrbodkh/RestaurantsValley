@@ -2,6 +2,8 @@ package com.mehrbod.data.datasource
 
 import com.mehrbod.data.api.RestaurantApiService
 import com.mehrbod.data.api.adapter.convertToRestaurants
+import com.mehrbod.data.di.ClientId
+import com.mehrbod.data.di.ClientSecret
 import com.mehrbod.data.util.RESPONSE_LIMIT
 import com.mehrbod.data.util.RESTAURANTS_CATEGORY_ID
 import com.mehrbod.domain.model.restaurant.Restaurant
@@ -12,8 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class RestaurantsRemoteDataSourceImpl @Inject constructor(
     private val apiService: RestaurantApiService,
-    @Named("ClientId") private val clientId: String,
-    @Named("ClientSecret") private val clientSecret: String
+    @ClientId private val clientId: String,
+    @ClientSecret private val clientSecret: String
 ) : RestaurantsRemoteDataSource {
     companion object {
         const val SUCCESS_CODE = 200
